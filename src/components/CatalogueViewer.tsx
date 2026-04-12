@@ -1,6 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { ChevronLeft, ChevronRight, X } from 'lucide-react'
+
+const FLIP_DURATION = 550
 
 interface CatalogueViewerProps {
   pages: string[]
@@ -13,6 +15,7 @@ export function CatalogueViewer({ pages, isOpen, onClose, title }: CatalogueView
   const [currentPage, setCurrentPage] = useState(0)
   const [direction, setDirection] = useState(0)
   const [isFlipping, setIsFlipping] = useState(false)
+  const flipTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
     if (isOpen) {
@@ -23,37 +26,38 @@ export function CatalogueViewer({ pages, isOpen, onClose, title }: CatalogueView
     }
     return () => {
       document.body.style.overflow = ''
+      if (flipTimer.current) clearTimeout(flipTimer.current)
     }
   }, [isOpen])
+
+  const goNext = useCallback(() => {
+    if (currentPage < pages.length - 1 && !isFlipping) {
+      setIsFlipping(true)
+      setDirection(1)
+      setCurrentPage((p) => p + 1)
+      flipTimer.current = setTimeout(() => setIsFlipping(false), FLIP_DURATION)
+    }
+  }, [currentPage, pages.length, isFlipping])
+
+  const goPrev = useCallback(() => {
+    if (currentPage > 0 && !isFlipping) {
+      setIsFlipping(true)
+      setDirection(-1)
+      setCurrentPage((p) => p - 1)
+      flipTimer.current = setTimeout(() => setIsFlipping(false), FLIP_DURATION)
+    }
+  }, [currentPage, isFlipping])
 
   useEffect(() => {
     if (!isOpen) return
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose()
-      if (e.key === 'ArrowRight' && currentPage < pages.length - 1 && !isFlipping) goNext()
-      if (e.key === 'ArrowLeft' && currentPage > 0 && !isFlipping) goPrev()
+      if (e.key === 'ArrowRight') goNext()
+      if (e.key === 'ArrowLeft') goPrev()
     }
     window.addEventListener('keydown', handleKey)
     return () => window.removeEventListener('keydown', handleKey)
-  }, [isOpen, currentPage, pages.length, onClose, isFlipping])
-
-  const goNext = () => {
-    if (currentPage < pages.length - 1 && !isFlipping) {
-      setIsFlipping(true)
-      setDirection(1)
-      setCurrentPage((p) => p + 1)
-      setTimeout(() => setIsFlipping(false), 600)
-    }
-  }
-
-  const goPrev = () => {
-    if (currentPage > 0 && !isFlipping) {
-      setIsFlipping(true)
-      setDirection(-1)
-      setCurrentPage((p) => p - 1)
-      setTimeout(() => setIsFlipping(false), 600)
-    }
-  }
+  }, [isOpen, onClose, goNext, goPrev])
 
   const pageLabels = ['Couverture', 'Page intérieure 1', 'Page intérieure 2']
 
@@ -176,7 +180,7 @@ export function CatalogueViewer({ pages, isOpen, onClose, title }: CatalogueView
                   setIsFlipping(true)
                   setDirection(i > currentPage ? 1 : -1)
                   setCurrentPage(i)
-                  setTimeout(() => setIsFlipping(false), 600)
+                  flipTimer.current = setTimeout(() => setIsFlipping(false), FLIP_DURATION)
                 }
               }}
               className="flex flex-col items-center gap-1.5 group/dot"

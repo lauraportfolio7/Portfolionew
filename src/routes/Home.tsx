@@ -20,7 +20,7 @@ export function Home() {
       <Projects />
       <SectionWaveDivider fromColor="#F6F9FD" toColor="#0F1B3D" />
       <Music />
-      <div className="h-6 bg-gradient-to-b from-night to-ivory" />
+      <div className="h-32 md:h-40 bg-gradient-to-b from-night via-night-light to-ivory" aria-hidden="true" />
       <Contact />
       <Footer />
     </>

@@ -1,4 +1,40 @@
 @import './fonts.css';
-@import './tailwind.css';
-@import './theme.css';
-@import './carousel.css';
+@import './tokens.css';
+@import 'tailwindcss';
+
+@theme inline {
+  --color-night: var(--color-night);
+  --color-night-light: var(--color-night-light);
+  --color-night-dark: var(--color-night-dark);
+  --color-night-secondary: var(--color-night-secondary);
+  --color-accent: var(--color-accent);
+  --color-accent-blue: var(--color-accent-blue);
+  --color-ivory: var(--color-ivory);
+  --color-ivory-warm: var(--color-ivory-warm);
+  --color-sky-light: var(--color-sky-light);
+  --color-text-secondary: var(--color-text-secondary);
+  --color-text-muted: var(--color-text-muted);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--color-ivory);
+    color: var(--color-night);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

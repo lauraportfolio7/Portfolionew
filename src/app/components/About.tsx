@@ -1,6 +1,6 @@
 import { motion } from 'motion/react';
 import { useInView } from './useInView';
-import profileImage from 'figma:asset/1fcc05456d7eeb8570419d239a501917c5581ead.png';
+import profileImage from '@/assets/profile/laura.jpg';
 
 export function About() {
   const [ref, isInView] = useInView({ threshold: 0.15 });

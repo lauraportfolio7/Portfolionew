@@ -117,21 +117,26 @@ export function CatalogueViewer({ pages, isOpen, onClose, title }: CatalogueView
             <motion.div
               key={currentPage}
               custom={direction}
-              initial={(dir: number) => ({
-                rotateY: dir > 0 ? -90 : 90,
-                opacity: 0,
-                scale: 0.95,
-              })}
-              animate={{
-                rotateY: 0,
-                opacity: 1,
-                scale: 1,
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              variants={{
+                initial: (dir: number) => ({
+                  rotateY: dir > 0 ? -90 : 90,
+                  opacity: 0,
+                  scale: 0.95,
+                }),
+                animate: {
+                  rotateY: 0,
+                  opacity: 1,
+                  scale: 1,
+                },
+                exit: (dir: number) => ({
+                  rotateY: dir > 0 ? 90 : -90,
+                  opacity: 0,
+                  scale: 0.95,
+                }),
               }}
-              exit={(dir: number) => ({
-                rotateY: dir > 0 ? 90 : -90,
-                opacity: 0,
-                scale: 0.95,
-              })}
               transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
               className="relative"
               style={{ transformStyle: 'preserve-3d', transformOrigin: direction > 0 ? 'left center' : 'right center' }}

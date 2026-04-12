@@ -91,6 +91,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
               src={lightboxImage}
               alt="Vue plein écran"
               className="max-w-[90vw] max-h-[90vh] object-contain rounded-2xl shadow-2xl"
+              decoding="async"
             />
           </motion.div>
         </div>
@@ -135,6 +136,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
                 src={project.conversationGroup.images[convLightboxIndex]}
                 alt={`${project.conversationGroup.label} – ${convLightboxIndex + 1}`}
                 className="max-w-[75vw] max-h-[78vh] object-contain rounded-2xl shadow-2xl"
+                decoding="async"
               />
               <div className="px-5 py-2.5 bg-white/95 backdrop-blur-sm rounded-full shadow-lg text-sm text-night border border-night/10">
                 {convLightboxIndex + 1} / {project.conversationGroup.images.length} — {project.conversationGroup.label}
@@ -194,6 +196,8 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
                   alt={project.title}
                   className="w-full h-full object-contain"
                   style={{ maxHeight: '580px' }}
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
             </div>
@@ -466,7 +470,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
                         <div className="flex items-center justify-center p-4" style={{ maxHeight: '420px', minHeight: '280px' }}>
                           <img
                             src={image}
-                            alt={caption || `Visuel ${i + 1}`}
+                            alt={caption || `${project.title} – visuel ${i + 1}`}
                             className="max-w-full max-h-full object-contain rounded-lg"
                             style={{ maxHeight: '400px' }}
                             loading="lazy"

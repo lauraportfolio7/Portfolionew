@@ -12,7 +12,7 @@ export default defineConfig({
   },
   build: {
     target: 'es2020',
-    rollupOptions: {
+    rolldownOptions: {
       output: {
         manualChunks(id: string) {
           if (id.includes('node_modules/react') || id.includes('node_modules/react-dom') || id.includes('node_modules/react-router')) {

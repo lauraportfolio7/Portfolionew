@@ -3,6 +3,7 @@
 @import 'tailwindcss';
 
 @theme inline {
+  /* Anciennes couleurs — conservées le temps de la transition */
   --color-night: #1B160B;
   --color-night-light: #2A2316;
   --color-night-dark: #100D06;
@@ -14,6 +15,20 @@
   --color-sky-light: #F8EFD2;
   --color-text-secondary: #3F3422;
   --color-text-muted: #6B5B33;
+
+  /* Nouvelles couleurs — DA brutaliste artistique */
+  --color-bone: #F2EBDA;
+  --color-bone-soft: #FAF5E8;
+  --color-ink: #0F0D08;
+  --color-ink-deep: #1F1A12;
+  --color-gold: #E5A823;
+  --color-gold-deep: #B07410;
+  --color-cinnabar: #C5371E;
+
+  /* Nouvelles polices */
+  --font-display: 'Fraunces', 'Playfair Display', Georgia, serif;
+  --font-body: 'Bricolage Grotesque', 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
 }
 
 @layer base {

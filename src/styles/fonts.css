@@ -1,3 +1,8 @@
+/* ============================================================ */
+/* Polices anciennes — conservées le temps de la transition vers */
+/* la nouvelle identité, seront retirées en Phase C (legacy).    */
+/* ============================================================ */
+
 @font-face {
   font-family: 'Playfair Display';
   src: url('/fonts/playfair-display-v40-latin-700.woff2') format('woff2');
@@ -25,6 +30,53 @@
 @font-face {
   font-family: 'Inter';
   src: url('/fonts/inter-v20-latin-500.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ============================================================ */
+/* Nouvelles polices — DA éditoriale brutaliste artistique        */
+/* ============================================================ */
+
+/* Fraunces — display, variable, italiques expressifs */
+@font-face {
+  font-family: 'Fraunces';
+  src: url('/fonts/fraunces-latin-wght-normal.woff2') format('woff2-variations');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Fraunces';
+  src: url('/fonts/fraunces-latin-wght-italic.woff2') format('woff2-variations');
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Bricolage Grotesque — sans-serif, variable, caractère moderne */
+@font-face {
+  font-family: 'Bricolage Grotesque';
+  src: url('/fonts/bricolage-grotesque-latin-wght-normal.woff2') format('woff2-variations');
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* JetBrains Mono — mono, détails éditoriaux et méta-infos */
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/jetbrains-mono-latin-400-normal.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/jetbrains-mono-latin-500-normal.woff2') format('woff2');
   font-weight: 500;
   font-style: normal;
   font-display: swap;

@@ -1,5 +1,9 @@
 :root {
-  /* Couleurs signature — DA Tournesol éditorial */
+  /* ============================================================ */
+  /* Anciens tokens — DA Tournesol éditorial (conservés pour      */
+  /* compatibilité ascendante : voir CLAUDE.md, on n'en renomme   */
+  /* aucun, on en ajoute simplement de nouveaux).                  */
+  /* ============================================================ */
   --color-night: #1B160B;
   --color-night-light: #2A2316;
   --color-night-dark: #100D06;
@@ -11,15 +15,45 @@
   --color-ivory: #FFFCF4;
   --color-ivory-warm: #FBF4DD;
   --color-sky-light: #F8EFD2;
-  /* Typographies */
+
+  /* Anciennes typographies — toujours utilisées par /legacy. */
   --font-serif: 'Playfair Display', Georgia, serif;
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
-  /* Easing signature */
+  /* ============================================================ */
+  /* Nouveaux tokens — DA Éditoriale brutaliste artistique         */
+  /* Crème + noir profond + doré qui claquent.                     */
+  /* ============================================================ */
+
+  /* Crèmes (fond) */
+  --color-bone: #F2EBDA;
+  --color-bone-soft: #FAF5E8;
+
+  /* Noirs chauds */
+  --color-ink: #0F0D08;
+  --color-ink-deep: #1F1A12;
+
+  /* Dorés */
+  --color-gold: #E5A823;
+  --color-gold-deep: #B07410;
+
+  /* Couleur surprise — à utiliser avec parcimonie */
+  --color-cinnabar: #C5371E;
+
+  /* Nouvelles typographies — DA brutaliste */
+  --font-display: 'Fraunces', 'Playfair Display', Georgia, serif;
+  --font-body: 'Bricolage Grotesque', 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* ============================================================ */
+  /* Animation                                                      */
+  /* ============================================================ */
   --ease-signature: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 
-  /* Spacing */
+  /* ============================================================ */
+  /* Spacing                                                        */
+  /* ============================================================ */
   --section-py: clamp(4rem, 8vw, 7rem);
   --section-px: clamp(1.5rem, 5vw, 4rem);
   --max-w: 80rem;

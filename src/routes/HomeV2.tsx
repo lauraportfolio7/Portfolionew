@@ -1,4 +1,5 @@
 import { Hero } from '@/sections/v2/Hero'
+import { Manifesto } from '@/sections/v2/Manifesto'
 import { BrutalCursor } from '@/components/BrutalCursor'
 
 /**
@@ -11,6 +12,7 @@ export function HomeV2() {
     <>
       <BrutalCursor />
       <Hero />
+      <Manifesto />
     </>
   )
 }

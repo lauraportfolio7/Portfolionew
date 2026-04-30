@@ -60,6 +60,17 @@
   }
 }
 
+/* Animation utilitaires — DA brutaliste */
+@keyframes sigilSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes marqueeSlide {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;

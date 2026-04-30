@@ -20,6 +20,7 @@ import { useEffect, useState } from 'react'
 import type { Project } from '@/types'
 import { SlideViewer } from '@/components/SlideViewer'
 import { FlipbookViewer } from '@/components/FlipbookViewer'
+import { Picture } from '@/components/Picture'
 
 interface ProjectModalProps {
   project: Project | null
@@ -119,11 +120,12 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
             >
               <X className="w-5 h-5 text-night" />
             </button>
-            <img
+            <Picture
               src={lightboxImage}
               alt="Vue plein écran"
-              className="max-w-[90vw] max-h-[90vh] object-contain rounded-2xl shadow-2xl"
-              decoding="async"
+              loading="eager"
+              imgClassName="max-w-[90vw] max-h-[90vh] object-contain rounded-2xl shadow-2xl"
+              sizes="90vw"
             />
           </motion.div>
         </div>
@@ -164,11 +166,12 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
             </button>
 
             <div className="relative max-w-[75vw] max-h-[85vh] flex flex-col items-center gap-4">
-              <img
+              <Picture
                 src={project.conversationGroup.images[convLightboxIndex]}
                 alt={`${project.conversationGroup.label} – ${convLightboxIndex + 1}`}
-                className="max-w-[75vw] max-h-[78vh] object-contain rounded-2xl shadow-2xl"
-                decoding="async"
+                loading="eager"
+                imgClassName="max-w-[75vw] max-h-[78vh] object-contain rounded-2xl shadow-2xl"
+                sizes="75vw"
               />
               <div className="px-5 py-2.5 bg-white/95 backdrop-blur-sm rounded-full shadow-lg text-sm text-night border border-night/10">
                 {convLightboxIndex + 1} / {project.conversationGroup.images.length} — {project.conversationGroup.label}
@@ -239,13 +242,12 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
                 className="aspect-[3/4] md:aspect-auto flex items-center justify-center p-6"
                 style={{ maxHeight: '600px' }}
               >
-                <img
+                <Picture
                   src={project.image}
                   alt={project.title}
-                  className="w-full h-full object-contain relative z-[2] drop-shadow-[0_10px_28px_rgba(176,116,16,0.20)]"
-                  style={{ maxHeight: '580px' }}
-                  loading="lazy"
-                  decoding="async"
+                  imgClassName="w-full h-full object-contain relative z-[2] drop-shadow-[0_10px_28px_rgba(176,116,16,0.20)]"
+                  imgStyle={{ maxHeight: '580px' }}
+                  sizes="(max-width: 768px) 100vw, 50vw"
                 />
               </div>
             </div>
@@ -529,12 +531,11 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
                         onClick={() => setLightboxImage(image)}
                       >
                         <div className="flex items-center justify-center p-2 aspect-square bg-ivory-warm/40">
-                          <img
+                          <Picture
                             src={image}
                             alt={caption || `${project.title} – visuel ${i + 1}`}
-                            className="max-w-full max-h-full object-contain rounded"
-                            loading="lazy"
-                            decoding="async"
+                            imgClassName="max-w-full max-h-full object-contain rounded"
+                            sizes="(max-width: 768px) 80vw, (max-width: 1280px) 40vw, 25vw"
                           />
                           {caption && (
                             <div className="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-sm px-4 py-2">
@@ -598,12 +599,11 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
                       }}
                     >
                       <div className="flex items-center justify-center p-2 aspect-square bg-ivory-warm/40 relative">
-                        <img
+                        <Picture
                           src={project.conversationGroup.cover}
                           alt={project.conversationGroup.label}
-                          className="max-w-full max-h-full object-contain rounded"
-                          loading="lazy"
-                          decoding="async"
+                          imgClassName="max-w-full max-h-full object-contain rounded"
+                          sizes="(max-width: 768px) 80vw, 50vw"
                         />
                       </div>
                       <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent flex flex-col items-center justify-end pb-6">

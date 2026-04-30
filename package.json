@@ -5,8 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
-    "preview": "vite preview"
+    "build": "pnpm images && tsc -b && vite build",
+    "preview": "vite preview",
+    "images": "node scripts/build-images.mjs",
+    "images:force": "node scripts/build-images.mjs --force"
   },
   "dependencies": {
     "embla-carousel-autoplay": "^8.6.0",
@@ -26,6 +28,7 @@
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",
     "canvas": "^3.2.3",
+    "sharp": "^0.34.5",
     "tailwindcss": "^4.2.4",
     "typescript": "~6.0.3",
     "vite": "^8.0.10"

@@ -2,6 +2,7 @@ import { motion, useScroll, useTransform } from 'motion/react'
 import { useRef } from 'react'
 import { ArrowDownRight } from 'lucide-react'
 import portrait from '@/assets/profile/laura-sunflowers.png'
+import { Picture } from '@/components/Picture'
 
 export function Hero() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -216,12 +217,13 @@ export function Hero() {
                       '0 30px 80px -20px rgba(229,168,35,0.40), 0 12px 30px -10px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05)',
                   }}
                 >
-                  <img
+                  <Picture
                     src={portrait}
                     alt="Laura Cerveaux"
                     className="w-full h-full object-cover aspect-[4/5]"
                     loading="eager"
                     fetchPriority="high"
+                    sizes="(max-width: 768px) 80vw, (max-width: 1280px) 40vw, 30vw"
                   />
                 </div>
 

@@ -4,6 +4,7 @@ import { GraduationCap, Briefcase, ExternalLink, BookOpen, FileText, Play } from
 import { ProjectModal } from '@/components/ProjectModal'
 import { CatalogueViewer } from '@/components/CatalogueViewer'
 import { Carousel, CarouselSlide } from '@/components/Carousel'
+import { Picture } from '@/components/Picture'
 import { featuredProjects, otherProjects } from '@/data/projects'
 import type { Project } from '@/types'
 import { useState } from 'react'
@@ -63,7 +64,7 @@ function ProjectCard({ project, onClick, delay, dark = false }: { project: Proje
             >
               <div className="absolute top-[4px] left-1/2 -translate-x-1/2 w-[5px] h-[5px] rounded-full bg-[#3a3a3e]" style={{ boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.4)' }} aria-hidden="true" />
               <div className="rounded-[12px] overflow-hidden relative bg-white">
-                <img src={project.image} alt={project.title} className="h-[290px] w-auto block mx-auto" style={{ objectFit: 'cover' }} loading="lazy" decoding="async" />
+                <Picture src={project.image} alt={project.title} imgClassName="h-[290px] w-auto block mx-auto" imgStyle={{ objectFit: 'cover' }} sizes="(max-width: 768px) 90vw, (max-width: 1280px) 45vw, 30vw" />
                 <div className="absolute inset-0 pointer-events-none rounded-[12px]" style={{ boxShadow: 'inset 0 0 0 0.5px rgba(255,255,255,0.1)' }} aria-hidden="true" />
               </div>
             </div>
@@ -84,7 +85,7 @@ function ProjectCard({ project, onClick, delay, dark = false }: { project: Proje
             >
               <div className="absolute top-[8px] left-1/2 -translate-x-1/2 w-[6px] h-[6px] rounded-full bg-[#3a3a3e]" style={{ boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.5)' }} aria-hidden="true" />
               <div className="rounded-[4px] overflow-hidden relative bg-white">
-                <img src={project.image} alt={project.title} className="w-[360px] block" style={{ objectFit: 'contain', aspectRatio: '16/9' }} loading="lazy" decoding="async" />
+                <Picture src={project.image} alt={project.title} imgClassName="w-[360px] block" imgStyle={{ objectFit: 'contain', aspectRatio: '16/9' }} sizes="(max-width: 768px) 80vw, 360px" />
                 <div className="absolute inset-0 pointer-events-none" style={{ boxShadow: 'inset 0 0 0 0.5px rgba(255,255,255,0.08)' }} aria-hidden="true" />
               </div>
             </div>
@@ -119,7 +120,7 @@ function ProjectCard({ project, onClick, delay, dark = false }: { project: Proje
             >
               <div className="absolute top-[6px] left-1/2 -translate-x-1/2 w-[36px] h-[4px] rounded-full bg-[#3a3a3e]" aria-hidden="true" />
               <div className="rounded-[24px] overflow-hidden relative bg-white">
-                <img src={project.image} alt={project.title} className="w-[180px] h-[320px] block" style={{ objectFit: 'cover' }} loading="lazy" decoding="async" />
+                <Picture src={project.image} alt={project.title} imgClassName="w-[180px] h-[320px] block" imgStyle={{ objectFit: 'cover' }} sizes="180px" />
               </div>
               <div className="absolute bottom-[5px] left-1/2 -translate-x-1/2 w-[40px] h-[4px] rounded-full bg-[#3a3a3e]" aria-hidden="true" />
             </div>
@@ -136,7 +137,7 @@ function ProjectCard({ project, onClick, delay, dark = false }: { project: Proje
                 boxShadow: '8px 8px 30px -5px rgba(28,35,64,0.25), -2px -1px 10px rgba(28,35,64,0.05)',
               }}
             >
-              <img src={project.image} alt={project.title} className="h-[310px] w-auto block" style={{ objectFit: 'contain' }} loading="lazy" decoding="async" />
+              <Picture src={project.image} alt={project.title} imgClassName="h-[310px] w-auto block" imgStyle={{ objectFit: 'contain' }} sizes="(max-width: 768px) 80vw, 360px" />
             </div>
             <div className="absolute left-0 top-0 bottom-0 w-[4px] rounded-l-sm" style={{ background: 'linear-gradient(to right, rgba(28,35,64,0.15), transparent)', transform: 'rotateY(-5deg) rotateX(2deg)' }} aria-hidden="true" />
             <div className="absolute -bottom-[4px] left-[3%] right-[3%] h-[4px] rounded-b-sm" style={{ background: 'rgba(28,35,64,0.06)' }} aria-hidden="true" />
@@ -145,12 +146,11 @@ function ProjectCard({ project, onClick, delay, dark = false }: { project: Proje
       ) : (
         <div className="h-[360px] flex items-center justify-center relative overflow-hidden" style={PREMIUM_CARD_BG}>
           <SunflowerStamp />
-          <img
+          <Picture
             src={project.image}
             alt={project.title}
-            className="relative z-[2] w-full h-full object-contain p-6"
-            loading="lazy"
-            decoding="async"
+            imgClassName="relative z-[2] w-full h-full object-contain p-6"
+            sizes="(max-width: 768px) 90vw, (max-width: 1280px) 45vw, 30vw"
           />
         </div>
       )}
@@ -327,7 +327,7 @@ function VergelegenCard({ onOpenCatalogue, onOpenProject }: { onOpenCatalogue: (
             <div className="absolute top-[4px] left-1/2 -translate-x-1/2 w-[5px] h-[5px] rounded-full bg-[#3a3a3e]" style={{ boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.4)' }} aria-hidden="true" />
             {/* Screen */}
             <div className="rounded-[12px] overflow-hidden relative bg-white">
-              <img src={vergelegenCover} alt="Vergelegen - Couverture" className="h-[290px] w-auto block" style={{ objectFit: 'cover' }} loading="lazy" decoding="async" />
+              <Picture src={vergelegenCover} alt="Vergelegen - Couverture" imgClassName="h-[290px] w-auto block" imgStyle={{ objectFit: 'cover' }} sizes="(max-width: 768px) 90vw, (max-width: 1280px) 45vw, 30vw" />
               <div className="absolute inset-0 pointer-events-none rounded-[12px]" style={{ boxShadow: 'inset 0 0 0 0.5px rgba(255,255,255,0.1)' }} aria-hidden="true" />
             </div>
           </div>
@@ -448,12 +448,11 @@ export function Projects() {
                         className="h-[360px] md:h-auto md:min-h-[480px] relative overflow-hidden rounded-t-3xl md:rounded-l-3xl md:rounded-tr-none flex items-center justify-center"
                         style={PREMIUM_CARD_BG}
                       >
-                        <img
+                        <Picture
                           src={project.image}
                           alt={project.title}
-                          className="w-full h-full object-contain relative z-[1] p-6"
-                          loading="lazy"
-                          decoding="async"
+                          imgClassName="w-full h-full object-contain relative z-[1] p-6"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1280px) 60vw, 50vw"
                         />
                       </div>
                       <div className="p-8 md:p-10 flex flex-col justify-center">

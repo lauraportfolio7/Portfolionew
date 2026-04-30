@@ -8,9 +8,11 @@ Single-page portfolio for Laura Cerveaux (BTS Communication student). React 19 +
 
 ## Commands
 
-- `pnpm dev` — Vite dev server (default `http://localhost:5173`)
-- `pnpm build` — `tsc -b` then `vite build`. The TypeScript step is the only typecheck/lint gate (no ESLint, no test runner configured), so always run `pnpm tsc --noEmit` after substantive edits to verify.
+- `pnpm dev` — Vite dev server (default `http://localhost:5173`). The `image-watch` plugin auto-generates AVIF/WebP/fallback variants when an image is dropped into `src/assets/`.
+- `pnpm build` — runs `pnpm images` first (regenerates any stale variants), then `tsc -b` and `vite build`. The TypeScript step is the only typecheck/lint gate (no ESLint, no test runner configured), so always run `pnpm tsc --noEmit` after substantive edits to verify.
 - `pnpm preview` — preview the built bundle.
+- `pnpm images` — incrementally generate image variants (skips unchanged sources via `.image-cache.json`).
+- `pnpm images:force` — same but ignores the cache and regenerates everything.
 
 Production deploy is the multi-stage `Dockerfile` (build → nginx serving `dist/`). `nginx.conf` ships with the image.
 
@@ -46,6 +48,32 @@ Production deploy is the multi-stage `Dockerfile` (build → nginx serving `dist
 
 The palette has been migrated from a blue DA to a sunflower yellow DA, but the CSS variable **names** (`--color-night`, `--color-accent`, `--color-accent-blue`, `--color-ivory`, `--color-sky-light`, etc.) were kept and only their values changed. Don't take names literally — `accent-blue` is currently a deep amber, `night` is a warm coffee. When extending the palette, add new tokens; don't rename existing ones.
 
+### Image pipeline (responsive AVIF / WebP / fallback)
+
+Every image under `src/assets/` is processed by [scripts/build-images.mjs](scripts/build-images.mjs) (using `sharp`, with a `@napi-rs/canvas` fallback for AVIF inputs that libheif can't decode). For each source, the script generates **9 variants** as siblings: 3 widths (`640w` / `1280w` / `1920w`) × 3 formats (`avif` / `webp` / fallback `jpg` or `png`). Variant filenames follow the convention `<basename>.<width>w.<ext>` (e.g. `poster.1280w.avif`).
+
+The originals are kept (max compatibility) and the **variants are committed** — `.image-cache.json` (gitignored) stores per-source content hashes so the script is no-op when nothing changed.
+
+**Adding a new image — the only correct workflow:**
+
+1. Drop the source file (`.jpg` / `.jpeg` / `.png` / `.webp` / `.avif`) somewhere under `src/assets/`. Use a meaningful sub-folder per project. Don't include `640w` / `1280w` / `1920w` in the source's own filename — the script reserves those suffixes for generated variants.
+2. If `pnpm dev` is running, the variants are generated automatically (the [scripts/vite-image-watch.ts](scripts/vite-image-watch.ts) plugin calls the same conversion function on `add` / `change` events and triggers HMR). Otherwise run `pnpm images` once.
+3. Import the **original** in code (the variants are resolved at build-time, not imported by hand): `import myImage from '@/assets/foo/bar.jpg'`.
+4. Render via the `<Picture>` component, never a raw `<img>` for asset images:
+
+   ```tsx
+   import { Picture } from '@/components/Picture'
+   <Picture src={myImage} alt="…" sizes="(max-width: 768px) 100vw, 50vw" />
+   ```
+
+   The `sizes` attribute drives which width the browser picks — set it tight (the rendered width per breakpoint) to avoid downloading 1920w when the image only displays at 360px.
+
+[src/components/Picture.tsx](src/components/Picture.tsx) reads two `import.meta.glob` maps (sources + variants) at module load, derives variant URLs by string manipulation, and emits `<picture><source type="image/avif"><source type="image/webp"><source type="image/jpeg"><img></picture>`. If a source has no generated variants (e.g. a base64 data URL from PDF rendering, or the script hasn't run yet), `<Picture>` falls back gracefully to a plain `<img>` — never throws.
+
+`<Picture>` accepts `imgClassName` / `imgStyle` (applied to the inner `<img>`) and `pictureClassName` / `pictureStyle` (applied to the wrapping `<picture>`). The plain `className` / `style` props default to the inner `<img>` for drop-in replacement of existing `<img>` tags.
+
+**Don't** add a raw `<img>` for any asset image — the variants exist precisely to be served, and skipping `<Picture>` defeats the pipeline. Raw `<img>` is fine only for non-asset sources (data URLs from PDF.js, generated SVGs, etc.).
+
 ### PDF rendering
 
 `SlideViewer` and `FlipbookViewer` use `pdfjs-dist`. The worker is loaded via Vite's `?url` import: `import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.min.mjs?url'`, then `pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker`. Reproduce this pattern if adding another PDF surface — do not point at a CDN. PDFs themselves live in `public/documents/` and are referenced as absolute paths (e.g. `/documents/vice-versa.pdf`).
@@ -75,3 +103,4 @@ Section headlines use `WebkitBackgroundClip: text` with an italic span — the t
 - Always use `pnpm` (the lockfile and Dockerfile assume it via corepack).
 - Section files own their layout, animations, and entry transitions. Cross-section visuals (cursor, thread, intro) live in `components/` and are mounted once in `Home.tsx`.
 - New rich content (a project, a track, a milestone) goes in `src/data/*` against the existing types in `src/types/index.ts` — sections re-render automatically.
+- New images go in `src/assets/<project>/`, are imported as ES modules, and are rendered via `<Picture>` — see the **Image pipeline** section above for the full workflow.

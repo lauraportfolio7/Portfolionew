@@ -22,10 +22,7 @@ export function Journey() {
   const hasMore = milestones.length > VISIBLE_COUNT
 
   return (
-    <section id="parcours" className="py-16 md:py-24 px-6 bg-ivory relative overflow-hidden" ref={ref} aria-label="Parcours">
-      <div className="absolute top-[10%] left-[10%] w-[450px] h-[350px] rounded-full blur-[100px]" style={{ background: 'radial-gradient(ellipse, rgba(107,127,232,0.08) 0%, transparent 70%)' }} aria-hidden="true" />
-      <div className="absolute bottom-[10%] right-[5%] w-[350px] h-[280px] rounded-full blur-[90px]" style={{ background: 'radial-gradient(ellipse, rgba(74,111,189,0.06) 0%, transparent 65%)' }} aria-hidden="true" />
-
+    <section id="parcours" className="py-24 md:py-32 px-6 bg-ivory relative" ref={ref} aria-label="Parcours">
       <div className="max-w-6xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

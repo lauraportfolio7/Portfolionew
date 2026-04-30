@@ -1,16 +1,16 @@
 :root {
-  /* Couleurs signature */
-  --color-night: #0F1B3D;
-  --color-night-light: #1A2B52;
-  --color-night-dark: #060D1F;
-  --color-night-secondary: #1C2340;
-  --color-text-secondary: #2A3458;
-  --color-text-muted: #4A5068;
-  --color-accent: #6B7FE8;
-  --color-accent-blue: #4A6FBD;
-  --color-ivory: #FAFBFC;
-  --color-ivory-warm: #F5F7FA;
-  --color-sky-light: #F6F9FD;
+  /* Couleurs signature — DA Tournesol éditorial */
+  --color-night: #1B160B;
+  --color-night-light: #2A2316;
+  --color-night-dark: #100D06;
+  --color-night-secondary: #3A2F1A;
+  --color-text-secondary: #3F3422;
+  --color-text-muted: #6B5B33;
+  --color-accent: #E5A823;
+  --color-accent-blue: #B07410;
+  --color-ivory: #FFFCF4;
+  --color-ivory-warm: #FBF4DD;
+  --color-sky-light: #F8EFD2;
   /* Typographies */
   --font-serif: 'Playfair Display', Georgia, serif;
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;

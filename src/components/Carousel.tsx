@@ -44,7 +44,7 @@ export function Carousel({ children, autoplay = true, loop = true, className = '
   return (
     <div className={`relative ${className}`}>
       <div ref={emblaRef} className="overflow-hidden">
-        <div className="flex">{children}</div>
+        <div className="flex items-stretch">{children}</div>
       </div>
 
       {/* Navigation buttons */}
@@ -91,8 +91,8 @@ interface CarouselSlideProps {
 
 export function CarouselSlide({ children, className = '' }: CarouselSlideProps) {
   return (
-    <div className={`flex-[0_0_85%] md:flex-[0_0_70%] min-w-0 px-3 ${className}`}>
-      {children}
+    <div className={`flex-[0_0_85%] md:flex-[0_0_70%] min-w-0 px-3 flex ${className}`}>
+      <div className="w-full">{children}</div>
     </div>
   )
 }

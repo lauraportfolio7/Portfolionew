@@ -1,98 +1,150 @@
 import { motion } from 'motion/react'
 import { useInView } from '@/hooks/useInView'
-import profileImage from '@/assets/profile/laura.jpg'
 
 export function About() {
   const [ref, isInView] = useInView({ threshold: 0.15 })
 
   return (
-    <section id="apropos" className="py-16 md:py-24 px-6 bg-ivory relative overflow-hidden" ref={ref} aria-label="À propos">
-      <div className="absolute top-[10%] right-[8%] w-[450px] h-[350px] rounded-full blur-[90px]" style={{ background: 'radial-gradient(ellipse, rgba(107,127,232,0.08) 0%, transparent 70%)' }} aria-hidden="true" />
-      <div className="absolute bottom-[20%] left-[5%] w-[350px] h-[280px] rounded-full blur-[80px]" style={{ background: 'radial-gradient(ellipse, rgba(74,111,189,0.06) 0%, transparent 65%)' }} aria-hidden="true" />
+    <section
+      id="apropos"
+      className="py-24 md:py-32 px-6 bg-ivory relative overflow-hidden"
+      ref={ref}
+      aria-label="À propos"
+    >
+      {/* Soft sunflower glow corners */}
+      <div
+        className="absolute -top-32 -right-32 w-[500px] h-[500px] rounded-full pointer-events-none"
+        style={{
+          background:
+            'radial-gradient(circle, rgba(229,168,35,0.12) 0%, transparent 65%)',
+          filter: 'blur(40px)',
+        }}
+        aria-hidden="true"
+      />
+      <div
+        className="absolute -bottom-40 -left-32 w-[450px] h-[450px] rounded-full pointer-events-none"
+        style={{
+          background:
+            'radial-gradient(circle, rgba(176,116,16,0.08) 0%, transparent 65%)',
+          filter: 'blur(40px)',
+        }}
+        aria-hidden="true"
+      />
 
       <div className="max-w-6xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="mb-16 md:mb-20"
+          className="mb-16 md:mb-20 text-center md:text-left"
         >
-          <span className="text-[10px] uppercase tracking-[0.4em] text-night/30 mb-3 block">À propos</span>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl text-night leading-[1.1]" style={{ fontFamily: 'var(--font-serif)', fontWeight: 700 }}>
-            Qui suis-je ?
+          <div className="flex items-center gap-3 justify-center md:justify-start mb-4">
+            <div className="w-10 h-[1px] bg-accent" aria-hidden="true" />
+            <span className="text-[10px] uppercase tracking-[0.45em] text-accent" style={{ fontWeight: 600 }}>
+              À propos
+            </span>
+          </div>
+          <h2
+            className="text-5xl md:text-6xl lg:text-7xl text-night leading-[1.05] max-w-4xl"
+            style={{ fontFamily: 'var(--font-serif)', fontWeight: 700, letterSpacing: '-0.02em' }}
+          >
+            Je ne fais pas que communiquer,
+            <br />
+            <span
+              className="italic inline-block"
+              style={{
+                paddingRight: '0.1em',
+                background: 'linear-gradient(135deg, #B07410 0%, #E5A823 50%, #F5C957 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}
+            >
+              je construis des récits.
+            </span>
           </h2>
         </motion.div>
 
-        <div className="grid md:grid-cols-5 gap-10 md:gap-16 items-start">
+        <div className="grid md:grid-cols-12 gap-10 md:gap-14">
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            className="md:col-span-2"
+            initial="hidden"
+            animate={isInView ? 'visible' : 'hidden'}
+            variants={{
+              hidden: {},
+              visible: { transition: { staggerChildren: 0.18, delayChildren: 0.2 } },
+            }}
+            className="md:col-span-7 space-y-6 text-[16px] md:text-[17px] leading-[1.85] text-text-secondary"
           >
-            <div className="relative">
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={isInView ? { opacity: 1, scale: 1 } : {}}
-                transition={{ duration: 0.7, delay: 0.5 }}
-                className="absolute -top-4 -left-4 w-32 h-32 border-2 border-night/15 rounded-3xl"
-                aria-hidden="true"
-              />
-
-              <div className="relative rounded-3xl overflow-hidden" style={{ boxShadow: '0 24px 60px -12px rgba(15,27,61,0.25)' }}>
-                <div className="aspect-[3/4] overflow-hidden">
-                  <img
-                    src={profileImage}
-                    alt="Laura Cerveaux"
-                    className="w-full h-full object-cover object-top scale-110"
-                    loading="eager"
-                    fetchPriority="high"
-                    width={400}
-                    height={533}
-                  />
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-night/30 via-transparent to-transparent" aria-hidden="true" />
-              </div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 15 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.6, delay: 0.8 }}
-                className="absolute -bottom-5 -right-5 px-5 py-3 bg-night text-white rounded-2xl text-sm tracking-wide"
-                style={{ boxShadow: '0 12px 32px -8px rgba(15,27,61,0.40)', fontWeight: 600 }}
+            {[
+              <>
+                Je suis en <span className="text-night" style={{ fontWeight: 600 }}>BTS Communication en alternance</span>, un parcours qui me sert de passerelle vers ce qui m'anime vraiment : <span className="text-accent-blue" style={{ fontWeight: 600 }}>le son et l'image</span>.
+              </>,
+              <>
+                J'y développe à la fois des compétences en communication et une sensibilité créative, à travers des projets réels menés en entreprise — événementiel, édition, branding, contenus digitaux.
+              </>,
+              <>
+                Mon objectif est d'intégrer une <span className="text-night" style={{ fontWeight: 600 }}>licence professionnelle dans le domaine du son et de l'image</span>, un univers plus proche de la musique et de la création visuelle.
+              </>,
+            ].map((node, i) => (
+              <motion.p
+                key={i}
+                variants={{
+                  hidden: { opacity: 0, y: 18 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } },
+                }}
               >
-                22 ans
-              </motion.div>
-            </div>
+                {node}
+              </motion.p>
+            ))}
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            initial={{ opacity: 0, y: 24 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            className="md:col-span-3 space-y-8"
+            className="md:col-span-5"
           >
-            <div className="space-y-5">
-              <h3 className="text-2xl md:text-3xl text-night leading-[1.3]" style={{ fontFamily: 'var(--font-serif)', fontWeight: 600 }}>
-                Laura Cerveaux
-              </h3>
-              <div className="w-16 h-1 bg-night rounded-full" aria-hidden="true" />
-              <p className="text-lg md:text-xl text-night leading-relaxed" style={{ fontWeight: 500 }}>
-                Je ne fais pas que communiquer, je construis des expériences visuelles et sonores.
+            <div
+              className="relative p-7 rounded-3xl border border-accent/20"
+              style={{
+                background:
+                  'linear-gradient(135deg, rgba(255,252,244,0.95) 0%, rgba(251,244,221,0.95) 100%)',
+                boxShadow: '0 18px 50px -14px rgba(176,116,16,0.18)',
+              }}
+            >
+              <div className="absolute top-4 right-4 text-[60px] leading-none text-accent/15" style={{ fontFamily: 'var(--font-serif)' }} aria-hidden="true">
+                "
+              </div>
+              <p
+                className="text-xl md:text-2xl text-night leading-[1.45] italic mb-6 relative z-10"
+                style={{ fontFamily: 'var(--font-serif)', fontWeight: 500 }}
+              >
+                Mon vrai métier : faire en sorte qu'on ait envie d'écouter.
+              </p>
+              <div className="w-12 h-[2px] bg-accent mb-3" aria-hidden="true" />
+              <p className="text-[11px] uppercase tracking-[0.3em] text-text-muted" style={{ fontWeight: 600 }}>
+                Laura · 22 ans · La Réunion
               </p>
             </div>
 
-            <div className="space-y-4 text-[15px] leading-[1.8] text-text-secondary">
-              <p>Je suis actuellement en BTS Communication en alternance. Ce parcours me sert de passerelle vers le son et l'image.</p>
-              <p>J'y développe à la fois des compétences en communication et une sensibilité créative, à travers des projets réels menés en entreprise.</p>
-              <p>Mon objectif est d'intégrer une licence professionnelle dans le domaine du son et de l'image, un univers plus proche de la musique et de la création.</p>
-            </div>
-
-            <div className="flex flex-wrap gap-3 pt-4">
-              {['BTS Communication', 'Alternance', 'Son & Image', 'Création'].map((pill) => (
-                <div key={pill} className="px-5 py-2.5 bg-night/[0.06] rounded-full text-sm text-night border border-night/10" style={{ fontWeight: 500 }}>
-                  {pill}
-                </div>
+            <div className="flex flex-wrap gap-2.5 mt-6">
+              {[
+                { label: 'BTS Communication', accent: false },
+                { label: 'Alternance', accent: true },
+                { label: 'Son & Image', accent: false },
+                { label: 'Création', accent: true },
+              ].map((pill) => (
+                <span
+                  key={pill.label}
+                  className={`px-4 py-2 rounded-full text-[12px] tracking-wide border transition-all ${
+                    pill.accent
+                      ? 'bg-accent/12 text-accent-blue border-accent/30'
+                      : 'bg-night/[0.04] text-night border-night/10'
+                  }`}
+                  style={{ fontWeight: 500 }}
+                >
+                  {pill.label}
+                </span>
               ))}
             </div>
           </motion.div>

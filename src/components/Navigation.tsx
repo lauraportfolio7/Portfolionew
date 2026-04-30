@@ -38,10 +38,10 @@ export function Navigation() {
     if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.pageYOffset - 70, behavior: 'smooth' })
   }
 
-  const textBase = scrolled ? 'text-night' : 'text-white'
-  const textMuted = scrolled ? 'text-night/45' : 'text-white/50'
-  const textHover = scrolled ? 'hover:text-night' : 'hover:text-white'
-  const dotColor = scrolled ? 'bg-night' : 'bg-white'
+  const textBase = scrolled ? 'text-night' : 'text-ivory'
+  const textMuted = scrolled ? 'text-night/45' : 'text-ivory/55'
+  const textHover = scrolled ? 'hover:text-accent-blue' : 'hover:text-accent'
+  const dotColor = 'bg-accent'
 
   return (
     <motion.nav

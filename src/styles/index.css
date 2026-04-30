@@ -3,17 +3,17 @@
 @import 'tailwindcss';
 
 @theme inline {
-  --color-night: #0F1B3D;
-  --color-night-light: #1A2B52;
-  --color-night-dark: #060D1F;
-  --color-night-secondary: #1C2340;
-  --color-accent: #6B7FE8;
-  --color-accent-blue: #4A6FBD;
-  --color-ivory: #FAFBFC;
-  --color-ivory-warm: #F5F7FA;
-  --color-sky-light: #F6F9FD;
-  --color-text-secondary: #2A3458;
-  --color-text-muted: #4A5068;
+  --color-night: #1B160B;
+  --color-night-light: #2A2316;
+  --color-night-dark: #100D06;
+  --color-night-secondary: #3A2F1A;
+  --color-accent: #E5A823;
+  --color-accent-blue: #B07410;
+  --color-ivory: #FFFCF4;
+  --color-ivory-warm: #FBF4DD;
+  --color-sky-light: #F8EFD2;
+  --color-text-secondary: #3F3422;
+  --color-text-muted: #6B5B33;
 }
 
 @layer base {
@@ -27,6 +27,21 @@
     color: var(--color-night);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background: var(--color-accent);
+    color: var(--color-night);
+  }
+
+  /* Custom cursor — desktop only */
+  @media (hover: hover) and (pointer: fine) {
+    .cursor-none-mode,
+    .cursor-none-mode *,
+    .cursor-none-mode *::before,
+    .cursor-none-mode *::after {
+      cursor: none !important;
+    }
   }
 }
 

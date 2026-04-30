@@ -12,10 +12,23 @@ export function Contact() {
   ]
 
   return (
-    <section id="contact" className="py-20 md:py-28 px-6 bg-gradient-to-b from-ivory to-ivory-warm relative overflow-hidden" ref={ref} aria-label="Contact">
-      <div className="absolute top-[20%] right-[10%] w-[400px] h-[320px] rounded-full blur-[100px]" style={{ background: 'radial-gradient(ellipse, rgba(107,127,232,0.08) 0%, transparent 70%)' }} aria-hidden="true" />
-      <div className="absolute bottom-[15%] left-[8%] w-[350px] h-[280px] rounded-full blur-[90px]" style={{ background: 'radial-gradient(ellipse, rgba(74,111,189,0.06) 0%, transparent 65%)' }} aria-hidden="true" />
-
+    <section id="contact" className="py-24 md:py-32 px-6 bg-ivory relative overflow-hidden" ref={ref} aria-label="Contact">
+      <div
+        className="absolute -top-32 -left-32 w-[450px] h-[450px] rounded-full pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle, rgba(229,168,35,0.12) 0%, transparent 65%)',
+          filter: 'blur(38px)',
+        }}
+        aria-hidden="true"
+      />
+      <div
+        className="absolute -bottom-32 -right-32 w-[400px] h-[400px] rounded-full pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle, rgba(176,116,16,0.10) 0%, transparent 65%)',
+          filter: 'blur(38px)',
+        }}
+        aria-hidden="true"
+      />
       <div className="max-w-4xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 25 }}
@@ -23,12 +36,32 @@ export function Contact() {
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           className="text-center mb-14"
         >
-          <span className="text-[10px] uppercase tracking-[0.4em] text-night/30 mb-4 block">Contact</span>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl mb-6 text-night leading-[1.1]" style={{ fontFamily: 'var(--font-serif)', fontWeight: 700 }}>
-            Discutons de vos projets
+          <div className="flex items-center gap-3 justify-center mb-4">
+            <div className="w-10 h-[1px] bg-accent" aria-hidden="true" />
+            <span className="text-[10px] uppercase tracking-[0.45em] text-accent" style={{ fontWeight: 600 }}>
+              Contact
+            </span>
+            <div className="w-10 h-[1px] bg-accent" aria-hidden="true" />
+          </div>
+          <h2
+            className="text-5xl md:text-6xl lg:text-7xl mb-6 text-night leading-[1.05]"
+            style={{ fontFamily: 'var(--font-serif)', fontWeight: 700, letterSpacing: '-0.02em' }}
+          >
+            Discutons de vos{' '}
+            <span
+              className="italic inline-block"
+              style={{
+                paddingRight: '0.12em',
+                background: 'linear-gradient(135deg, #B07410 0%, #E5A823 50%, #F5C957 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}
+            >
+              projets
+            </span>
           </h2>
-          <div className="w-24 h-1 bg-night rounded-full mx-auto mb-6" aria-hidden="true" />
-          <p className="text-lg md:text-xl text-text-secondary max-w-2xl mx-auto leading-relaxed">
+          <p className="text-lg md:text-xl text-text-muted max-w-2xl mx-auto leading-relaxed">
             Vous avez un projet en tête ? N'hésitez pas à me contacter.
           </p>
         </motion.div>
@@ -41,24 +74,27 @@ export function Contact() {
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.2 + index * 0.15, ease: [0.22, 1, 0.36, 1] }}
-              className="group relative bg-white p-7 rounded-2xl border border-night/10 hover:border-night/25 transition-all duration-300 cursor-pointer overflow-hidden"
-              style={{ boxShadow: '0 8px 32px -8px rgba(15,27,61,0.12)' }}
+              className="group relative bg-white p-7 rounded-2xl border border-accent/15 hover:border-accent/40 transition-all duration-300 cursor-pointer overflow-hidden"
+              style={{ boxShadow: '0 8px 32px -8px rgba(176,116,16,0.15)' }}
             >
               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" aria-hidden="true">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-accent/10 to-transparent blur-2xl" />
+                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-accent/15 to-transparent blur-2xl" />
               </div>
 
               <div className="relative flex items-center gap-5">
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-night to-night-light flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
-                  <info.icon className="w-6 h-6 text-white" />
+                <div
+                  className="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300"
+                  style={{ background: 'linear-gradient(135deg, #F5C957 0%, #E5A823 55%, #B07410 100%)' }}
+                >
+                  <info.icon className="w-6 h-6 text-night" />
                 </div>
                 <div className="flex-1">
-                  <p className="text-[11px] text-night/40 uppercase tracking-[0.2em] mb-1.5">{info.label}</p>
-                  <p className="text-night text-base md:text-lg group-hover:text-night-light transition-colors" style={{ fontWeight: 500 }}>
+                  <p className="text-[11px] text-accent-blue uppercase tracking-[0.25em] mb-1.5" style={{ fontWeight: 600 }}>{info.label}</p>
+                  <p className="text-night text-base md:text-lg group-hover:text-accent-blue transition-colors" style={{ fontWeight: 500 }}>
                     {info.value}
                   </p>
                 </div>
-                <ArrowRight className="w-5 h-5 text-night/30 group-hover:text-night group-hover:translate-x-1 transition-all duration-300 flex-shrink-0" />
+                <ArrowRight className="w-5 h-5 text-accent group-hover:text-accent-blue group-hover:translate-x-1 transition-all duration-300 flex-shrink-0" />
               </div>
             </motion.a>
           ))}
@@ -72,7 +108,11 @@ export function Contact() {
         >
           <a
             href={`mailto:${contact.email}`}
-            className="inline-flex items-center gap-3 px-10 py-5 bg-night text-white rounded-full hover:bg-night-light transition-all duration-300 hover:scale-105 hover:shadow-[0_0_50px_rgba(15,27,61,0.30)] group"
+            className="inline-flex items-center gap-3 px-10 py-5 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-[0_12px_40px_-8px_rgba(229,168,35,0.55)] group"
+            style={{
+              background: 'linear-gradient(135deg, #F5C957 0%, #E5A823 55%, #B07410 100%)',
+              color: '#1B160B',
+            }}
           >
             <span className="text-[17px] tracking-wide" style={{ fontWeight: 600 }}>Travaillons ensemble</span>
             <motion.div animate={{ x: [0, 4, 0] }} transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}>

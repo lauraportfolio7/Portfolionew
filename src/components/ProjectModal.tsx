@@ -18,10 +18,42 @@ import {
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import type { Project } from '@/types'
+import { SlideViewer } from '@/components/SlideViewer'
+import { FlipbookViewer } from '@/components/FlipbookViewer'
 
 interface ProjectModalProps {
   project: Project | null
   onClose: () => void
+}
+
+function SunflowerStaticSVG() {
+  return (
+    <svg viewBox="0 0 100 100" className="w-full h-full">
+      <defs>
+        <radialGradient id="modal-petal" cx="50%" cy="50%">
+          <stop offset="0%" stopColor="#F5C957" stopOpacity="0.95" />
+          <stop offset="100%" stopColor="#B07410" stopOpacity="0.4" />
+        </radialGradient>
+      </defs>
+      {Array.from({ length: 14 }).map((_, i) => {
+        const angle = (360 / 14) * i
+        return (
+          <ellipse
+            key={i}
+            cx="50"
+            cy="22"
+            rx="6"
+            ry="14"
+            fill="url(#modal-petal)"
+            transform={`rotate(${angle} 50 50)`}
+            opacity="0.85"
+          />
+        )
+      })}
+      <circle cx="50" cy="50" r="9" fill="#3A2F1A" />
+      <circle cx="50" cy="50" r="6" fill="#1B160B" />
+    </svg>
+  )
 }
 
 export function ProjectModal({ project, onClose }: ProjectModalProps) {
@@ -58,10 +90,10 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
     project.gallery.length + (project.videos?.length || 0) + (project.conversationGroup ? 1 : 0)
   const gridClass =
     totalMedia === 1
-      ? 'grid-cols-1 max-w-2xl mx-auto'
+      ? 'grid-cols-1 max-w-md mx-auto'
       : totalMedia === 2
-        ? 'grid-cols-1 md:grid-cols-2 max-w-4xl mx-auto'
-        : 'md:grid-cols-2 lg:grid-cols-3'
+        ? 'grid-cols-2 max-w-2xl mx-auto'
+        : 'grid-cols-2 md:grid-cols-3'
 
   return (
     <AnimatePresence>
@@ -181,20 +213,36 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
         >
           <button
             onClick={onClose}
-            className="absolute top-6 right-6 z-10 w-12 h-12 rounded-full bg-ivory/95 border border-night/10 shadow-lg hover:bg-ivory-warm hover:border-accent transition-all flex items-center justify-center group"
+            className="absolute top-6 right-6 z-20 w-12 h-12 rounded-full shadow-lg transition-all flex items-center justify-center group bg-ivory border border-accent/20 hover:bg-accent hover:border-accent"
             aria-label="Fermer"
           >
-            <X className="w-6 h-6 text-text-muted group-hover:text-accent transition-colors" />
+            <X className="w-6 h-6 text-night transition-colors" />
           </button>
 
-          {/* Hero Section */}
-          <div className="grid md:grid-cols-2 gap-0">
-            <div className="relative overflow-hidden bg-ivory-warm/50">
-              <div className="aspect-[3/4] md:aspect-auto flex items-center justify-center bg-ivory-warm/30 p-6" style={{ maxHeight: '600px' }}>
+          {/* Hero Section — premium cream + gold */}
+          <div
+            className="relative grid md:grid-cols-2 gap-0"
+            style={{
+              background:
+                'linear-gradient(135deg, #FFFCF4 0%, #FBF4DD 50%, #F5E5C0 100%)',
+            }}
+          >
+            <div
+              className="absolute -top-10 -right-10 w-44 h-44 opacity-20 pointer-events-none"
+              aria-hidden="true"
+            >
+              <SunflowerStaticSVG />
+            </div>
+
+            <div className="relative overflow-hidden">
+              <div
+                className="aspect-[3/4] md:aspect-auto flex items-center justify-center p-6"
+                style={{ maxHeight: '600px' }}
+              >
                 <img
                   src={project.image}
                   alt={project.title}
-                  className="w-full h-full object-contain"
+                  className="w-full h-full object-contain relative z-[2] drop-shadow-[0_10px_28px_rgba(176,116,16,0.20)]"
                   style={{ maxHeight: '580px' }}
                   loading="lazy"
                   decoding="async"
@@ -202,32 +250,39 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
               </div>
             </div>
 
-            <div className="p-8 md:p-12 flex flex-col justify-center bg-ivory">
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent/10 rounded-full mb-6 self-start">
-                <span className="text-sm uppercase tracking-wider text-accent font-medium">
+            <div className="relative z-[2] p-8 md:p-12 flex flex-col justify-center">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 self-start bg-accent/12 border border-accent/30">
+                <span className="text-sm uppercase tracking-[0.25em] font-medium text-accent-blue" style={{ fontWeight: 600 }}>
                   {project.category}
                 </span>
               </div>
 
               <h2
                 id="modal-title"
-                className="text-4xl md:text-5xl mb-6 leading-tight text-night"
-                style={{ fontFamily: 'var(--font-serif)' }}
+                className="text-4xl md:text-5xl mb-6 leading-[1.1] text-night"
+                style={{ fontFamily: 'var(--font-serif)', fontWeight: 700, letterSpacing: '-0.015em' }}
               >
                 {project.title}
               </h2>
 
               <div className="flex flex-wrap gap-2 mb-8">
                 {project.tags.map((tag, i) => (
-                  <span key={i} className="px-3 py-1 bg-ivory-warm text-text-secondary rounded-full text-sm">
+                  <span
+                    key={i}
+                    className="px-3 py-1 rounded-full text-sm bg-accent/8 text-accent-blue border border-accent/20"
+                    style={{ fontWeight: 500 }}
+                  >
                     {tag}
                   </span>
                 ))}
               </div>
 
               {project.slogan && (
-                <div className="mb-8 pb-8 border-b border-night/10">
-                  <p className="text-2xl text-accent italic leading-relaxed" style={{ fontFamily: 'var(--font-serif)' }}>
+                <div className="mb-8 pb-8 border-b border-accent/20">
+                  <p
+                    className="text-2xl italic leading-relaxed text-accent-blue"
+                    style={{ fontFamily: 'var(--font-serif)' }}
+                  >
                     &ldquo;{project.slogan}&rdquo;
                   </p>
                 </div>
@@ -238,7 +293,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
                   <FileText className="w-5 h-5 text-accent" />
                   <h3 className="text-lg font-semibold text-night">Type de Projet</h3>
                 </div>
-                <p className="text-text-muted leading-relaxed">{project.type}</p>
+                <p className="leading-relaxed text-text-muted">{project.type}</p>
               </div>
 
               <div>
@@ -247,25 +302,31 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
                   <h3 className="text-lg font-semibold text-night">Cible</h3>
                 </div>
                 {typeof project.target === 'string' ? (
-                  <p className="text-text-muted leading-relaxed">{project.target}</p>
+                  <p className="leading-relaxed text-text-muted">{project.target}</p>
                 ) : (
                   <div className="space-y-4">
                     {project.target.main && (
-                      <div className="bg-ivory-warm/50 p-4 rounded-lg border border-night/5">
-                        <p className="font-semibold text-sm text-accent mb-2 uppercase tracking-wide">Cible principale</p>
-                        <p className="text-text-muted leading-relaxed text-sm">{project.target.main}</p>
+                      <div className="p-4 rounded-lg border bg-ivory border-accent/15">
+                        <p className="font-semibold text-sm mb-2 uppercase tracking-wide text-accent-blue">
+                          Cible principale
+                        </p>
+                        <p className="leading-relaxed text-sm text-text-muted">{project.target.main}</p>
                       </div>
                     )}
                     {project.target.core && (
-                      <div className="bg-ivory-warm/50 p-4 rounded-lg border border-night/5">
-                        <p className="font-semibold text-sm text-accent mb-2 uppercase tracking-wide">Coeur de cible</p>
-                        <p className="text-text-muted leading-relaxed text-sm">{project.target.core}</p>
+                      <div className="p-4 rounded-lg border bg-ivory border-accent/15">
+                        <p className="font-semibold text-sm mb-2 uppercase tracking-wide text-accent-blue">
+                          Coeur de cible
+                        </p>
+                        <p className="leading-relaxed text-sm text-text-muted">{project.target.core}</p>
                       </div>
                     )}
                     {project.target.relay && (
-                      <div className="bg-ivory-warm/50 p-4 rounded-lg border border-night/5">
-                        <p className="font-semibold text-sm text-accent mb-2 uppercase tracking-wide">Cible relais</p>
-                        <p className="text-text-muted leading-relaxed text-sm">{project.target.relay}</p>
+                      <div className="p-4 rounded-lg border bg-ivory border-accent/15">
+                        <p className="font-semibold text-sm mb-2 uppercase tracking-wide text-accent-blue">
+                          Cible relais
+                        </p>
+                        <p className="leading-relaxed text-sm text-text-muted">{project.target.relay}</p>
                       </div>
                     )}
                   </div>
@@ -467,12 +528,11 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
                         className="relative group rounded-2xl overflow-hidden shadow-[0_4px_24px_rgba(0,0,0,0.06)] hover:shadow-[0_8px_40px_rgba(0,0,0,0.12)] transition-all duration-500 hover:-translate-y-1 bg-ivory-warm/30 cursor-pointer"
                         onClick={() => setLightboxImage(image)}
                       >
-                        <div className="flex items-center justify-center p-4" style={{ maxHeight: '420px', minHeight: '280px' }}>
+                        <div className="flex items-center justify-center p-2 aspect-square bg-ivory-warm/40">
                           <img
                             src={image}
                             alt={caption || `${project.title} – visuel ${i + 1}`}
-                            className="max-w-full max-h-full object-contain rounded-lg"
-                            style={{ maxHeight: '400px' }}
+                            className="max-w-full max-h-full object-contain rounded"
                             loading="lazy"
                             decoding="async"
                           />
@@ -501,16 +561,26 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
                       transition={{ delay: (project.gallery.length + i) * 0.1 }}
                       className="rounded-2xl overflow-hidden shadow-[0_4px_24px_rgba(0,0,0,0.06)] hover:shadow-[0_8px_40px_rgba(0,0,0,0.12)] transition-all duration-500 hover:-translate-y-1 bg-ivory-warm/30"
                     >
-                      <div className="w-full bg-black flex items-center justify-center" style={{ height: '420px' }}>
-                        <iframe
-                          src={videoUrl}
-                          title={`Vidéo ${i + 1}`}
-                          className="w-full h-full"
-                          frameBorder="0"
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          allowFullScreen
-                          loading="lazy"
-                        />
+                      <div className="w-full bg-black flex items-center justify-center aspect-square">
+                        {videoUrl.endsWith('.mp4') || videoUrl.endsWith('.webm') || videoUrl.endsWith('.mov') ? (
+                          <video
+                            src={videoUrl}
+                            title={`Vidéo ${i + 1}`}
+                            className="w-full h-full object-contain"
+                            controls
+                            preload="metadata"
+                          />
+                        ) : (
+                          <iframe
+                            src={videoUrl}
+                            title={`Vidéo ${i + 1}`}
+                            className="w-full h-full"
+                            frameBorder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                            loading="lazy"
+                          />
+                        )}
                       </div>
                     </motion.div>
                   ))}
@@ -527,12 +597,11 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
                         setConvLightboxOpen(true)
                       }}
                     >
-                      <div className="flex items-center justify-center p-4 relative" style={{ maxHeight: '420px', minHeight: '280px' }}>
+                      <div className="flex items-center justify-center p-2 aspect-square bg-ivory-warm/40 relative">
                         <img
                           src={project.conversationGroup.cover}
                           alt={project.conversationGroup.label}
-                          className="max-w-full max-h-full object-contain rounded-lg"
-                          style={{ maxHeight: '400px' }}
+                          className="max-w-full max-h-full object-contain rounded"
                           loading="lazy"
                           decoding="async"
                         />
@@ -557,9 +626,24 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
               </div>
             )}
 
+            {/* Embedded slide viewer */}
+            {project.documentUrl?.endsWith('.pdf') && (
+              <SlideViewer pdfUrl={project.documentUrl} title={project.documentLabel || 'Document'} />
+            )}
+
+            {/* Flipbook brochure viewer */}
+            {project.brochureUrl && (
+              <FlipbookViewer pdfUrl={project.brochureUrl} title="Feuilleter la brochure" />
+            )}
+
+            {/* LinkedIn carousel viewer */}
+            {project.carouselPdfUrl && (
+              <SlideViewer pdfUrl={project.carouselPdfUrl} title="Carrousel LinkedIn" />
+            )}
+
             {/* Document / Brandbook Links */}
             <div className="flex flex-wrap justify-center gap-4">
-              {project.documentUrl && (
+              {project.documentUrl && !project.documentUrl.endsWith('.pdf') && (
                 <a
                   href={project.documentUrl}
                   target="_blank"
@@ -567,7 +651,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
                   className="inline-flex items-center gap-3 px-8 py-4 bg-accent/10 hover:bg-accent/15 text-accent rounded-2xl transition-all duration-300 border border-accent/20 hover:border-accent/40 group"
                 >
                   <FileText className="w-5 h-5" />
-                  <span className="text-lg" style={{ fontFamily: 'var(--font-serif)' }}>Consulter le document complet</span>
+                  <span className="text-lg" style={{ fontFamily: 'var(--font-serif)' }}>{project.documentLabel || 'Consulter le document complet'}</span>
                   <ExternalLink className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-0.5" />
                 </a>
               )}

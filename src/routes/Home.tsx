@@ -5,22 +5,22 @@ import { Projects } from '@/sections/Projects'
 import { Music } from '@/sections/Music'
 import { Contact } from '@/sections/Contact'
 import { Footer } from '@/sections/Footer'
-import { SectionWaveDivider } from '@/components/WaveformDivider'
-import { WaveformDivider } from '@/components/WaveformDivider'
+import { WelcomeIntro } from '@/components/WelcomeIntro'
+import { Cursor } from '@/components/Cursor'
+import { SunflowerThread } from '@/components/SunflowerThread'
 
 export function Home() {
   return (
     <>
+      <Cursor />
+      <SunflowerThread />
+      <WelcomeIntro />
       <Hero />
       <About />
-      <SectionWaveDivider />
-      <WaveformDivider className="py-6" />
       <Journey />
-      <SectionWaveDivider />
       <Projects />
-      <SectionWaveDivider fromColor="#F6F9FD" toColor="#0F1B3D" />
       <Music />
-      <div className="h-32 md:h-40 bg-gradient-to-b from-night via-night-light to-ivory" aria-hidden="true" />
+      <div className="h-24 md:h-32 bg-gradient-to-b from-night via-night-light to-ivory" aria-hidden="true" />
       <Contact />
       <Footer />
     </>

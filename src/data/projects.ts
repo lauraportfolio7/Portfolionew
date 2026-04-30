@@ -9,7 +9,12 @@ import reunionGallery4 from '@/assets/reunion-ecran/gallery-4.webp'
 import reunionGallery5 from '@/assets/reunion-ecran/gallery-5.webp'
 import reunionGallery6 from '@/assets/reunion-ecran/gallery-6.avif'
 import reunionGallery7 from '@/assets/reunion-ecran/gallery-7.avif'
-import reunionGallery8 from '@/assets/reunion-ecran/gallery-8.jpg'
+import reunionChiffres from '@/assets/reunion-ecran/chiffres.png'
+import prestataire1 from '@/assets/reunion-ecran/prestataire-1.png'
+import prestataire2 from '@/assets/reunion-ecran/prestataire-2.png'
+import prestataire3 from '@/assets/reunion-ecran/prestataire-3.png'
+import prestataire4 from '@/assets/reunion-ecran/prestataire-4.png'
+import devisNawarProd from '@/assets/reunion-ecran/devis-nawar-prod.png'
 import convScreen1 from '@/assets/reunion-ecran/conv-suivi-1.avif'
 import convScreen2 from '@/assets/reunion-ecran/conv-suivi-2.jpg'
 import convScreen3 from '@/assets/reunion-ecran/conv-suivi-3.jpg'
@@ -52,6 +57,42 @@ import gamescomTeam from '@/assets/gamescom/team.avif'
 import gamescomTablet from '@/assets/gamescom/tablet.webp'
 import gamescomSocialTablet from '@/assets/gamescom/social-tablet.jpg'
 import gamescomSocialPost from '@/assets/gamescom/social-post.webp'
+
+// --- Images Disney ---
+import disneyCarte from '@/assets/disney/carte.jpg'
+
+// --- Images Spotify ---
+import spotifyCarte from '@/assets/spotify/carte.jpg'
+
+// --- Images 48H Chrono ---
+import chrono48hKakemono from '@/assets/48h-chrono/kakemono.png'
+
+// --- Images Post EEN ---
+import postEenCover from '@/assets/post-een/cover.png'
+
+// --- Images Stand FIC 2026 ---
+import standFic1 from '@/assets/stand-fic-2026/stand-1.jpeg'
+import standFic2 from '@/assets/stand-fic-2026/stand-2.jpeg'
+import standFic3 from '@/assets/stand-fic-2026/stand-3.jpeg'
+import standFic4 from '@/assets/stand-fic-2026/stand-4.jpeg'
+import standFic5 from '@/assets/stand-fic-2026/stand-5.jpeg'
+import standFic6 from '@/assets/stand-fic-2026/stand-6.jpeg'
+import standFic7 from '@/assets/stand-fic-2026/stand-7.jpeg'
+
+// --- Images Brochure FIC ---
+import ficBrochureCover from '@/assets/fic-brochure/cover.png'
+
+// --- Images Benchmark ---
+import benchmarkCarte from '@/assets/benchmark/carte.jpg'
+
+// --- Images Chevalets ---
+import chevaletsInSitu1 from '@/assets/chevalets/in-situ-1.jpeg'
+import chevaletsInSitu2 from '@/assets/chevalets/in-situ-2.jpeg'
+import chevaletsPrototype from '@/assets/chevalets/prototype.png'
+
+// --- Images La Réunion In Games ---
+import reunionInGamesAffiche from '@/assets/la-reunion-in-games/affiche.png'
+import reunionInGamesKakemono from '@/assets/la-reunion-in-games/kakemono.jpg'
 
 // --- Images Café ÉCO ---
 import cafeEcoTablet from '@/assets/cafe-eco/tablet.jpg'
@@ -106,81 +147,37 @@ export const featuredProjects: Project[] = [
     impact: 'Une communication cohérente et professionnelle sur l\'ensemble des supports, une meilleure visibilité de l\'événement auprès des professionnels du secteur, une participation significative aux sessions organisées, et une valorisation prolongée grâce aux contenus publiés avant, pendant et après l\'événement. Le projet a permis de renforcer le positionnement de La Réunion comme territoire créatif et attractif pour l\'industrie audiovisuelle.',
     gallery: [
       reunionGallery1, reunionGallery2, reunionGallery3, reunionGallery4,
-      reunionGallery5, reunionGallery6, reunionGallery7, reunionGallery8,
+      reunionGallery5, reunionGallery6, reunionGallery7, reunionChiffres,
     ],
     videos: ['https://www.youtube.com/embed/WMWUucGfpyo'],
     conversationGroup: {
-      label: 'Suivi de production',
-      cover: convScreen1,
-      images: [convScreen1, convScreen2, convScreen3, convScreen4],
+      label: 'Relation prestataire',
+      cover: prestataire1,
+      images: [prestataire1, prestataire2, prestataire3, prestataire4, devisNawarProd, convScreen1, convScreen2, convScreen3, convScreen4],
     },
   },
   {
-    id: 'pantoufle-pepere',
-    isFeatured: true,
-    title: 'La Pantoufle à Pépère',
-    description: 'Stratégie de communication et création de supports pour valoriser une marque de pantoufles Made in France',
-    image: pantoufleImage,
+    id: 'disney-100-ans',
+    title: '100 ans de Disney',
+    description: 'Projet de communication autour du centenaire de Disney : analyse de la stratégie de marque, étude des leviers de communication et propositions créatives.',
+    image: disneyCarte,
+    tabletMockup: true,
+    documentUrl: '/documents/vice-versa.pdf',
+    documentLabel: 'Voir la présentation',
     category: 'École',
-    tags: ['Stratégie', 'Print', 'Digital'],
-    type: 'Projet école – stratégie de communication / création de supports print et digitaux',
-    problematic: 'Comment valoriser les qualités du produit, comme le confort, l\'authenticité et la qualité artisanale, ainsi que son origine Made in France, tout en se différenciant d\'une concurrence qui propose des produits plus accessibles ?',
-    context: 'Projet réalisé dans le cadre de mon BTS Communication autour de la marque La Pantoufle à Pépère. L\'objectif était de valoriser les qualités du produit, son positionnement Made in France, son authenticité et sa qualité artisanale, tout en construisant une communication plus moderne, attractive et différenciante. Le travail portait à la fois sur le positionnement de la marque, la stratégie de communication et la création de supports adaptés à la cible.',
-    slogan: 'Portez du Made in France avec style.',
-    target: {
-      main: 'Consommateurs éco-responsables, à l\'aise financièrement, âgés de 25 à 55 ans, sensibles à la qualité, à la durabilité et à l\'origine française des produits',
-      core: 'Jeunes adultes engagés de 25 à 35 ans, sensibles au localisme et à l\'écoresponsabilité',
-      relay: 'Médias, influenceurs, blogueurs et créateurs de contenu autour de la mode, du lifestyle, du Made in France et de l\'écoresponsabilité',
-    },
+    tags: ['Stratégie', 'Marketing', 'Branding', 'Événementiel'],
+    type: 'Projet école – stratégie de communication / analyse de marque',
+    context: 'Projet réalisé dans le cadre de mon BTS Communication à l\'occasion du centenaire de Disney. L\'objectif était d\'analyser la stratégie de communication de Disney autour de ses 100 ans, d\'étudier les leviers marketing et événementiels déployés par la marque, et de proposer des recommandations créatives. Le travail portait sur l\'analyse de la marque, son positionnement, ses campagnes anniversaire et la construction de propositions de communication innovantes.',
+    slogan: '100 ans de magie, d\'histoires et de rêves',
+    target: 'Grand public, familles, fans Disney de toutes générations, professionnels du marketing et de la communication',
     objectives: {
-      cognitive: [
-        'Faire connaître la marque et ses modèles auprès des consommateurs français',
-        'Valoriser la production Made in France',
-        'Mettre en avant la qualité artisanale des produits',
-        'Renforcer la perception de la marque comme moderne et tendance',
-      ],
-      affective: [
-        'Susciter l\'attachement à la marque grâce à son authenticité et ses valeurs',
-        'Sensibiliser à l\'importance de soutenir le marché local et l\'achat écoresponsable',
-        'Fédérer une communauté autour des valeurs de localisme et de durabilité',
-      ],
-      conative: [
-        'Inciter à l\'achat de produits locaux et éthiques',
-        'Stimuler l\'engagement des consommateurs sur les réseaux sociaux',
-        'Fidéliser la clientèle existante',
-        'Augmenter les visites sur le site internet et les conversions',
-      ],
+      cognitive: ['Analyser la stratégie de communication de Disney pour son centenaire', 'Comprendre les leviers de marque qui ont fait le succès de Disney', 'Identifier les campagnes et dispositifs déployés pour les 100 ans'],
+      affective: ['Mettre en lumière la puissance émotionnelle de la marque Disney', 'Valoriser l\'héritage et la nostalgie comme leviers de communication', 'Susciter l\'admiration pour la cohérence de marque sur un siècle'],
+      conative: ['Proposer des recommandations de communication pertinentes', 'Inspirer des stratégies applicables à d\'autres marques', 'Démontrer la capacité d\'analyse stratégique'],
     },
-    positioning: 'La Pantoufle à Pépère propose des pantoufles Made in France qui allient authenticité, qualité artisanale et modernité, pour des consommateurs engagés et fiers de soutenir une production locale, éthique et durable.',
-    promise: 'Confort authentique et durable avec des pantoufles Made in France.',
-    proofs: [
-      'Fabrication 100 % française',
-      'Savoir-faire artisanal',
-      'Matériaux de qualité',
-      'Approche locale, éthique et durable',
-      'Valorisation du Made in France',
-    ],
-    tone: [
-      'Authentique et chaleureux',
-      'Moderne et engageant',
-      'Responsable et fier',
-      'Premium et lifestyle',
-    ],
-    creativeChoices: [
-      'Direction artistique plus mode, urbaine et premium',
-      'Mise en scène d\'une femme stylée dans un environnement street / lifestyle',
-      'Fort focus sur les pantoufles pour valoriser le produit',
-      'Slogan court et impactant',
-      'Cohérence visuelle entre l\'affiche abri bus et le post Instagram',
-      'Rendu plus haut de gamme, plus contemporain et plus crédible visuellement',
-    ],
-    supports: [
-      'Affiche publicitaire au format abri bus / clear channel',
-      'Post Instagram classique, déclinaison visuelle de l\'affiche',
-      'Adaptation d\'une même direction artistique sur un support print urbain et un support digital',
-    ],
-    impact: 'Attirer l\'attention de la cible grâce à un visuel fort et moderne, moderniser l\'image de la marque, valoriser le Made in France de façon plus désirable, montrer qu\'un produit confortable peut aussi être stylé, et renforcer la cohérence de marque entre affichage urbain et réseaux sociaux.',
-    gallery: [pantoufleImage, pantoufleInstaImage],
+    supports: ['Présentation stratégique complète', 'Analyse de la marque Disney', 'Étude des campagnes du centenaire', 'Recommandations créatives'],
+    impact: 'Une analyse approfondie de la stratégie de communication de Disney pour ses 100 ans, mettant en lumière les mécanismes de storytelling, de nostalgie et d\'innovation qui ont permis à la marque de rester incontournable sur un siècle.',
+    gallery: [disneyCarte],
   },
   {
     id: 'guide-investisseur',
@@ -259,19 +256,19 @@ export const otherProjects: Project[] = [
     description: 'Publireportage gastronomique pour le domaine viticole Vergelegen — trois espaces culinaires au cœur de la nature sud-africaine.',
     image: vergelegenCover,
     category: 'École',
-    tags: ['Rédaction', 'Mise en page'],
+    tags: ['Rédaction', 'Mise en page', 'Publireportage'],
     type: 'Projet école – publireportage / rédaction / mise en page',
-    context: 'Publireportage réalisé dans le cadre de mon BTS Communication pour le domaine viticole Vergelegen en Afrique du Sud.',
-    slogan: 'Vergelegen — Publireportage',
-    target: 'Lecteurs de presse gastronomique et œnologique',
+    context: 'Projet réalisé dans le cadre de mon BTS Communication. L\'objectif était de concevoir un publireportage gastronomique pour le domaine viticole Vergelegen, situé à Somerset West en Afrique du Sud. Le domaine propose trois espaces culinaires distincts — le Camphors, restaurant gastronomique ; le Stables, bistrot décontracté ; et le Picnic, expérience en plein air au cœur des jardins historiques. Le travail portait sur la rédaction des textes, la mise en page et la direction artistique du publireportage, avec un rendu élégant et immersif destiné à la presse gastronomique.',
+    slogan: 'Vergelegen — Une expérience culinaire au cœur de la nature sud-africaine',
+    target: 'Lecteurs de presse gastronomique et œnologique, amateurs de voyages et de découvertes culinaires, touristes haut de gamme',
     objectives: {
-      cognitive: ['Faire découvrir le domaine Vergelegen'],
-      affective: ['Créer une ambiance gastronomique immersive'],
-      conative: ['Inciter à la visite du domaine'],
+      cognitive: ['Faire découvrir le domaine Vergelegen et ses trois espaces culinaires', 'Présenter la richesse gastronomique et viticole du domaine', 'Informer sur l\'histoire et le patrimoine du lieu'],
+      affective: ['Créer une ambiance gastronomique immersive et élégante', 'Susciter l\'envie de découvrir le domaine et ses saveurs', 'Véhiculer une image de raffinement et d\'authenticité'],
+      conative: ['Inciter à la visite du domaine Vergelegen', 'Encourager la réservation dans les restaurants du domaine', 'Donner envie de découvrir la région viticole de Stellenbosch'],
     },
-    supports: ['Publireportage magazine'],
-    impact: 'Un publireportage élégant mettant en valeur le domaine viticole.',
-    gallery: [vergelegenCover],
+    supports: ['Publireportage magazine sur plusieurs pages', 'Rédaction des textes descriptifs et évocateurs', 'Mise en page éditoriale soignée', 'Sélection et intégration des visuels'],
+    impact: 'Un publireportage élégant et immersif qui transporte le lecteur au cœur du domaine Vergelegen, valorisant à la fois l\'expérience gastronomique, le cadre naturel exceptionnel et le patrimoine historique du lieu. Le rendu final propose une lecture fluide et attractive, fidèle aux codes de la presse gastronomique haut de gamme.',
+    gallery: [vergelegenCover, vergelegenPage1, vergelegenPage2],
     vergelegenPages: [vergelegenCover, vergelegenPage1, vergelegenPage2],
   },
   {
@@ -399,10 +396,124 @@ export const otherProjects: Project[] = [
     gallery: [leRobertImage],
   },
   {
+    id: '48h-chrono',
+    title: '48H Top Chrono – T\'Crousty',
+    description: 'Challenge créatif de 48h en équipe : création d\'une identité visuelle complète, d\'une stratégie de lancement et de supports de communication pour le lancement des Crousty Bowls de T\'Crousty.',
+    image: chrono48hKakemono,
+    documentUrl: '/documents/charte-graphique-t-crousty.pdf',
+    documentLabel: 'Charte graphique',
+    category: 'École',
+    tags: ['Branding', 'Stratégie', 'Événementiel', 'Social Media'],
+    type: 'Projet école – challenge 48H / stratégie de communication / identité visuelle',
+    context: 'Projet réalisé dans le cadre d\'un challenge 48H Top Chrono organisé à l\'école. Le brief : accompagner la marque T\'Crousty dans le lancement de ses propres Crousty Bowls. En 48 heures, il fallait concevoir une charte graphique, proposer des visuels de communication, imaginer un événement de lancement et élaborer une stratégie complète sur les réseaux sociaux. Un exercice intense de travail en équipe sous pression, mêlant créativité, stratégie et production.',
+    slogan: 'T\'Crousty – Le croustillant qui fait le bowl',
+    target: 'Jeunes adultes 18-35 ans, amateurs de street food et de bowls, consommateurs connectés et sensibles aux tendances food',
+    objectives: {
+      cognitive: ['Faire connaître le lancement des Crousty Bowls', 'Positionner T\'Crousty comme acteur innovant sur le marché des bowls', 'Présenter l\'univers de marque et ses valeurs'],
+      affective: ['Créer l\'envie et la curiosité autour du nouveau produit', 'Véhiculer une image fun, gourmande et moderne', 'Générer de l\'enthousiasme autour de l\'événement de lancement'],
+      conative: ['Inciter à goûter les Crousty Bowls', 'Encourager le partage sur les réseaux sociaux', 'Générer du trafic lors de l\'événement de lancement'],
+    },
+    supports: ['Charte graphique complète', 'Kakémono de présentation', 'Visuels pour réseaux sociaux', 'Concept d\'événement de lancement', 'Stratégie social media', 'Vidéo de présentation du projet'],
+    impact: 'Un projet complet réalisé en 48h démontrant la capacité à travailler en équipe sous pression, à produire une identité de marque cohérente et une stratégie de lancement structurée dans un délai très court.',
+    gallery: [chrono48hKakemono],
+    videos: ['/videos/t-crousty.mp4'],
+  },
+  {
+    id: 'spotify',
+    title: 'Spotify – Offres médias innovantes',
+    description: 'Étude de la démarche marketing de Spotify pour construire des offres médias innovantes, avec analyse stratégique et propositions créatives.',
+    image: spotifyCarte,
+    tabletMockup: true,
+    documentUrl: '/documents/spotify-diapo.pdf',
+    documentLabel: 'Voir la présentation',
+    category: 'École',
+    tags: ['Marketing', 'Stratégie', 'Médias', 'Digital'],
+    type: 'Projet école – stratégie marketing / offres médias',
+    context: 'Projet réalisé dans le cadre de mon BTS Communication sur le thème "Prendre appui sur la démarche marketing pour construire des offres médias innovantes". L\'objectif était d\'analyser la stratégie marketing de Spotify, comprendre son modèle économique et ses offres médias, puis proposer des pistes d\'innovation. Le travail portait sur l\'analyse du marché du streaming musical, l\'étude du positionnement de Spotify, et la construction de propositions d\'offres médias créatives et pertinentes.',
+    slogan: 'Prendre appui sur la démarche marketing pour construire des offres médias innovantes',
+    target: 'Annonceurs, marques et agences média souhaitant toucher les utilisateurs de plateformes de streaming musical',
+    objectives: {
+      cognitive: ['Analyser la démarche marketing de Spotify', 'Comprendre le modèle économique du streaming musical', 'Identifier les leviers d\'innovation des offres médias'],
+      affective: ['Démontrer la pertinence de Spotify comme support publicitaire', 'Valoriser l\'expérience utilisateur comme levier média'],
+      conative: ['Proposer des offres médias innovantes et actionnables', 'Encourager les annonceurs à investir dans le streaming musical'],
+    },
+    supports: ['Présentation stratégique complète', 'Analyse marketing détaillée', 'Propositions d\'offres médias innovantes'],
+    impact: 'Une analyse approfondie de la stratégie marketing de Spotify et des propositions concrètes d\'offres médias innovantes, démontrant la capacité à s\'appuyer sur une démarche marketing existante pour créer de la valeur.',
+    gallery: [spotifyCarte],
+  },
+  {
+    id: 'pantoufle-pepere',
+    isFeatured: true,
+    title: 'La Pantoufle à Pépère',
+    description: 'Stratégie de communication et création de supports pour valoriser une marque de pantoufles Made in France',
+    image: pantoufleImage,
+    category: 'École',
+    tags: ['Stratégie', 'Print', 'Digital'],
+    type: 'Projet école – stratégie de communication / création de supports print et digitaux',
+    problematic: 'Comment valoriser les qualités du produit, comme le confort, l\'authenticité et la qualité artisanale, ainsi que son origine Made in France, tout en se différenciant d\'une concurrence qui propose des produits plus accessibles ?',
+    context: 'Projet réalisé dans le cadre de mon BTS Communication autour de la marque La Pantoufle à Pépère. L\'objectif était de valoriser les qualités du produit, son positionnement Made in France, son authenticité et sa qualité artisanale, tout en construisant une communication plus moderne, attractive et différenciante. Le travail portait à la fois sur le positionnement de la marque, la stratégie de communication et la création de supports adaptés à la cible.',
+    slogan: 'Portez du Made in France avec style.',
+    target: {
+      main: 'Consommateurs éco-responsables, à l\'aise financièrement, âgés de 25 à 55 ans, sensibles à la qualité, à la durabilité et à l\'origine française des produits',
+      core: 'Jeunes adultes engagés de 25 à 35 ans, sensibles au localisme et à l\'écoresponsabilité',
+      relay: 'Médias, influenceurs, blogueurs et créateurs de contenu autour de la mode, du lifestyle, du Made in France et de l\'écoresponsabilité',
+    },
+    objectives: {
+      cognitive: [
+        'Faire connaître la marque et ses modèles auprès des consommateurs français',
+        'Valoriser la production Made in France',
+        'Mettre en avant la qualité artisanale des produits',
+        'Renforcer la perception de la marque comme moderne et tendance',
+      ],
+      affective: [
+        'Susciter l\'attachement à la marque grâce à son authenticité et ses valeurs',
+        'Sensibiliser à l\'importance de soutenir le marché local et l\'achat écoresponsable',
+        'Fédérer une communauté autour des valeurs de localisme et de durabilité',
+      ],
+      conative: [
+        'Inciter à l\'achat de produits locaux et éthiques',
+        'Stimuler l\'engagement des consommateurs sur les réseaux sociaux',
+        'Fidéliser la clientèle existante',
+        'Augmenter les visites sur le site internet et les conversions',
+      ],
+    },
+    positioning: 'La Pantoufle à Pépère propose des pantoufles Made in France qui allient authenticité, qualité artisanale et modernité, pour des consommateurs engagés et fiers de soutenir une production locale, éthique et durable.',
+    promise: 'Confort authentique et durable avec des pantoufles Made in France.',
+    proofs: [
+      'Fabrication 100 % française',
+      'Savoir-faire artisanal',
+      'Matériaux de qualité',
+      'Approche locale, éthique et durable',
+      'Valorisation du Made in France',
+    ],
+    tone: [
+      'Authentique et chaleureux',
+      'Moderne et engageant',
+      'Responsable et fier',
+      'Premium et lifestyle',
+    ],
+    creativeChoices: [
+      'Direction artistique plus mode, urbaine et premium',
+      'Mise en scène d\'une femme stylée dans un environnement street / lifestyle',
+      'Fort focus sur les pantoufles pour valoriser le produit',
+      'Slogan court et impactant',
+      'Cohérence visuelle entre l\'affiche abri bus et le post Instagram',
+      'Rendu plus haut de gamme, plus contemporain et plus crédible visuellement',
+    ],
+    supports: [
+      'Affiche publicitaire au format abri bus / clear channel',
+      'Post Instagram classique, déclinaison visuelle de l\'affiche',
+      'Adaptation d\'une même direction artistique sur un support print urbain et un support digital',
+    ],
+    impact: 'Attirer l\'attention de la cible grâce à un visuel fort et moderne, moderniser l\'image de la marque, valoriser le Made in France de façon plus désirable, montrer qu\'un produit confortable peut aussi être stylé, et renforcer la cohérence de marque entre affichage urbain et réseaux sociaux.',
+    gallery: [pantoufleImage, pantoufleInstaImage],
+  },
+  {
     id: 'cyber-reunion',
     title: 'Stand Cyber Réunion – Paris',
     description: 'Conception et réalisation d\'un stand charté La Réunion pour un salon de la cybersécurité à Paris, valorisant l\'attractivité du territoire dans le secteur tech.',
     image: cyberStandFull,
+    tabletMockup: true,
     category: 'Entreprise',
     tags: ['Événementiel', 'Stand', 'Cybersécurité'],
     type: 'Projet entreprise – événementiel / conception de stand',
@@ -448,7 +559,7 @@ export const otherProjects: Project[] = [
     id: 'gamescom-stand',
     title: 'Stand GamesCom Cologne',
     description: 'Stand GamesCom - La Réunion in games',
-    image: gamescomStand,
+    image: gamescomTablet,
     category: 'Entreprise',
     tags: ['Stand', 'Événementiel', 'Gaming', 'International', 'Branding'],
     type: 'Conception et réalisation de stand événementiel',
@@ -504,5 +615,133 @@ export const otherProjects: Project[] = [
     impact: 'Le post d\'annonce a généré de la visibilité et mobilisé les acteurs économiques, tandis que la captation photo a permis de valoriser la qualité des échanges et l\'engagement des participants. Ces visuels authentiques renforcent le positionnement de La Réunion Développement comme facilitateur de rencontres professionnelles et créent un capital visuel réutilisable pour promouvoir les futurs événements Café ÉCO.',
     gallery: [cafeEcoTablet, cafeEcoEvent1, cafeEcoEvent2, cafeEcoEvent3, cafeEcoEvent4],
     videoUrl: 'https://www.dropbox.com/scl/fi/nkybrbxkippf1dxucdq0q/copy_AEE50C35-5DD7-46CD-8DE2-FC1892E6B7C6.MOV?rlkey=tg8258cdqlzmzeo458130r6wm&st=p15un22a&dl=0',
+  },
+  {
+    id: 'chevalets-conferences',
+    title: 'Chevalets – Conférences de presse',
+    description: 'Conception de chevalets de table pour les conférences de presse de La Réunion Développement, assurant une signalétique professionnelle et institutionnelle.',
+    image: chevaletsInSitu1,
+    tabletMockup: true,
+    category: 'Entreprise',
+    tags: ['Print', 'Signalétique', 'Communication institutionnelle'],
+    type: 'Projet entreprise – signalétique / communication institutionnelle',
+    context: 'Projet réalisé au sein de La Réunion Développement dans le cadre de l\'organisation de conférences de presse. L\'objectif était de concevoir des chevalets de table permettant d\'identifier les intervenants et de structurer visuellement l\'espace lors des prises de parole officielles. Le travail portait sur la mise en page, le respect de la charte graphique institutionnelle et la production de supports prêts à l\'impression.',
+    slogan: 'Une communication institutionnelle soignée jusque dans les détails',
+    target: 'Journalistes, médias locaux et nationaux, partenaires institutionnels, intervenants des conférences de presse',
+    objectives: {
+      cognitive: ['Identifier clairement les intervenants lors des conférences de presse', 'Renforcer l\'image institutionnelle de La Réunion Développement', 'Assurer une cohérence visuelle avec la charte graphique'],
+      affective: ['Véhiculer une image de sérieux et de professionnalisme', 'Renforcer la crédibilité des prises de parole officielles'],
+      conative: ['Faciliter le travail des journalistes lors des conférences', 'Contribuer à la bonne organisation des événements presse'],
+    },
+    supports: ['Chevalets de table nominatifs', 'Mise en page chartée', 'Fichiers prêts à l\'impression'],
+    impact: 'Des supports de signalétique professionnels et cohérents qui contribuent à la qualité et à la crédibilité des conférences de presse organisées par La Réunion Développement.',
+    gallery: [chevaletsPrototype, chevaletsInSitu2],
+  },
+  {
+    id: 'benchmark-reseaux-sociaux',
+    title: 'Benchmark des réseaux sociaux',
+    description: 'Analyse comparative des réseaux sociaux de La Réunion Développement : audit des performances, veille concurrentielle et recommandations stratégiques.',
+    image: benchmarkCarte,
+    laptopMockup: true,
+    documentUrl: '/documents/benchmark-reseaux-sociaux.pdf',
+    documentLabel: 'Voir le benchmark',
+    category: 'Entreprise',
+    tags: ['Social Media', 'Audit', 'Stratégie digitale'],
+    type: 'Projet entreprise – benchmark / stratégie digitale',
+    context: 'Projet réalisé au sein de La Réunion Développement afin d\'évaluer la présence digitale de l\'organisme sur les réseaux sociaux. L\'objectif était de réaliser un benchmark complet : analyse des performances des comptes existants (LinkedIn, Facebook, Instagram), veille concurrentielle sur des organismes similaires, identification des bonnes pratiques et formulation de recommandations stratégiques pour améliorer la visibilité et l\'engagement en ligne.',
+    slogan: 'Comprendre pour mieux communiquer',
+    target: 'Service communication de La Réunion Développement, direction générale, équipes en charge du digital',
+    objectives: {
+      cognitive: ['Dresser un état des lieux des performances sur les réseaux sociaux', 'Identifier les forces et faiblesses de la stratégie digitale actuelle', 'Analyser les pratiques des organismes concurrents ou comparables'],
+      affective: ['Sensibiliser les équipes à l\'importance d\'une stratégie social media structurée', 'Valoriser le potentiel d\'amélioration et les opportunités identifiées'],
+      conative: ['Fournir des recommandations actionnables pour améliorer la stratégie digitale', 'Proposer un plan d\'action concret pour augmenter l\'engagement et la visibilité'],
+    },
+    supports: ['Document de benchmark comparatif', 'Analyse des KPIs (portée, engagement, croissance)', 'Veille concurrentielle', 'Recommandations stratégiques'],
+    impact: 'Un document d\'analyse complet permettant au service communication de La Réunion Développement de prendre des décisions éclairées pour optimiser sa stratégie sur les réseaux sociaux et renforcer sa présence digitale.',
+    gallery: [],
+  },
+  {
+    id: 'brochure-forum-in-cyber',
+    title: 'Brochure – Forum InCyber',
+    description: 'Conception d\'une brochure institutionnelle pour la participation de La Réunion au Forum InCyber, valorisant l\'écosystème cybersécurité du territoire.',
+    image: ficBrochureCover,
+    bookletMockup: true,
+    brochureUrl: '/documents/brochure-fic.pdf',
+    category: 'Entreprise',
+    tags: ['Édition', 'Print', 'Cybersécurité'],
+    type: 'Projet entreprise – édition / communication institutionnelle',
+    context: 'Projet réalisé au sein de La Réunion Développement pour accompagner la participation du territoire au Forum InCyber (anciennement FIC), événement européen de référence en cybersécurité. L\'objectif était de concevoir une brochure institutionnelle mettant en valeur les entreprises et acteurs réunionnais de la cybersécurité, les atouts du territoire et les opportunités de collaboration. Le travail portait sur la direction artistique, la rédaction, la mise en page et la production du support.',
+    slogan: 'La Réunion, territoire d\'innovation cyber',
+    target: 'Professionnels de la cybersécurité, entreprises du secteur, investisseurs, partenaires institutionnels européens',
+    objectives: {
+      cognitive: ['Présenter l\'écosystème cybersécurité réunionnais', 'Mettre en avant les entreprises et les compétences du territoire', 'Informer sur les opportunités de collaboration et d\'implantation'],
+      affective: ['Renforcer l\'image de La Réunion comme hub d\'innovation numérique', 'Inspirer confiance et crédibilité auprès des professionnels européens'],
+      conative: ['Encourager les contacts et les échanges sur le stand', 'Générer des opportunités de partenariats avec les acteurs réunionnais'],
+    },
+    supports: ['Brochure institutionnelle imprimée', 'Mise en page professionnelle', 'Contenu rédactionnel structuré', 'Visuels et infographies'],
+    impact: 'Une brochure institutionnelle de qualité qui accompagne la délégation réunionnaise sur le salon et renforce la visibilité de l\'écosystème cybersécurité de La Réunion auprès des acteurs européens du secteur.',
+    gallery: [],
+  },
+  {
+    id: 'post-een',
+    title: 'Post EEN',
+    description: 'Création de publications LinkedIn pour le réseau Enterprise Europe Network (EEN), valorisant les actions d\'accompagnement des entreprises réunionnaises à l\'international.',
+    image: postEenCover,
+    carouselPdfUrl: '/documents/post-een.pdf',
+    category: 'Entreprise',
+    tags: ['Social Media', 'LinkedIn', 'International'],
+    type: 'Projet entreprise – communication digitale / social media',
+    context: 'Projet réalisé au sein de La Réunion Développement dans le cadre du réseau Enterprise Europe Network (EEN). L\'objectif était de créer des publications LinkedIn pour valoriser les actions d\'accompagnement des entreprises réunionnaises à l\'international, promouvoir les événements et missions du réseau, et renforcer la visibilité de La Réunion Développement comme point de contact EEN. Le travail portait sur la rédaction, la création de visuels et le storytelling corporate.',
+    slogan: 'Connecter les entreprises réunionnaises au monde',
+    target: 'Entreprises réunionnaises à potentiel export, partenaires du réseau EEN, institutionnels, communauté professionnelle LinkedIn',
+    objectives: {
+      cognitive: ['Faire connaître le réseau EEN et ses services d\'accompagnement', 'Valoriser les actions de La Réunion Développement au sein du réseau', 'Informer sur les opportunités d\'internationalisation pour les entreprises réunionnaises'],
+      affective: ['Renforcer la crédibilité de La Réunion Développement comme acteur de l\'internationalisation', 'Créer un sentiment d\'appartenance à un réseau européen d\'excellence'],
+      conative: ['Encourager les entreprises à solliciter l\'accompagnement EEN', 'Générer de l\'engagement sur les publications LinkedIn', 'Motiver la participation aux événements du réseau'],
+    },
+    supports: ['Publications LinkedIn', 'Visuels chartés', 'Storytelling corporate', 'Contenu rédactionnel'],
+    impact: 'Des publications professionnelles et engageantes qui renforcent la visibilité du réseau EEN à La Réunion et encouragent les entreprises locales à s\'engager dans des démarches d\'internationalisation.',
+    gallery: [],
+  },
+  {
+    id: 'stand-forum-in-cyber-2026',
+    title: 'Stand Forum InCyber (2026)',
+    description: 'Conception et coordination du stand La Réunion au Forum InCyber 2026, mettant en avant l\'écosystème cyber du territoire lors de l\'événement européen de référence.',
+    image: standFic1,
+    tabletMockup: true,
+    category: 'Entreprise',
+    tags: ['Événementiel', 'Stand', 'Cybersécurité'],
+    type: 'Projet entreprise – événementiel / conception de stand',
+    context: 'Projet réalisé au sein de La Réunion Développement pour la participation au Forum InCyber 2026 (anciennement FIC) à Lille, événement européen majeur de la cybersécurité. L\'objectif était de concevoir et coordonner l\'ensemble du stand institutionnel La Réunion : direction artistique, signalétique, supports de communication, coordination logistique avec les prestataires et les entreprises exposantes. Le stand accueillait des entreprises réunionnaises spécialisées en cybersécurité pour favoriser les rencontres B2B et la visibilité internationale du territoire.',
+    slogan: 'La Réunion, hub cyber de l\'océan Indien',
+    target: 'Professionnels européens de la cybersécurité, entreprises du secteur numérique, investisseurs, décideurs institutionnels',
+    objectives: {
+      cognitive: ['Positionner La Réunion comme territoire d\'excellence en cybersécurité', 'Présenter les entreprises et compétences cyber réunionnaises', 'Faire connaître les atouts stratégiques du territoire dans l\'océan Indien'],
+      affective: ['Créer un espace d\'accueil professionnel et attractif', 'Renforcer la fierté des entreprises réunionnaises exposantes', 'Véhiculer une image moderne et innovante du territoire'],
+      conative: ['Favoriser les rencontres B2B et les partenariats', 'Générer des opportunités commerciales pour les entreprises exposantes', 'Encourager les contacts et les échanges avec les visiteurs du salon'],
+    },
+    supports: ['Stand institutionnel charté', 'Signalétique et kakémonos', 'Supports de communication print et digitaux', 'Coordination logistique et technique', 'Espace de rencontre professionnel'],
+    impact: 'Une présence institutionnelle forte et structurée au Forum InCyber 2026, offrant aux entreprises réunionnaises une vitrine européenne de premier plan et renforçant le positionnement de La Réunion comme hub cyber dans l\'océan Indien.',
+    gallery: [standFic1, standFic2, standFic3, standFic4, standFic5, standFic6, standFic7],
+  },
+  {
+    id: 'la-reunion-in-games',
+    title: 'La Réunion In Games',
+    description: 'Création de l\'identité visuelle et des supports de communication pour la marque "La Réunion In Games", promouvant l\'industrie vidéoludique réunionnaise à l\'international.',
+    image: reunionInGamesAffiche,
+    category: 'Entreprise',
+    tags: ['Branding', 'Gaming', 'International', 'Communication'],
+    type: 'Projet entreprise – branding / communication sectorielle',
+    context: 'Projet réalisé au sein de La Réunion Développement pour structurer et valoriser la filière jeu vidéo réunionnaise sous une identité commune : "La Réunion In Games". L\'objectif était de créer une marque fédératrice pour représenter les studios de jeux vidéo réunionnais lors d\'événements internationaux (GamesCom, salons professionnels). Le travail portait sur la création de l\'identité visuelle, la déclinaison sur différents supports de communication et la mise en place d\'une communication cohérente autour de l\'écosystème gaming du territoire.',
+    slogan: 'La Réunion In Games – L\'île aux talents numériques',
+    target: 'Studios de jeux vidéo réunionnais, professionnels de l\'industrie gaming internationale, éditeurs, investisseurs, médias spécialisés',
+    objectives: {
+      cognitive: ['Créer une identité de marque forte pour la filière gaming réunionnaise', 'Fédérer les studios locaux sous une bannière commune', 'Positionner La Réunion comme territoire créatif dans l\'industrie du jeu vidéo'],
+      affective: ['Susciter la fierté et l\'appartenance chez les studios réunionnais', 'Véhiculer une image moderne, créative et dynamique du territoire', 'Créer une identité mémorable mêlant culture réunionnaise et univers gaming'],
+      conative: ['Faciliter la promotion collective des studios lors d\'événements internationaux', 'Encourager les collaborations entre les acteurs locaux du gaming', 'Attirer l\'attention des éditeurs et investisseurs internationaux'],
+    },
+    supports: ['Identité visuelle complète', 'Déclinaison sur supports print et digitaux', 'Signalétique pour événements internationaux', 'Visuels pour réseaux sociaux', 'Supports de présentation'],
+    impact: 'Une marque fédératrice qui structure la communication de la filière jeu vidéo réunionnaise et offre une visibilité internationale cohérente aux studios locaux, renforçant le positionnement de La Réunion comme territoire d\'innovation dans l\'industrie du gaming.',
+    gallery: [reunionInGamesKakemono],
   },
 ]

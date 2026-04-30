@@ -46,10 +46,17 @@ export interface Project {
   tone?: string[]
   creativeChoices?: string[]
   documentUrl?: string
+  brochureUrl?: string
+  documentLabel?: string
   videoUrl?: string
   brandbookUrl?: string
   videos?: string[]
   conversationGroup?: ConversationGroup
+  tabletMockup?: boolean
+  laptopMockup?: boolean
+  bookletMockup?: boolean
+  phoneMockup?: boolean
+  carouselPdfUrl?: string
   // Vergelegen spécial
   isVergelegen?: boolean
   vergelegenPages?: string[]
@@ -70,6 +77,7 @@ export interface Milestone {
 export interface Track {
   title: string
   soundcloudUrl: string
+  category?: string
 }
 
 export interface MusicPractice {

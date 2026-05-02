@@ -101,6 +101,9 @@ import cafeEcoEvent2 from '@/assets/cafe-eco/event-2.webp'
 import cafeEcoEvent3 from '@/assets/cafe-eco/event-3.webp'
 import cafeEcoEvent4 from '@/assets/cafe-eco/event-4.webp'
 
+// --- Image Infographie Publicité contextuelle ---
+import infographiePubContextuelle from '@/assets/infographie-publicite-contextuelle/cover.png'
+
 export const featuredProjects: Project[] = [
   {
     id: 'reunion-ecran',
@@ -743,5 +746,23 @@ export const otherProjects: Project[] = [
     supports: ['Identité visuelle complète', 'Déclinaison sur supports print et digitaux', 'Signalétique pour événements internationaux', 'Visuels pour réseaux sociaux', 'Supports de présentation'],
     impact: 'Une marque fédératrice qui structure la communication de la filière jeu vidéo réunionnaise et offre une visibilité internationale cohérente aux studios locaux, renforçant le positionnement de La Réunion comme territoire d\'innovation dans l\'industrie du gaming.',
     gallery: [reunionInGamesKakemono],
+  },
+  {
+    id: 'infographie-publicite-contextuelle',
+    title: 'Infographie — Publicité contextuelle',
+    description: 'Infographie réalisée dans le cadre du cours de stratégie de communication.',
+    image: infographiePubContextuelle,
+    category: 'École',
+    tags: ['Infographie', 'Stratégie de communication', 'Print'],
+    type: 'Production école — infographie',
+    context: '',
+    slogan: '',
+    target: '',
+    objectives: { cognitive: [], affective: [], conative: [] },
+    supports: [],
+    impact: '',
+    gallery: [infographiePubContextuelle],
+    documentUrl: '/documents/infographie-publicite-contextuelle.pdf',
+    documentLabel: 'Voir l\'infographie en PDF',
   },
 ]

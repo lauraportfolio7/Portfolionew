@@ -298,42 +298,45 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
                 <p className="leading-relaxed text-text-muted">{project.type}</p>
               </div>
 
-              <div>
-                <div className="flex items-center gap-2 mb-3">
-                  <Users className="w-5 h-5 text-accent" />
-                  <h3 className="text-lg font-semibold text-night">Cible</h3>
-                </div>
-                {typeof project.target === 'string' ? (
-                  <p className="leading-relaxed text-text-muted">{project.target}</p>
-                ) : (
-                  <div className="space-y-4">
-                    {project.target.main && (
-                      <div className="p-4 rounded-lg border bg-ivory border-accent/15">
-                        <p className="font-semibold text-sm mb-2 uppercase tracking-wide text-accent-blue">
-                          Cible principale
-                        </p>
-                        <p className="leading-relaxed text-sm text-text-muted">{project.target.main}</p>
-                      </div>
-                    )}
-                    {project.target.core && (
-                      <div className="p-4 rounded-lg border bg-ivory border-accent/15">
-                        <p className="font-semibold text-sm mb-2 uppercase tracking-wide text-accent-blue">
-                          Coeur de cible
-                        </p>
-                        <p className="leading-relaxed text-sm text-text-muted">{project.target.core}</p>
-                      </div>
-                    )}
-                    {project.target.relay && (
-                      <div className="p-4 rounded-lg border bg-ivory border-accent/15">
-                        <p className="font-semibold text-sm mb-2 uppercase tracking-wide text-accent-blue">
-                          Cible relais
-                        </p>
-                        <p className="leading-relaxed text-sm text-text-muted">{project.target.relay}</p>
-                      </div>
-                    )}
+              {((typeof project.target === 'string' && project.target) ||
+                (typeof project.target === 'object' && (project.target.main || project.target.core || project.target.relay))) && (
+                <div>
+                  <div className="flex items-center gap-2 mb-3">
+                    <Users className="w-5 h-5 text-accent" />
+                    <h3 className="text-lg font-semibold text-night">Cible</h3>
                   </div>
-                )}
-              </div>
+                  {typeof project.target === 'string' ? (
+                    <p className="leading-relaxed text-text-muted">{project.target}</p>
+                  ) : (
+                    <div className="space-y-4">
+                      {project.target.main && (
+                        <div className="p-4 rounded-lg border bg-ivory border-accent/15">
+                          <p className="font-semibold text-sm mb-2 uppercase tracking-wide text-accent-blue">
+                            Cible principale
+                          </p>
+                          <p className="leading-relaxed text-sm text-text-muted">{project.target.main}</p>
+                        </div>
+                      )}
+                      {project.target.core && (
+                        <div className="p-4 rounded-lg border bg-ivory border-accent/15">
+                          <p className="font-semibold text-sm mb-2 uppercase tracking-wide text-accent-blue">
+                            Coeur de cible
+                          </p>
+                          <p className="leading-relaxed text-sm text-text-muted">{project.target.core}</p>
+                        </div>
+                      )}
+                      {project.target.relay && (
+                        <div className="p-4 rounded-lg border bg-ivory border-accent/15">
+                          <p className="font-semibold text-sm mb-2 uppercase tracking-wide text-accent-blue">
+                            Cible relais
+                          </p>
+                          <p className="leading-relaxed text-sm text-text-muted">{project.target.relay}</p>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </div>
 
@@ -349,13 +352,15 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
               </div>
             )}
 
-            <div className="bg-ivory-warm/50 p-8 rounded-2xl border border-night/5">
-              <h3 className="text-2xl mb-4 flex items-center gap-3 text-night" style={{ fontFamily: 'var(--font-serif)' }}>
-                <div className="w-2 h-8 bg-accent rounded-full" />
-                Contexte
-              </h3>
-              <p className="text-lg text-text-muted leading-relaxed">{project.context}</p>
-            </div>
+            {project.context && (
+              <div className="bg-ivory-warm/50 p-8 rounded-2xl border border-night/5">
+                <h3 className="text-2xl mb-4 flex items-center gap-3 text-night" style={{ fontFamily: 'var(--font-serif)' }}>
+                  <div className="w-2 h-8 bg-accent rounded-full" />
+                  Contexte
+                </h3>
+                <p className="text-lg text-text-muted leading-relaxed">{project.context}</p>
+              </div>
+            )}
 
             {(project.positioning || project.promise) && (
               <div className="grid md:grid-cols-2 gap-6">
@@ -434,6 +439,9 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
             )}
 
             {/* Objectives */}
+            {(project.objectives.cognitive.length > 0 ||
+              project.objectives.affective.length > 0 ||
+              project.objectives.conative.length > 0) && (
             <div>
               <h3 className="text-3xl mb-8 text-center text-night" style={{ fontFamily: 'var(--font-serif)' }}>
                 Objectifs de Communication
@@ -485,31 +493,36 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
                 </div>
               </div>
             </div>
+            )}
 
             {/* Supports */}
-            <div className="bg-white p-8 rounded-2xl border border-night/5">
-              <h3 className="text-2xl mb-6 flex items-center gap-3 text-night" style={{ fontFamily: 'var(--font-serif)' }}>
-                <div className="w-2 h-8 bg-accent rounded-full" />
-                Supports Réalisés
-              </h3>
-              <div className="grid md:grid-cols-2 gap-4">
-                {project.supports.map((support, i) => (
-                  <div key={i} className="flex items-center gap-3 p-4 bg-ivory rounded-lg">
-                    <div className="w-2 h-2 rounded-full bg-accent" />
-                    <span className="text-lg text-text-muted">{support}</span>
-                  </div>
-                ))}
+            {project.supports.length > 0 && (
+              <div className="bg-white p-8 rounded-2xl border border-night/5">
+                <h3 className="text-2xl mb-6 flex items-center gap-3 text-night" style={{ fontFamily: 'var(--font-serif)' }}>
+                  <div className="w-2 h-8 bg-accent rounded-full" />
+                  Supports Réalisés
+                </h3>
+                <div className="grid md:grid-cols-2 gap-4">
+                  {project.supports.map((support, i) => (
+                    <div key={i} className="flex items-center gap-3 p-4 bg-ivory rounded-lg">
+                      <div className="w-2 h-2 rounded-full bg-accent" />
+                      <span className="text-lg text-text-muted">{support}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Impact */}
-            <div className="bg-gradient-to-br from-accent/5 to-accent-blue/5 p-8 rounded-2xl border border-accent/20">
-              <h3 className="text-2xl mb-4 flex items-center gap-3 text-night" style={{ fontFamily: 'var(--font-serif)' }}>
-                <TrendingUp className="w-7 h-7 text-accent" />
-                Impact &amp; Résultats Attendus
-              </h3>
-              <p className="text-lg text-text-muted leading-relaxed">{project.impact}</p>
-            </div>
+            {project.impact && (
+              <div className="bg-gradient-to-br from-accent/5 to-accent-blue/5 p-8 rounded-2xl border border-accent/20">
+                <h3 className="text-2xl mb-4 flex items-center gap-3 text-night" style={{ fontFamily: 'var(--font-serif)' }}>
+                  <TrendingUp className="w-7 h-7 text-accent" />
+                  Impact &amp; Résultats Attendus
+                </h3>
+                <p className="text-lg text-text-muted leading-relaxed">{project.impact}</p>
+              </div>
+            )}
 
             {/* Gallery */}
             {totalMedia > 0 && (

@@ -262,6 +262,75 @@ function ProjectCard({ project, onClick, delay, dark = false }: { project: Proje
   )
 }
 
+/* Carte éditoriale (mise en page magazine, sans crop, native aspect ratio) — utilisée pour la section École. */
+function EditorialCard({
+  project,
+  onClick,
+  index,
+  extraButton,
+}: {
+  project: Project
+  onClick: () => void
+  index: number
+  extraButton?: React.ReactNode
+}) {
+  return (
+    <motion.article
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.1 }}
+      transition={{ duration: 0.7, delay: 0.05 + (index % 6) * 0.05, ease: [0.22, 1, 0.36, 1] }}
+      className="group relative break-inside-avoid mb-5 cursor-pointer"
+      onClick={onClick}
+      data-cursor="hover"
+    >
+      <div className="relative overflow-hidden rounded-xl bg-white border border-night/10 transition-all duration-500 group-hover:border-accent/45 group-hover:shadow-[0_18px_48px_-14px_rgba(176,116,16,0.30)]">
+        <div className="relative">
+          <Picture
+            src={project.image}
+            alt={project.title}
+            imgClassName="w-full h-auto block transition-transform duration-700 ease-out group-hover:scale-[1.02]"
+            sizes="(max-width: 640px) 96vw, (max-width: 1024px) 48vw, 32vw"
+          />
+          {/* Voile doré au survol */}
+          <div
+            className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+            style={{ background: 'linear-gradient(180deg, transparent 55%, rgba(27,22,11,0.55) 100%)' }}
+          />
+          {extraButton && (
+            <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-[2]">
+              {extraButton}
+            </div>
+          )}
+        </div>
+
+        <div className="p-5">
+          <div className="flex items-center gap-2 mb-2">
+            {project.tags.slice(0, 1).map((tag) => (
+              <span
+                key={tag}
+                className="text-[10px] uppercase tracking-[0.25em] text-accent-blue/85"
+                style={{ fontWeight: 600 }}
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+          <h4
+            className="text-lg leading-snug text-night transition-colors group-hover:text-accent-blue"
+            style={{ fontFamily: 'var(--font-serif)', fontWeight: 600 }}
+          >
+            {project.title}
+          </h4>
+          <p className="mt-2 text-[13px] leading-relaxed text-text-muted line-clamp-3">
+            {project.description}
+          </p>
+        </div>
+      </div>
+    </motion.article>
+  )
+}
+
 function SunflowerStamp() {
   return (
     <motion.div
@@ -295,65 +364,6 @@ function SunflowerStamp() {
         <circle cx="50" cy="50" r="9" fill="#3A2F1A" />
         <circle cx="50" cy="50" r="6" fill="#1B160B" />
       </svg>
-    </motion.div>
-  )
-}
-
-function VergelegenCard({ onOpenCatalogue, onOpenProject }: { onOpenCatalogue: () => void; onOpenProject: () => void }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 25 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: 0.58, ease: [0.22, 1, 0.36, 1] }}
-      onClick={onOpenProject}
-      className="bg-white/85 backdrop-blur-sm rounded-xl border border-night-secondary/[0.06] group cursor-pointer relative overflow-hidden"
-      style={{ boxShadow: '0 4px 16px -4px rgba(28,35,64,0.06)' }}
-    >
-      <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-night-secondary/[0.08] to-transparent group-hover:via-night-secondary/25 transition-all duration-500 z-10" aria-hidden="true" />
-      <div className="absolute top-0 left-0 w-[2px] h-0 bg-gradient-to-b from-night-secondary to-night-secondary/20 group-hover:h-full transition-all duration-500 ease-out z-10" aria-hidden="true" />
-
-      <div className="h-[380px] bg-gradient-to-br from-sky-light to-[#E4EBF5] flex items-center justify-center p-6 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, #1C2340 1px, transparent 0)', backgroundSize: '20px 20px' }} aria-hidden="true" />
-        <div className="relative transition-transform duration-500 group-hover:scale-[1.03] group-hover:-translate-y-1">
-          {/* Tablet frame */}
-          <div
-            className="relative rounded-[20px] p-[10px] pb-[14px]"
-            style={{
-              background: 'linear-gradient(145deg, #2a2a2e 0%, #1a1a1e 50%, #232327 100%)',
-              boxShadow: '0 20px 50px -10px rgba(0,0,0,0.35), 0 8px 20px -6px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.08)',
-            }}
-          >
-            {/* Camera dot */}
-            <div className="absolute top-[4px] left-1/2 -translate-x-1/2 w-[5px] h-[5px] rounded-full bg-[#3a3a3e]" style={{ boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.4)' }} aria-hidden="true" />
-            {/* Screen */}
-            <div className="rounded-[12px] overflow-hidden relative bg-white">
-              <Picture src={vergelegenCover} alt="Vergelegen - Couverture" imgClassName="h-[290px] w-auto block" imgStyle={{ objectFit: 'cover' }} sizes="(max-width: 768px) 90vw, (max-width: 1280px) 45vw, 30vw" />
-              <div className="absolute inset-0 pointer-events-none rounded-[12px]" style={{ boxShadow: 'inset 0 0 0 0.5px rgba(255,255,255,0.1)' }} aria-hidden="true" />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="p-5">
-        <div className="flex items-center gap-2 mb-2">
-          <BookOpen className="w-3.5 h-3.5 text-night-secondary/40" />
-          <span className="text-[10px] uppercase tracking-[0.15em] text-night-secondary/40">Publireportage</span>
-        </div>
-        <div className="flex items-start justify-between mb-2">
-          <h4 className="text-lg text-night-secondary group-hover:text-text-secondary transition-colors" style={{ fontFamily: 'var(--font-serif)' }}>Vergelegen</h4>
-          <ExternalLink className="w-4 h-4 text-night-secondary/30 opacity-0 group-hover:opacity-100 transition-all duration-400 flex-shrink-0 ml-2 mt-1" />
-        </div>
-        <p className="text-[13px] text-text-muted leading-relaxed mb-3">Publireportage gastronomique pour le domaine viticole Vergelegen — trois espaces culinaires au cœur de la nature sud-africaine.</p>
-        <div className="flex flex-wrap gap-1.5 mb-4">
-          <span className="text-[10px] uppercase tracking-wider text-night-secondary/40 px-2 py-0.5 bg-night-secondary/[0.04] rounded-full">Rédaction</span>
-          <span className="text-[10px] uppercase tracking-wider text-night-secondary/40 px-2 py-0.5 bg-night-secondary/[0.04] rounded-full">Mise en page</span>
-          <span className="text-[10px] uppercase tracking-wider text-night-secondary/40 px-2 py-0.5 bg-night-secondary/[0.04] rounded-full">Publireportage</span>
-        </div>
-        <button onClick={(e) => { e.stopPropagation(); onOpenCatalogue() }} className="inline-flex items-center gap-2 px-4 py-2 bg-night-secondary text-white rounded-lg text-[13px] tracking-wide hover:bg-text-secondary transition-all duration-300">
-          <BookOpen className="w-3.5 h-3.5" />
-          <span>Feuilleter le magazine</span>
-        </button>
-      </div>
     </motion.div>
   )
 }
@@ -680,29 +690,44 @@ export function Projects() {
             </div>
           </motion.div>
 
+          {/* Mise en page éditoriale en mosaïque — chaque image garde son format natif, pas de crop. */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="grid md:grid-cols-2 gap-5"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, amount: 0.05 }}
+            transition={{ duration: 0.5 }}
+            className="columns-1 sm:columns-2 lg:columns-3 gap-5 [column-fill:_balance]"
           >
             {schoolProjects.flatMap((project, index) => {
               const card = (
-                <ProjectCard
+                <EditorialCard
                   key={project.id}
                   project={project}
                   onClick={() => setSelectedProject(project)}
-                  delay={0.1 + index * 0.06}
+                  index={index}
                 />
               )
               if (index === 0) {
                 return [
                   card,
-                  <VergelegenCard
+                  <EditorialCard
                     key="vergelegen-card"
-                    onOpenCatalogue={() => setCatalogueOpen(true)}
-                    onOpenProject={() => setSelectedProject(vergelegenProject)}
+                    project={vergelegenProject}
+                    onClick={() => setSelectedProject(vergelegenProject)}
+                    index={index + 1}
+                    extraButton={
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          setCatalogueOpen(true)
+                        }}
+                        className="inline-flex items-center gap-2 px-3 py-2 bg-night/95 backdrop-blur text-ivory rounded-full text-[11px] uppercase tracking-[0.2em] hover:bg-accent hover:text-night transition-colors"
+                        style={{ fontWeight: 600 }}
+                      >
+                        <BookOpen className="w-3.5 h-3.5" />
+                        <span>Feuilleter</span>
+                      </button>
+                    }
                   />,
                 ]
               }

@@ -1,6 +1,6 @@
 import { motion } from 'motion/react'
 import { useInView } from '@/hooks/useInView'
-import { GraduationCap, Briefcase, ExternalLink, BookOpen, FileText, Play } from 'lucide-react'
+import { GraduationCap, Briefcase, ExternalLink, BookOpen } from 'lucide-react'
 import { useNavigate } from 'react-router'
 import { CatalogueViewer } from '@/components/CatalogueViewer'
 import { Carousel, CarouselSlide } from '@/components/Carousel'
@@ -19,312 +19,110 @@ const PREMIUM_CARD_BG = {
     'linear-gradient(135deg, #FFFCF4 0%, #FBF4DD 50%, #F5E5C0 100%)',
 }
 
-function ProjectCard({ project, onClick, delay, dark = false }: { project: Project; onClick: () => void; delay: number; dark?: boolean }) {
-  const hasImage = project.image && typeof project.image === 'string'
-
-  return hasImage ? (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.15 }}
-      transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }}
-      whileHover={{ y: -4 }}
-      onClick={onClick}
-      className={`group cursor-pointer relative overflow-hidden rounded-2xl border transition-all duration-500 ${
-        dark
-          ? 'bg-night-light/40 border-accent/15 hover:border-accent/40 backdrop-blur-md'
-          : 'bg-ivory border-night/10 hover:border-accent/40'
-      }`}
-      style={{
-        boxShadow: dark
-          ? '0 6px 22px -6px rgba(0,0,0,0.35)'
-          : '0 6px 22px -6px rgba(176,116,16,0.12)',
-      }}
-    >
-      {/* Top gold gradient line — grows on hover */}
-      <div
-        className="absolute top-0 left-0 right-0 h-[2px] origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-700 ease-out z-10"
-        style={{
-          background: 'linear-gradient(to right, transparent, #E5A823, transparent)',
-        }}
-        aria-hidden="true"
-      />
-
-      {project.tabletMockup ? (
-        <div className="h-[360px] flex items-center justify-center p-6 relative overflow-hidden" style={PREMIUM_CARD_BG}>
-          <SunflowerStamp />
-          <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, #B07410 1px, transparent 0)', backgroundSize: '24px 24px' }} aria-hidden="true" />
-          <div className="relative transition-transform duration-500 group-hover:scale-[1.03] group-hover:-translate-y-1">
-            <div
-              className="relative rounded-[20px] p-[10px] pb-[14px]"
-              style={{
-                background: 'linear-gradient(145deg, #2a2a2e 0%, #1a1a1e 50%, #232327 100%)',
-                boxShadow: '0 20px 50px -10px rgba(0,0,0,0.35), 0 8px 20px -6px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.08)',
-              }}
-            >
-              <div className="absolute top-[4px] left-1/2 -translate-x-1/2 w-[5px] h-[5px] rounded-full bg-[#3a3a3e]" style={{ boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.4)' }} aria-hidden="true" />
-              <div className="rounded-[12px] overflow-hidden relative bg-white">
-                <Picture src={project.image} alt={project.title} imgClassName="h-[290px] w-auto block mx-auto" imgStyle={{ objectFit: 'cover' }} sizes="(max-width: 768px) 90vw, (max-width: 1280px) 45vw, 30vw" />
-                <div className="absolute inset-0 pointer-events-none rounded-[12px]" style={{ boxShadow: 'inset 0 0 0 0.5px rgba(255,255,255,0.1)' }} aria-hidden="true" />
-              </div>
-            </div>
-          </div>
-        </div>
-      ) : project.laptopMockup ? (
-        <div className="h-[360px] flex items-center justify-center px-4 py-8 relative overflow-hidden" style={PREMIUM_CARD_BG}>
-          <SunflowerStamp />
-          <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, #B07410 1px, transparent 0)', backgroundSize: '24px 24px' }} aria-hidden="true" />
-          <div className="relative transition-transform duration-500 group-hover:scale-[1.03] group-hover:-translate-y-1">
-            {/* Laptop screen */}
-            <div
-              className="relative rounded-t-[10px] pt-[22px] px-[10px] pb-[6px]"
-              style={{
-                background: 'linear-gradient(145deg, #2a2a2e 0%, #1a1a1e 50%, #232327 100%)',
-                boxShadow: '0 20px 50px -10px rgba(0,0,0,0.35), 0 8px 20px -6px rgba(0,0,0,0.2)',
-              }}
-            >
-              <div className="absolute top-[8px] left-1/2 -translate-x-1/2 w-[6px] h-[6px] rounded-full bg-[#3a3a3e]" style={{ boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.5)' }} aria-hidden="true" />
-              <div className="rounded-[4px] overflow-hidden relative bg-white">
-                <Picture src={project.image} alt={project.title} imgClassName="w-[360px] block" imgStyle={{ objectFit: 'contain', aspectRatio: '16/9' }} sizes="(max-width: 768px) 80vw, 360px" />
-                <div className="absolute inset-0 pointer-events-none" style={{ boxShadow: 'inset 0 0 0 0.5px rgba(255,255,255,0.08)' }} aria-hidden="true" />
-              </div>
-            </div>
-            {/* Laptop hinge */}
-            <div
-              className="relative h-[4px] mx-[-6px] rounded-b-sm"
-              style={{ background: 'linear-gradient(to bottom, #2a2a2e, #222226)' }}
-            />
-            {/* Laptop base */}
-            <div
-              className="relative h-[12px] mx-[-16px] rounded-b-[8px]"
-              style={{
-                background: 'linear-gradient(to bottom, #28282c 0%, #1c1c20 100%)',
-                boxShadow: '0 6px 16px -4px rgba(0,0,0,0.3)',
-              }}
-            >
-              <div className="absolute top-[2px] left-1/2 -translate-x-1/2 w-[60px] h-[4px] rounded-[3px]" style={{ background: '#3a3a3e' }} aria-hidden="true" />
-            </div>
-          </div>
-        </div>
-      ) : project.phoneMockup ? (
-        <div className="h-[360px] flex items-center justify-center p-6 relative overflow-hidden" style={PREMIUM_CARD_BG}>
-          <SunflowerStamp />
-          <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, #B07410 1px, transparent 0)', backgroundSize: '24px 24px' }} aria-hidden="true" />
-          <div className="relative transition-transform duration-500 group-hover:scale-[1.03] group-hover:-translate-y-1">
-            <div
-              className="relative rounded-[32px] pt-[14px] pb-[14px] px-[8px]"
-              style={{
-                background: 'linear-gradient(145deg, #2a2a2e 0%, #1a1a1e 50%, #232327 100%)',
-                boxShadow: '0 20px 50px -10px rgba(0,0,0,0.35), 0 8px 20px -6px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.08)',
-              }}
-            >
-              <div className="absolute top-[6px] left-1/2 -translate-x-1/2 w-[36px] h-[4px] rounded-full bg-[#3a3a3e]" aria-hidden="true" />
-              <div className="rounded-[24px] overflow-hidden relative bg-white">
-                <Picture src={project.image} alt={project.title} imgClassName="w-[180px] h-[320px] block" imgStyle={{ objectFit: 'cover' }} sizes="180px" />
-              </div>
-              <div className="absolute bottom-[5px] left-1/2 -translate-x-1/2 w-[40px] h-[4px] rounded-full bg-[#3a3a3e]" aria-hidden="true" />
-            </div>
-          </div>
-        </div>
-      ) : project.bookletMockup ? (
-        <div className="h-[360px] flex items-center justify-center p-6 relative overflow-hidden" style={PREMIUM_CARD_BG}>
-          <SunflowerStamp />
-          <div className="relative transition-transform duration-500 group-hover:scale-[1.03] group-hover:-translate-y-1" style={{ perspective: '800px' }}>
-            <div
-              className="relative rounded-[3px] overflow-hidden"
-              style={{
-                transform: 'rotateY(-5deg) rotateX(2deg)',
-                boxShadow: '8px 8px 30px -5px rgba(28,35,64,0.25), -2px -1px 10px rgba(28,35,64,0.05)',
-              }}
-            >
-              <Picture src={project.image} alt={project.title} imgClassName="h-[310px] w-auto block" imgStyle={{ objectFit: 'contain' }} sizes="(max-width: 768px) 80vw, 360px" />
-            </div>
-            <div className="absolute left-0 top-0 bottom-0 w-[4px] rounded-l-sm" style={{ background: 'linear-gradient(to right, rgba(28,35,64,0.15), transparent)', transform: 'rotateY(-5deg) rotateX(2deg)' }} aria-hidden="true" />
-            <div className="absolute -bottom-[4px] left-[3%] right-[3%] h-[4px] rounded-b-sm" style={{ background: 'rgba(28,35,64,0.06)' }} aria-hidden="true" />
-          </div>
-        </div>
-      ) : (
-        <div className="h-[360px] flex items-center justify-center relative overflow-hidden" style={PREMIUM_CARD_BG}>
-          <SunflowerStamp />
-          <Picture
-            src={project.image}
-            alt={project.title}
-            imgClassName="relative z-[2] w-full h-full object-contain p-6"
-            sizes="(max-width: 768px) 90vw, (max-width: 1280px) 45vw, 30vw"
-          />
-        </div>
-      )}
-
-      <div className="p-6">
-        <div className="flex items-center gap-2 mb-3">
-          <span className="w-1 h-1 rounded-full bg-accent" aria-hidden="true" />
-          <span className={`text-[10px] uppercase tracking-[0.3em] ${dark ? 'text-accent/80' : 'text-accent-blue'}`} style={{ fontWeight: 600 }}>
-            {project.category}
-          </span>
-        </div>
-        <div className="flex items-start justify-between mb-3 gap-3">
-          <h4
-            className={`text-xl leading-snug ${dark ? 'text-ivory group-hover:text-accent' : 'text-night group-hover:text-accent-blue'} transition-colors`}
-            style={{ fontFamily: 'var(--font-serif)', fontWeight: 600, letterSpacing: '-0.01em' }}
-          >
-            {project.title}
-          </h4>
-          <ExternalLink className={`w-4 h-4 flex-shrink-0 mt-1.5 ${dark ? 'text-accent/40' : 'text-accent/50'} opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-500`} />
-        </div>
-        <p className={`text-[13.5px] leading-relaxed mb-4 ${dark ? 'text-ivory-warm/65' : 'text-text-muted'}`}>{project.description}</p>
-        <div className="flex flex-wrap gap-1.5">
-          {project.tags.slice(0, 3).map((tag, i) => (
-            <span
-              key={i}
-              className={`text-[10px] uppercase tracking-[0.15em] px-2.5 py-1 rounded-full border ${
-                dark
-                  ? 'bg-accent/8 text-accent/85 border-accent/20'
-                  : 'bg-accent/8 text-accent-blue border-accent/20'
-              }`}
-              style={{ fontWeight: 500 }}
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
-        {project.documentUrl && !project.documentUrl.endsWith('.pdf') && (
-          <a href={project.documentUrl} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} className="inline-flex items-center gap-2 px-4 py-2 mt-4 rounded-lg text-[12px] tracking-wide transition-all duration-300" style={{ background: 'linear-gradient(135deg, #F5C957, #E5A823, #B07410)', color: '#1B160B', fontWeight: 600 }}>
-            <FileText className="w-3.5 h-3.5" /><span>{project.documentLabel || 'Voir le dossier'}</span>
-          </a>
-        )}
-        {project.videoUrl && (
-          <a href={project.videoUrl} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} className="inline-flex items-center gap-2 px-4 py-2 mt-4 rounded-lg text-[12px] tracking-wide transition-all duration-300" style={{ background: 'linear-gradient(135deg, #F5C957, #E5A823, #B07410)', color: '#1B160B', fontWeight: 600 }}>
-            <Play className="w-3.5 h-3.5" /><span>Voir la vidéo</span>
-          </a>
-        )}
-        {project.brandbookUrl && (
-          <a href={project.brandbookUrl} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} className="inline-flex items-center gap-2 px-4 py-2 mt-4 rounded-lg text-[12px] tracking-wide transition-all duration-300" style={{ background: 'linear-gradient(135deg, #F5C957, #E5A823, #B07410)', color: '#1B160B', fontWeight: 600 }}>
-            <BookOpen className="w-3.5 h-3.5" /><span>Voir le brand book</span>
-          </a>
-        )}
-      </div>
-    </motion.div>
-  ) : (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.15 }}
-      transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }}
-      whileHover={{ y: -4 }}
-      onClick={onClick}
-      className={`group cursor-pointer relative overflow-hidden p-6 rounded-2xl border transition-all duration-500 ${
-        dark ? 'bg-night-light/40 border-accent/15 hover:border-accent/40 backdrop-blur-md' : 'bg-ivory border-night/10 hover:border-accent/40'
-      }`}
-      style={{ boxShadow: dark ? '0 6px 22px -6px rgba(0,0,0,0.35)' : '0 6px 22px -6px rgba(176,116,16,0.12)' }}
-    >
-      <div
-        className="absolute top-0 left-0 right-0 h-[2px] origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-700 ease-out"
-        style={{ background: 'linear-gradient(to right, transparent, #E5A823, transparent)' }}
-        aria-hidden="true"
-      />
-      <div className="flex items-start justify-between mb-4">
-        <div
-          className={`w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-400 ${
-            dark ? 'bg-accent/12 group-hover:bg-accent/20' : 'bg-accent/10 group-hover:bg-accent/18'
-          }`}
-        >
-          {project.category === 'École' ? <GraduationCap className="w-5 h-5 text-accent" /> : <Briefcase className="w-5 h-5 text-accent" />}
-        </div>
-        <ExternalLink className={`w-4 h-4 opacity-0 group-hover:opacity-100 transition-all duration-400 transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 ${dark ? 'text-accent/60' : 'text-accent/60'}`} />
-      </div>
-      <div className="flex items-center gap-2 mb-2">
-        <span className="w-1 h-1 rounded-full bg-accent" aria-hidden="true" />
-        <span className={`text-[10px] uppercase tracking-[0.3em] ${dark ? 'text-accent/80' : 'text-accent-blue'}`} style={{ fontWeight: 600 }}>
-          {project.category}
-        </span>
-      </div>
-      <h4
-        className={`text-lg mb-2.5 transition-colors ${dark ? 'text-ivory group-hover:text-accent' : 'text-night group-hover:text-accent-blue'}`}
-        style={{ fontFamily: 'var(--font-serif)', fontWeight: 600 }}
-      >
-        {project.title}
-      </h4>
-      <p className={`text-[13.5px] leading-relaxed ${dark ? 'text-ivory-warm/65' : 'text-text-muted'}`}>{project.description}</p>
-      <div className="flex flex-wrap gap-1.5 mt-4">
-        {project.tags.slice(0, 2).map((tag, i) => (
-          <span
-            key={i}
-            className={`text-[10px] uppercase tracking-[0.15em] px-2.5 py-1 rounded-full border ${
-              dark ? 'bg-accent/8 text-accent/85 border-accent/20' : 'bg-accent/8 text-accent-blue border-accent/20'
-            }`}
-            style={{ fontWeight: 500 }}
-          >
-            {tag}
-          </span>
-        ))}
-      </div>
-    </motion.div>
-  )
-}
-
-/* Carte éditoriale (mise en page magazine, sans crop, native aspect ratio) — utilisée pour la section École. */
-function EditorialCard({
+/* Ligne projet éditoriale — pleine largeur, alternance gauche/droite, format natif respecté. */
+function ProjectRow({
   project,
-  onClick,
   index,
+  onOpen,
+  dark = false,
   extraButton,
 }: {
   project: Project
-  onClick: () => void
   index: number
+  onOpen: () => void
+  dark?: boolean
   extraButton?: React.ReactNode
 }) {
+  const reversed = index % 2 === 1
+
+  const titleColor = dark ? 'text-ivory' : 'text-night'
+  const titleHover = dark ? 'group-hover:text-accent' : 'group-hover:text-accent-blue'
+  const descColor = dark ? 'text-ivory-warm/75' : 'text-text-muted'
+  const numberColor = dark ? 'text-accent/85' : 'text-accent-blue'
+  const ruleColor = dark ? 'bg-accent/30' : 'bg-accent-blue/35'
+  const tagBorder = dark
+    ? 'border-accent/25 text-accent bg-accent/[0.08]'
+    : 'border-accent-blue/30 text-accent-blue bg-accent-blue/[0.05]'
+  const ctaText = dark ? 'text-accent group-hover:text-ivory' : 'text-accent-blue group-hover:text-night'
+  const imageBg = dark ? 'bg-night-light/40 border-accent/15' : 'bg-white border-accent/15'
+  const ctaBorder = dark
+    ? 'border-accent/40 group-hover:border-accent group-hover:bg-accent'
+    : 'border-accent-blue/40 group-hover:border-accent-blue group-hover:bg-accent-blue'
+
   return (
     <motion.article
-      initial={{ opacity: 0, y: 24 }}
+      initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.1 }}
-      transition={{ duration: 0.7, delay: 0.05 + (index % 6) * 0.05, ease: [0.22, 1, 0.36, 1] }}
-      className="group relative break-inside-avoid mb-5 cursor-pointer"
-      onClick={onClick}
+      viewport={{ once: true, amount: 0.15 }}
+      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+      onClick={onOpen}
+      className="group cursor-pointer"
       data-cursor="hover"
     >
-      <div className="relative overflow-hidden rounded-xl bg-white border border-night/10 transition-all duration-500 group-hover:border-accent/45 group-hover:shadow-[0_18px_48px_-14px_rgba(176,116,16,0.30)]">
-        <div className="relative">
-          <Picture
-            src={project.image}
-            alt={project.title}
-            imgClassName="w-full h-auto block transition-transform duration-700 ease-out group-hover:scale-[1.02]"
-            sizes="(max-width: 640px) 96vw, (max-width: 1024px) 48vw, 32vw"
-          />
-          {/* Voile doré au survol */}
+      <div className="grid md:grid-cols-12 gap-8 md:gap-12 lg:gap-16 items-center">
+        {/* Image — col-span-7, alterne G/D selon l'index */}
+        <div className={`md:col-span-7 ${reversed ? 'md:order-2' : ''}`}>
           <div
-            className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-            style={{ background: 'linear-gradient(180deg, transparent 55%, rgba(27,22,11,0.55) 100%)' }}
-          />
-          {extraButton && (
-            <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-[2]">
-              {extraButton}
+            className={`relative overflow-hidden rounded-2xl border ${imageBg} transition-shadow duration-500 group-hover:shadow-[0_30px_70px_-20px_rgba(176,116,16,0.30)]`}
+          >
+            <div className="relative max-h-[75vh] overflow-hidden flex items-center justify-center">
+              <Picture
+                src={project.image}
+                alt={project.title}
+                imgClassName="w-full h-auto max-h-[75vh] object-contain block transition-transform duration-700 ease-out group-hover:scale-[1.02]"
+                sizes="(max-width: 768px) 100vw, 60vw"
+              />
             </div>
-          )}
+            {extraButton && (
+              <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-[2]">
+                {extraButton}
+              </div>
+            )}
+          </div>
         </div>
 
-        <div className="p-5">
-          <div className="flex items-center gap-2 mb-2">
-            {project.tags.slice(0, 1).map((tag) => (
+        {/* Texte — col-span-5 */}
+        <div className={`md:col-span-5 ${reversed ? 'md:order-1' : ''}`}>
+          <div
+            className={`flex items-center gap-3 mb-5 font-mono text-[11px] tabular-nums tracking-[0.3em] ${numberColor}`}
+            style={{ fontWeight: 600 }}
+          >
+            <span>{String(index + 1).padStart(2, '0')}</span>
+            <span className={`block w-12 h-[1px] ${ruleColor}`} aria-hidden="true" />
+            <span className="uppercase">{project.category}</span>
+          </div>
+
+          <h3
+            className={`text-3xl md:text-4xl lg:text-[2.6rem] leading-[1.05] mb-5 transition-colors duration-300 ${titleColor} ${titleHover}`}
+            style={{ fontFamily: 'var(--font-serif)', fontWeight: 700, letterSpacing: '-0.015em' }}
+          >
+            {project.title}
+          </h3>
+
+          <p className={`leading-[1.75] mb-7 ${descColor}`}>{project.description}</p>
+
+          <div className="flex flex-wrap gap-2 mb-8">
+            {project.tags.slice(0, 4).map((tag) => (
               <span
                 key={tag}
-                className="text-[10px] uppercase tracking-[0.25em] text-accent-blue/85"
+                className={`text-[10px] uppercase tracking-[0.2em] px-3 py-1.5 rounded-full border ${tagBorder}`}
                 style={{ fontWeight: 600 }}
               >
                 {tag}
               </span>
             ))}
           </div>
-          <h4
-            className="text-lg leading-snug text-night transition-colors group-hover:text-accent-blue"
-            style={{ fontFamily: 'var(--font-serif)', fontWeight: 600 }}
-          >
-            {project.title}
-          </h4>
-          <p className="mt-2 text-[13px] leading-relaxed text-text-muted line-clamp-3">
-            {project.description}
-          </p>
+
+          <span className={`inline-flex items-center gap-3 transition-colors duration-300 ${ctaText}`}>
+            <span className="text-[12px] uppercase tracking-[0.3em]" style={{ fontWeight: 700 }}>
+              Voir le projet
+            </span>
+            <span
+              className={`relative w-9 h-9 rounded-full border flex items-center justify-center transition-all duration-300 ${ctaBorder}`}
+            >
+              <ExternalLink className="w-3.5 h-3.5 transition-colors duration-300" />
+            </span>
+          </span>
         </div>
       </div>
     </motion.article>
@@ -590,22 +388,18 @@ export function Projects() {
             </div>
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="grid md:grid-cols-2 gap-5"
-          >
+          {/* Lignes éditoriales pleine largeur, alternance G/D, format natif respecté. */}
+          <div className="space-y-20 md:space-y-32">
             {entrepriseProjects.map((project, index) => (
-              <ProjectCard
+              <ProjectRow
                 key={project.id}
                 project={project}
-                onClick={() => openProject(project)}
-                delay={0.1 + index * 0.06}
+                index={index}
+                onOpen={() => openProject(project)}
+                dark
               />
             ))}
-          </motion.div>
+          </div>
         </div>
       </section>
 
@@ -691,50 +485,44 @@ export function Projects() {
             </div>
           </motion.div>
 
-          {/* Mise en page éditoriale en mosaïque — chaque image garde son format natif, pas de crop. */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true, amount: 0.05 }}
-            transition={{ duration: 0.5 }}
-            className="columns-1 sm:columns-2 lg:columns-3 gap-5 [column-fill:_balance]"
-          >
+          {/* Lignes éditoriales pleine largeur, alternance G/D, format natif respecté. */}
+          <div className="space-y-20 md:space-y-32">
             {schoolProjects.flatMap((project, index) => {
-              const card = (
-                <EditorialCard
+              const row = (
+                <ProjectRow
                   key={project.id}
                   project={project}
-                  onClick={() => openProject(project)}
                   index={index}
+                  onOpen={() => openProject(project)}
                 />
               )
               if (index === 0) {
                 return [
-                  card,
-                  <EditorialCard
-                    key="vergelegen-card"
+                  row,
+                  <ProjectRow
+                    key="vergelegen-row"
                     project={vergelegenProject}
-                    onClick={() => openProject(vergelegenProject)}
                     index={index + 1}
+                    onOpen={() => openProject(vergelegenProject)}
                     extraButton={
                       <button
                         onClick={(e) => {
                           e.stopPropagation()
                           setCatalogueOpen(true)
                         }}
-                        className="inline-flex items-center gap-2 px-3 py-2 bg-night/95 backdrop-blur text-ivory rounded-full text-[11px] uppercase tracking-[0.2em] hover:bg-accent hover:text-night transition-colors"
+                        className="inline-flex items-center gap-2 px-4 py-2.5 bg-night/95 backdrop-blur text-ivory rounded-full text-[11px] uppercase tracking-[0.25em] hover:bg-accent hover:text-night transition-colors"
                         style={{ fontWeight: 600 }}
                       >
                         <BookOpen className="w-3.5 h-3.5" />
-                        <span>Feuilleter</span>
+                        <span>Feuilleter le magazine</span>
                       </button>
                     }
                   />,
                 ]
               }
-              return [card]
+              return [row]
             })}
-          </motion.div>
+          </div>
         </div>
       </section>
 

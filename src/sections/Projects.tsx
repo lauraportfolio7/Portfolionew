@@ -1,7 +1,7 @@
 import { motion } from 'motion/react'
 import { useInView } from '@/hooks/useInView'
 import { GraduationCap, Briefcase, ExternalLink, BookOpen, FileText, Play } from 'lucide-react'
-import { ProjectModal } from '@/components/ProjectModal'
+import { useNavigate } from 'react-router'
 import { CatalogueViewer } from '@/components/CatalogueViewer'
 import { Carousel, CarouselSlide } from '@/components/Carousel'
 import { Picture } from '@/components/Picture'
@@ -371,7 +371,8 @@ function SunflowerStamp() {
 export function Projects() {
   const [ref] = useInView({ threshold: 0.05 })
   const isInView = true
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null)
+  const navigate = useNavigate()
+  const openProject = (project: Project) => navigate(`/projet/${project.id}`)
   const [catalogueOpen, setCatalogueOpen] = useState(false)
 
   const vergelegenProject = otherProjects.find((p) => p.id === 'vergelegen')!
@@ -496,7 +497,7 @@ export function Projects() {
                           ))}
                         </div>
                         <button
-                          onClick={() => setSelectedProject(project)}
+                          onClick={() => openProject(project)}
                           className="inline-flex items-center gap-2.5 self-start group/btn transition-all duration-300 text-night hover:text-accent-blue"
                         >
                           <span className="tracking-wide" style={{ fontWeight: 600 }}>Voir le projet</span>
@@ -600,7 +601,7 @@ export function Projects() {
               <ProjectCard
                 key={project.id}
                 project={project}
-                onClick={() => setSelectedProject(project)}
+                onClick={() => openProject(project)}
                 delay={0.1 + index * 0.06}
               />
             ))}
@@ -703,7 +704,7 @@ export function Projects() {
                 <EditorialCard
                   key={project.id}
                   project={project}
-                  onClick={() => setSelectedProject(project)}
+                  onClick={() => openProject(project)}
                   index={index}
                 />
               )
@@ -713,7 +714,7 @@ export function Projects() {
                   <EditorialCard
                     key="vergelegen-card"
                     project={vergelegenProject}
-                    onClick={() => setSelectedProject(vergelegenProject)}
+                    onClick={() => openProject(vergelegenProject)}
                     index={index + 1}
                     extraButton={
                       <button
@@ -737,7 +738,6 @@ export function Projects() {
         </div>
       </section>
 
-      <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />
       <CatalogueViewer pages={[vergelegenCover, vergelegenPage1, vergelegenPage2]} isOpen={catalogueOpen} onClose={() => setCatalogueOpen(false)} title="Vergelegen — Publireportage" />
     </>
   )

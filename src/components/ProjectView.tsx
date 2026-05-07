@@ -15,6 +15,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Images,
+  ArrowLeft,
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import type { Project } from '@/types'
@@ -22,9 +23,9 @@ import { SlideViewer } from '@/components/SlideViewer'
 import { FlipbookViewer } from '@/components/FlipbookViewer'
 import { Picture } from '@/components/Picture'
 
-interface ProjectModalProps {
-  project: Project | null
-  onClose: () => void
+interface ProjectViewProps {
+  project: Project
+  onBack: () => void
 }
 
 function SunflowerStaticSVG() {
@@ -57,35 +58,26 @@ function SunflowerStaticSVG() {
   )
 }
 
-export function ProjectModal({ project, onClose }: ProjectModalProps) {
+export function ProjectView({ project, onBack }: ProjectViewProps) {
   const [lightboxImage, setLightboxImage] = useState<string | null>(null)
   const [convLightboxOpen, setConvLightboxOpen] = useState(false)
   const [convLightboxIndex, setConvLightboxIndex] = useState(0)
 
+  // Remonte en haut de page à l'arrivée sur la page projet
   useEffect(() => {
-    if (project) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = ''
-    }
-    return () => {
-      document.body.style.overflow = ''
-    }
-  }, [project])
+    window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior })
+  }, [project.id])
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         if (lightboxImage) setLightboxImage(null)
         else if (convLightboxOpen) setConvLightboxOpen(false)
-        else onClose()
       }
     }
     window.addEventListener('keydown', handleEscape)
     return () => window.removeEventListener('keydown', handleEscape)
-  }, [onClose, lightboxImage, convLightboxOpen])
-
-  if (!project) return null
+  }, [lightboxImage, convLightboxOpen])
 
   const totalMedia =
     project.gallery.length + (project.videos?.length || 0) + (project.conversationGroup ? 1 : 0)
@@ -192,35 +184,41 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
         </div>
       )}
 
-      {/* Main Modal */}
-      <div key="modal" className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto">
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm"
-          onClick={onClose}
-        />
+      {/* Page projet — vraie page (pas une modale) */}
+      <motion.article
+        key="project-page"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 30 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        className="relative bg-ivory min-h-screen pb-24"
+        aria-labelledby="project-title"
+      >
+        {/* Bandeau supérieur avec bouton retour */}
+        <div className="sticky top-0 z-30 backdrop-blur-md bg-ivory/85 border-b border-accent/15">
+          <div className="max-w-6xl mx-auto px-6 md:px-8 py-4 flex items-center justify-between">
+            <button
+              onClick={onBack}
+              className="group inline-flex items-center gap-2.5 text-night hover:text-accent-blue transition-colors"
+              aria-label="Retour"
+            >
+              <span className="w-9 h-9 rounded-full border border-accent/30 group-hover:border-accent group-hover:bg-accent flex items-center justify-center transition-all">
+                <ArrowLeft className="w-4 h-4 text-accent group-hover:text-night transition-colors" />
+              </span>
+              <span className="text-[12px] uppercase tracking-[0.25em]" style={{ fontWeight: 600 }}>
+                Retour aux projets
+              </span>
+            </button>
+            <span
+              className="text-[10px] uppercase tracking-[0.3em] text-text-muted hidden md:inline"
+              style={{ fontWeight: 600 }}
+            >
+              {project.category}
+            </span>
+          </div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 50, scale: 0.95 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          exit={{ opacity: 0, y: 50, scale: 0.95 }}
-          transition={{ duration: 0.4, ease: 'easeOut' }}
-          className="relative w-full max-w-6xl mx-4 my-8 bg-ivory rounded-3xl shadow-2xl overflow-hidden"
-          onClick={(e) => e.stopPropagation()}
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="modal-title"
-        >
-          <button
-            onClick={onClose}
-            className="absolute top-6 right-6 z-20 w-12 h-12 rounded-full shadow-lg transition-all flex items-center justify-center group bg-ivory border border-accent/20 hover:bg-accent hover:border-accent"
-            aria-label="Fermer"
-          >
-            <X className="w-6 h-6 text-night transition-colors" />
-          </button>
+        <div className="max-w-6xl mx-auto bg-ivory shadow-[0_4px_40px_-12px_rgba(176,116,16,0.10)] md:rounded-3xl md:my-10 overflow-hidden">
 
           {/* Hero Section — premium cream + gold */}
           <div
@@ -682,8 +680,8 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
               )}
             </div>
           </div>
-        </motion.div>
-      </div>
+        </div>
+      </motion.article>
     </AnimatePresence>
   )
 }

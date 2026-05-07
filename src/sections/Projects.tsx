@@ -505,6 +505,9 @@ export function Projects() {
         </div>
       </section>
 
+      {/* Fondu ivory → night avant la section Entreprise */}
+      <div className="h-20 md:h-28 bg-gradient-to-b from-ivory via-night-secondary to-night" aria-hidden="true" />
+
       {/* ─── ENTREPRISE block ─── dark warm bg with gold accents */}
       <section
         id="projets-entreprise"
@@ -594,6 +597,9 @@ export function Projects() {
           </motion.div>
         </div>
       </section>
+
+      {/* Fondu night → ivory-warm avant la section École */}
+      <div className="h-20 md:h-28 bg-gradient-to-b from-night via-night-secondary to-ivory-warm" aria-hidden="true" />
 
       {/* ─── ÉCOLE block ─── light cream bg with academic warmth */}
       <section

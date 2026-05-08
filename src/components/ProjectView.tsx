@@ -291,6 +291,8 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
   // Identité visuelle reprise de l'affiche La Réunion à l'écran (ciel étoilé + terracotta).
   const isCinemaTheme = project.id === 'reunion-ecran'
   const isDarkTheme = isGuideTheme || isCinemaTheme
+  // Pour l'infographie, on n'affiche pas le visuel dans le hero (le SlideViewer du PDF suffit).
+  const hideHeroImage = project.id === 'infographie-publicite-contextuelle'
   const heroBackground = isGuideTheme
     ? 'linear-gradient(135deg, #0B1A44 0%, #122862 55%, #1C3A8E 100%)'
     : isCinemaTheme
@@ -455,7 +457,7 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
 
           {/* Hero Section — cream + gold (ou navy + cyan pour le guide investisseur) */}
           <div
-            className="relative grid md:grid-cols-2 gap-0"
+            className={`relative grid gap-0 ${hideHeroImage ? 'md:grid-cols-1' : 'md:grid-cols-2'}`}
             style={{ background: heroBackground }}
           >
             {isGuideTheme && (
@@ -523,24 +525,26 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
               </div>
             )}
 
-            <div className="relative overflow-hidden">
-              <div
-                className="aspect-[3/4] md:aspect-auto flex items-center justify-center p-6"
-                style={{ maxHeight: '600px' }}
-              >
-                <Picture
-                  src={project.image}
-                  alt={project.title}
-                  imgClassName={`w-full h-full object-contain relative z-[2] ${
-                    isDarkTheme
-                      ? 'drop-shadow-[0_18px_40px_rgba(0,0,0,0.55)]'
-                      : 'drop-shadow-[0_10px_28px_rgba(176,116,16,0.20)]'
-                  }`}
-                  imgStyle={{ maxHeight: '580px' }}
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                />
+            {!hideHeroImage && (
+              <div className="relative overflow-hidden">
+                <div
+                  className="aspect-[3/4] md:aspect-auto flex items-center justify-center p-6"
+                  style={{ maxHeight: '600px' }}
+                >
+                  <Picture
+                    src={project.image}
+                    alt={project.title}
+                    imgClassName={`w-full h-full object-contain relative z-[2] ${
+                      isDarkTheme
+                        ? 'drop-shadow-[0_18px_40px_rgba(0,0,0,0.55)]'
+                        : 'drop-shadow-[0_10px_28px_rgba(176,116,16,0.20)]'
+                    }`}
+                    imgStyle={{ maxHeight: '580px' }}
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
+                </div>
               </div>
-            </div>
+            )}
 
             <div className="relative z-[2] p-8 md:p-12 flex flex-col justify-center">
               <div

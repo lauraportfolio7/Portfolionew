@@ -58,6 +58,65 @@ function SunflowerStaticSVG() {
   )
 }
 
+/* Champ d'étoiles — reprend le ciel de la Plaine des Sables sur l'affiche La Réunion à l'écran. */
+function StarFieldSVG() {
+  // Étoiles fixes pour un rendu identique côté SSR/CSR.
+  const stars = [
+    [8, 12, 0.7], [22, 8, 1.1], [38, 18, 0.6], [54, 6, 1.4], [72, 14, 0.9], [88, 4, 0.8],
+    [4, 28, 1.0], [18, 34, 0.6], [32, 24, 1.3], [48, 32, 0.7], [62, 28, 1.1], [78, 38, 0.9], [94, 24, 0.6],
+    [12, 48, 0.8], [28, 52, 1.2], [44, 46, 0.6], [60, 56, 0.9], [76, 50, 1.4], [92, 58, 0.7],
+    [6, 68, 1.1], [22, 72, 0.6], [40, 78, 0.8], [56, 70, 1.0], [72, 80, 0.7], [88, 74, 1.2],
+    [16, 90, 0.6], [34, 86, 0.9], [52, 92, 0.7], [70, 88, 1.1], [86, 94, 0.8],
+  ] as const
+  return (
+    <svg viewBox="0 0 100 100" className="w-full h-full">
+      {stars.map(([x, y, r], i) => (
+        <circle
+          key={i}
+          cx={x}
+          cy={y}
+          r={r}
+          fill="#FFE9C8"
+          opacity={(0.5 + (r - 0.5) * 0.4).toFixed(2)}
+        />
+      ))}
+      {/* Filet de Voie lactée. */}
+      <ellipse cx="62" cy="38" rx="48" ry="6" fill="url(#milkyway)" opacity="0.35" />
+      <defs>
+        <linearGradient id="milkyway" x1="0" y1="0" x2="1" y2="0.4">
+          <stop offset="0%" stopColor="#FFE9C8" stopOpacity="0" />
+          <stop offset="40%" stopColor="#FFD8A0" stopOpacity="0.5" />
+          <stop offset="60%" stopColor="#E8A879" stopOpacity="0.5" />
+          <stop offset="100%" stopColor="#FFE9C8" stopOpacity="0" />
+        </linearGradient>
+      </defs>
+    </svg>
+  )
+}
+
+/* Silhouette de clap — clin d'œil au clap de cinéma sur l'affiche. */
+function ClapBoardSVG({ color = '#0E1A3A' }: { color?: string }) {
+  return (
+    <svg viewBox="0 0 100 100" className="w-full h-full">
+      <g fill={color}>
+        {/* Plaque arrière. */}
+        <rect x="14" y="32" width="72" height="44" rx="2" />
+        {/* Bras supérieur (clap ouvert). */}
+        <polygon points="14,28 86,18 88,28 16,38" />
+        {/* Charnière. */}
+        <circle cx="14" cy="32" r="2.4" fill="#C77A48" />
+      </g>
+      {/* Bandes diagonales du clap (alternance crème/navy). */}
+      <g>
+        <polygon points="20,20 30,18.5 26,28 16,29.5" fill="#F2EBDA" />
+        <polygon points="40,17 50,15.5 46,26 36,27.5" fill="#F2EBDA" />
+        <polygon points="60,15 70,13.5 66,24 56,25.5" fill="#F2EBDA" />
+        <polygon points="80,13 86,12 88,28 84,28" fill="#F2EBDA" opacity="0.0" />
+      </g>
+    </svg>
+  )
+}
+
 /* Motif réseau — réplique du graphisme de la couverture du guide investisseur. */
 function GuideNetworkSVG({ stroke = '#7CC4D6', dot = '#7CC4D6' }: { stroke?: string; dot?: string }) {
   const points: [number, number][] = [
@@ -128,9 +187,30 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
 
   // Identité visuelle reprise du guide investisseur (deep navy + cyan + motif réseau).
   const isGuideTheme = project.id === 'guide-investisseur'
+  // Identité visuelle reprise de l'affiche La Réunion à l'écran (ciel étoilé + terracotta).
+  const isCinemaTheme = project.id === 'reunion-ecran'
+  const isDarkTheme = isGuideTheme || isCinemaTheme
   const heroBackground = isGuideTheme
     ? 'linear-gradient(135deg, #0B1A44 0%, #122862 55%, #1C3A8E 100%)'
-    : 'linear-gradient(135deg, #FFFCF4 0%, #FBF4DD 50%, #F5E5C0 100%)'
+    : isCinemaTheme
+      ? 'linear-gradient(180deg, #0A1733 0%, #1C2350 35%, #4F2C2A 75%, #C77A48 100%)'
+      : 'linear-gradient(135deg, #FFFCF4 0%, #FBF4DD 50%, #F5E5C0 100%)'
+  // Accent texte selon thème (cyan pour le guide, crème chaud pour le ciné, doré sinon).
+  const heroAccentText = isGuideTheme
+    ? 'text-[#9DD8E6]'
+    : isCinemaTheme
+      ? 'text-[#FFD8A0]'
+      : 'text-accent'
+  const heroAccentBlueText = isGuideTheme
+    ? 'text-[#9DD8E6]'
+    : isCinemaTheme
+      ? 'text-[#FFD8A0]'
+      : 'text-accent-blue'
+  const heroAccentBorder = isGuideTheme
+    ? 'border-[#7CC4D6]/40'
+    : isCinemaTheme
+      ? 'border-[#FFD8A0]/40'
+      : 'border-accent/30'
 
   return (
     <AnimatePresence>
@@ -269,7 +349,7 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
             className="relative grid md:grid-cols-2 gap-0"
             style={{ background: heroBackground }}
           >
-            {isGuideTheme ? (
+            {isGuideTheme && (
               <>
                 {/* Motif réseau aux deux coins, signature du guide. */}
                 <div
@@ -293,7 +373,39 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
                   </div>
                 </div>
               </>
-            ) : (
+            )}
+
+            {isCinemaTheme && (
+              <>
+                {/* Champ d'étoiles diffus sur l'ensemble du hero. */}
+                <div className="absolute inset-0 opacity-90 pointer-events-none" aria-hidden="true">
+                  <StarFieldSVG />
+                </div>
+                {/* Halo terracotta qui rappelle l'horizon de l'affiche. */}
+                <div
+                  className="absolute -bottom-10 -right-12 w-72 h-72 rounded-full opacity-40 pointer-events-none"
+                  style={{ background: 'radial-gradient(circle, #E8A77B 0%, transparent 70%)' }}
+                  aria-hidden="true"
+                />
+                {/* Silhouette de clap, clin d'œil au visuel principal. */}
+                <div
+                  className="absolute -bottom-6 -left-6 w-32 h-32 opacity-70 pointer-events-none rotate-[-8deg]"
+                  aria-hidden="true"
+                >
+                  <ClapBoardSVG color="#0A1733" />
+                </div>
+                {/* Étiquette "événement" en haut à droite. */}
+                <div className="absolute top-0 right-0 hidden md:flex items-center pointer-events-none">
+                  <div className="bg-[#C77A48] px-7 py-2.5 rounded-bl-2xl shadow-md">
+                    <span className="text-[11px] uppercase tracking-[0.32em] text-ivory" style={{ fontWeight: 700 }}>
+                      29 sept. — 4 oct. 2025
+                    </span>
+                  </div>
+                </div>
+              </>
+            )}
+
+            {!isDarkTheme && (
               <div
                 className="absolute -top-10 -right-10 w-44 h-44 opacity-20 pointer-events-none"
                 aria-hidden="true"
@@ -311,7 +423,7 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
                   src={project.image}
                   alt={project.title}
                   imgClassName={`w-full h-full object-contain relative z-[2] ${
-                    isGuideTheme
+                    isDarkTheme
                       ? 'drop-shadow-[0_18px_40px_rgba(0,0,0,0.55)]'
                       : 'drop-shadow-[0_10px_28px_rgba(176,116,16,0.20)]'
                   }`}
@@ -324,15 +436,13 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
             <div className="relative z-[2] p-8 md:p-12 flex flex-col justify-center">
               <div
                 className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 self-start ${
-                  isGuideTheme
-                    ? 'bg-white/10 border border-[#7CC4D6]/40'
+                  isDarkTheme
+                    ? `bg-white/10 border ${heroAccentBorder}`
                     : 'bg-accent/12 border border-accent/30'
                 }`}
               >
                 <span
-                  className={`text-sm uppercase tracking-[0.25em] font-medium ${
-                    isGuideTheme ? 'text-[#9DD8E6]' : 'text-accent-blue'
-                  }`}
+                  className={`text-sm uppercase tracking-[0.25em] font-medium ${heroAccentBlueText}`}
                   style={{ fontWeight: 600 }}
                 >
                   {project.category}
@@ -342,7 +452,7 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
               <h2
                 id="modal-title"
                 className={`text-4xl md:text-5xl mb-6 leading-[1.1] ${
-                  isGuideTheme ? 'text-ivory' : 'text-night'
+                  isDarkTheme ? 'text-ivory' : 'text-night'
                 }`}
                 style={{ fontFamily: 'var(--font-serif)', fontWeight: 700, letterSpacing: '-0.015em' }}
               >
@@ -354,8 +464,8 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
                   <span
                     key={i}
                     className={`px-3 py-1 rounded-full text-sm ${
-                      isGuideTheme
-                        ? 'bg-white/8 text-[#C9E7EE] border border-white/15'
+                      isDarkTheme
+                        ? 'bg-white/8 text-white/85 border border-white/15'
                         : 'bg-accent/8 text-accent-blue border border-accent/20'
                     }`}
                     style={{ fontWeight: 500 }}
@@ -366,11 +476,9 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
               </div>
 
               {project.slogan && (
-                <div className={`mb-8 pb-8 border-b ${isGuideTheme ? 'border-white/15' : 'border-accent/20'}`}>
+                <div className={`mb-8 pb-8 border-b ${isDarkTheme ? 'border-white/15' : 'border-accent/20'}`}>
                   <p
-                    className={`text-2xl italic leading-relaxed ${
-                      isGuideTheme ? 'text-[#9DD8E6]' : 'text-accent-blue'
-                    }`}
+                    className={`text-2xl italic leading-relaxed ${heroAccentBlueText}`}
                     style={{ fontFamily: 'var(--font-serif)' }}
                   >
                     &ldquo;{project.slogan}&rdquo;
@@ -380,12 +488,12 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
 
               <div className="mb-6">
                 <div className="flex items-center gap-2 mb-3">
-                  <FileText className={`w-5 h-5 ${isGuideTheme ? 'text-[#9DD8E6]' : 'text-accent'}`} />
-                  <h3 className={`text-lg font-semibold ${isGuideTheme ? 'text-ivory' : 'text-night'}`}>
+                  <FileText className={`w-5 h-5 ${heroAccentText}`} />
+                  <h3 className={`text-lg font-semibold ${isDarkTheme ? 'text-ivory' : 'text-night'}`}>
                     Type de Projet
                   </h3>
                 </div>
-                <p className={`leading-relaxed ${isGuideTheme ? 'text-white/75' : 'text-text-muted'}`}>
+                <p className={`leading-relaxed ${isDarkTheme ? 'text-white/75' : 'text-text-muted'}`}>
                   {project.type}
                 </p>
               </div>
@@ -394,13 +502,13 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
                 (typeof project.target === 'object' && (project.target.main || project.target.core || project.target.relay))) && (
                 <div>
                   <div className="flex items-center gap-2 mb-3">
-                    <Users className={`w-5 h-5 ${isGuideTheme ? 'text-[#9DD8E6]' : 'text-accent'}`} />
-                    <h3 className={`text-lg font-semibold ${isGuideTheme ? 'text-ivory' : 'text-night'}`}>
+                    <Users className={`w-5 h-5 ${heroAccentText}`} />
+                    <h3 className={`text-lg font-semibold ${isDarkTheme ? 'text-ivory' : 'text-night'}`}>
                       Cible
                     </h3>
                   </div>
                   {typeof project.target === 'string' ? (
-                    <p className={`leading-relaxed ${isGuideTheme ? 'text-white/75' : 'text-text-muted'}`}>
+                    <p className={`leading-relaxed ${isDarkTheme ? 'text-white/75' : 'text-text-muted'}`}>
                       {project.target}
                     </p>
                   ) : (
@@ -408,19 +516,17 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
                       {project.target.main && (
                         <div
                           className={`p-4 rounded-lg border ${
-                            isGuideTheme
+                            isDarkTheme
                               ? 'bg-white/5 border-white/15'
                               : 'bg-ivory border-accent/15'
                           }`}
                         >
                           <p
-                            className={`font-semibold text-sm mb-2 uppercase tracking-wide ${
-                              isGuideTheme ? 'text-[#9DD8E6]' : 'text-accent-blue'
-                            }`}
+                            className={`font-semibold text-sm mb-2 uppercase tracking-wide ${heroAccentBlueText}`}
                           >
                             Cible principale
                           </p>
-                          <p className={`leading-relaxed text-sm ${isGuideTheme ? 'text-white/80' : 'text-text-muted'}`}>
+                          <p className={`leading-relaxed text-sm ${isDarkTheme ? 'text-white/80' : 'text-text-muted'}`}>
                             {project.target.main}
                           </p>
                         </div>
@@ -428,19 +534,17 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
                       {project.target.core && (
                         <div
                           className={`p-4 rounded-lg border ${
-                            isGuideTheme
+                            isDarkTheme
                               ? 'bg-white/5 border-white/15'
                               : 'bg-ivory border-accent/15'
                           }`}
                         >
                           <p
-                            className={`font-semibold text-sm mb-2 uppercase tracking-wide ${
-                              isGuideTheme ? 'text-[#9DD8E6]' : 'text-accent-blue'
-                            }`}
+                            className={`font-semibold text-sm mb-2 uppercase tracking-wide ${heroAccentBlueText}`}
                           >
                             Coeur de cible
                           </p>
-                          <p className={`leading-relaxed text-sm ${isGuideTheme ? 'text-white/80' : 'text-text-muted'}`}>
+                          <p className={`leading-relaxed text-sm ${isDarkTheme ? 'text-white/80' : 'text-text-muted'}`}>
                             {project.target.core}
                           </p>
                         </div>
@@ -448,19 +552,17 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
                       {project.target.relay && (
                         <div
                           className={`p-4 rounded-lg border ${
-                            isGuideTheme
+                            isDarkTheme
                               ? 'bg-white/5 border-white/15'
                               : 'bg-ivory border-accent/15'
                           }`}
                         >
                           <p
-                            className={`font-semibold text-sm mb-2 uppercase tracking-wide ${
-                              isGuideTheme ? 'text-[#9DD8E6]' : 'text-accent-blue'
-                            }`}
+                            className={`font-semibold text-sm mb-2 uppercase tracking-wide ${heroAccentBlueText}`}
                           >
                             Cible relais
                           </p>
-                          <p className={`leading-relaxed text-sm ${isGuideTheme ? 'text-white/80' : 'text-text-muted'}`}>
+                          <p className={`leading-relaxed text-sm ${isDarkTheme ? 'text-white/80' : 'text-text-muted'}`}>
                             {project.target.relay}
                           </p>
                         </div>

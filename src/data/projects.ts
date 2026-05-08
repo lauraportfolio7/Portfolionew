@@ -19,7 +19,12 @@ import convScreen1 from '@/assets/reunion-ecran/conv-suivi-1.avif'
 import convScreen2 from '@/assets/reunion-ecran/conv-suivi-2.jpg'
 import convScreen3 from '@/assets/reunion-ecran/conv-suivi-3.jpg'
 import convScreen4 from '@/assets/reunion-ecran/conv-suivi-4.jpg'
-import guideInvestImage from '@/assets/reunion-ecran/guide-investisseur.jpg'
+import guideInvestCover from '@/assets/reunion-ecran/guide-livre/guide-p1.png'
+import guideInvestSommaire from '@/assets/reunion-ecran/guide-livre/guide-p2.png'
+import guideInvestEurope from '@/assets/reunion-ecran/guide-livre/guide-p3.png'
+import guideInvestMap from '@/assets/reunion-ecran/guide-livre/guide-p4.png'
+import guideInvestPib from '@/assets/reunion-ecran/guide-livre/guide-p7.png'
+import guideInvestRD from '@/assets/reunion-ecran/guide-livre/guide-p9.png'
 
 // --- Images Pantoufle ---
 import pantoufleImage from '@/assets/pantoufle/affiche.jpg'
@@ -161,25 +166,52 @@ export const featuredProjects: Project[] = [
   },
   {
     id: 'disney-100-ans',
-    title: '100 ans de Disney',
-    description: 'Projet de communication autour du centenaire de Disney : analyse de la stratégie de marque, étude des leviers de communication et propositions créatives.',
+    title: 'Disney 100 — Projection Vice Versa au Grand Rex',
+    description: 'Stratégie de communication pour une projection événementielle de Vice Versa 1 & 2 au Grand Rex, dans le cadre du 100ème anniversaire de Disney, autour de la santé mentale et des émotions des 18-24 ans.',
     image: disneyCarte,
-    tabletMockup: true,
     documentUrl: '/documents/vice-versa.pdf',
-    documentLabel: 'Voir la présentation',
+    documentLabel: 'Voir le dossier complet',
     category: 'École',
-    tags: ['Stratégie', 'Marketing', 'Branding', 'Événementiel'],
-    type: 'Projet école – stratégie de communication / analyse de marque',
-    context: 'Projet réalisé dans le cadre de mon BTS Communication à l\'occasion du centenaire de Disney. L\'objectif était d\'analyser la stratégie de communication de Disney autour de ses 100 ans, d\'étudier les leviers marketing et événementiels déployés par la marque, et de proposer des recommandations créatives. Le travail portait sur l\'analyse de la marque, son positionnement, ses campagnes anniversaire et la construction de propositions de communication innovantes.',
-    slogan: '100 ans de magie, d\'histoires et de rêves',
-    target: 'Grand public, familles, fans Disney de toutes générations, professionnels du marketing et de la communication',
-    objectives: {
-      cognitive: ['Analyser la stratégie de communication de Disney pour son centenaire', 'Comprendre les leviers de marque qui ont fait le succès de Disney', 'Identifier les campagnes et dispositifs déployés pour les 100 ans'],
-      affective: ['Mettre en lumière la puissance émotionnelle de la marque Disney', 'Valoriser l\'héritage et la nostalgie comme leviers de communication', 'Susciter l\'admiration pour la cohérence de marque sur un siècle'],
-      conative: ['Proposer des recommandations de communication pertinentes', 'Inspirer des stratégies applicables à d\'autres marques', 'Démontrer la capacité d\'analyse stratégique'],
+    tags: ['Stratégie de communication', 'Événementiel', 'Persona', 'Étude consommateurs'],
+    type: 'Projet école — stratégie de communication / événementiel cinéma',
+    context: 'Projet réalisé dans le cadre de mon BTS Communication. À l\'occasion du 100ème anniversaire de Disney, je devais organiser une projection pendant la semaine dédiée aux animations et aux films Disney, dans le cinéma de mon choix. Le travail comprenait : choisir un film/animation, définir une cible (fiche persona), réaliser une étude consommateurs (quantitative et qualitative), élaborer une stratégie de communication incluant au minimum une innovation, et présenter brièvement Disney ainsi que ses 3 concurrents principaux.',
+    slogan: 'Ça te parle ? Tes émotions aussi.',
+    problematic: 'Dans le cadre d\'une projection du film Vice Versa au Grand Rex à Paris, comment concevoir une communication authentique et impactante qui donne aux jeunes adultes envie de participer à un événement émotionnel fort, en répondant à leur besoin de connexion sincère autour de leurs émotions ?',
+    target: {
+      main: 'Jeunes adultes 18-24 ans, sensibles aux questions de santé mentale et de gestion des émotions, consommateurs de contenus introspectifs.',
+      core: 'Persona « Louna » — 18 ans, étudiante en première année de psychologie, en colocation, indépendante. Centres d\'intérêt : compréhension des émotions, films d\'animation, santé mentale, journaling, contenu introspectif. A vu Vice Versa 1 ado et a été touchée par la représentation de l\'anxiété dans Vice Versa 2.',
+      relay: 'Influenceurs et créateurs de contenu bien-être (étudiants, psys, lifestyle), médias jeunes, comptes Instagram et TikTok orientés santé mentale.',
     },
-    supports: ['Présentation stratégique complète', 'Analyse de la marque Disney', 'Étude des campagnes du centenaire', 'Recommandations créatives'],
-    impact: 'Une analyse approfondie de la stratégie de communication de Disney pour ses 100 ans, mettant en lumière les mécanismes de storytelling, de nostalgie et d\'innovation qui ont permis à la marque de rester incontournable sur un siècle.',
+    objectives: {
+      cognitive: [
+        'Faire connaître l\'événement',
+        'Faire connaître l\'événement comme un espace unique pour vivre une expérience émotionnelle forte',
+      ],
+      affective: [
+        'Ressentir un lien personnel avec le thème du film et l\'événement',
+        'Se sentir en confiance et encouragé à explorer ses émotions',
+        'Être motivé par une communication sincère et bienveillante, qui résonne avec leurs besoins émotionnels',
+      ],
+      conative: [
+        'Participer à la projection au Grand Rex',
+        'S\'engager à rester ou revenir pour les moments de discussion ou d\'accompagnement proposés après la séance',
+        'Partager l\'existence de l\'événement via différents canaux',
+      ],
+    },
+    supports: [
+      'Affiche cinéma — design reprenant l\'univers graphique de Vice Versa, accroche « Ça te parle ? Tes émotions aussi. ? », mention des temps forts (miroir interactif, safe place, projections, animations) et QR code vers mini-site / réseaux',
+      'Déclinaison réseaux sociaux — formats courts Instagram et TikTok, vidéo de présentation du programme, témoignages et réactions des participants après la safe place',
+      'Partenariat influenceurs — sélection de créateurs de contenu bien-être (étudiants, psys, lifestyle) pour apporter de la crédibilité',
+      'Innovation 1 — Le Miroir des Émotions au Grand Rex : miroir interactif dans le hall qui capte l\'expression du visiteur, fait apparaître un personnage de Vice Versa selon l\'émotion détectée, propose une photo/vidéo partageable avec hashtag dédié et un message personnalisé',
+      'Innovation 2 — Espace « safe place » après la projection : lieu calme avec gâteaux et boissons, psychologues présents pour discuter dans un cadre confidentiel, tickets gratuits offerts pour des séances de suivi psychologique',
+    ],
+    proofs: [
+      'Étude Ipsos × Fondation FondaMental (2024) : près d\'un tiers des 18-24 ans souffrent de troubles psychiques, l\'anxiété touche environ 40 % de la tranche d\'âge, plus de 20 % présentent des symptômes dépressifs modérés à sévères',
+      'Vice Versa 2 (2024) : 8 millions d\'entrées en France au 20 août 2024, troisième film d\'animation le plus vu de l\'histoire en France (Le Parisien) — 1,45 milliard de dollars au box-office mondial, détrône La Reine des Neiges 2 deux semaines après sa sortie (CNEWS)',
+      'Google Trends : pic d\'intérêt en juin 2015 pour « Vice Versa Disney » et en juin 2024 pour « Vice Versa 2 », correspondant aux dates de sortie',
+      'Étude qualitative (panel 18-22 ans) : tous ont vu Vice Versa 1 et/ou 2 (majoritairement au cinéma), personnages les plus marquants cités — Anxiété, Dégoût, Joie, Embarras ; canaux de communication préférés — réseaux sociaux et print',
+    ],
+    impact: 'Une campagne qui ne se limite pas à promouvoir un film : elle permet aux jeunes adultes de mieux comprendre et exprimer leurs émotions, à travers une expérience immersive, bienveillante et utile. La performance sera mesurée via le taux de remplissage de la salle, les scans du QR code, les performances réseaux sociaux (Instagram Insights, TikTok Analytics) et les retours qualitatifs recueillis dans la safe place et en ligne.',
     gallery: [disneyCarte],
   },
   {
@@ -187,12 +219,13 @@ export const featuredProjects: Project[] = [
     isFeatured: true,
     title: 'Réalisation d\'un guide investisseur',
     description: 'Communication institutionnelle et édition d\'une plaquette investisseurs en anglais pour promouvoir l\'attractivité économique',
-    image: guideInvestImage,
+    image: guideInvestCover,
     category: 'Entreprise',
     tags: ['Édition', 'Communication institutionnelle', 'Mise en page'],
     type: 'Projet entreprise – communication institutionnelle / édition / mise en page',
     problematic: 'Comment moderniser une plaquette investisseurs devenue obsolète afin de proposer un support clair, actuel, professionnel et adapté à une cible internationale en anglais, tout en respectant la charte graphique institutionnelle et la fiabilité des données économiques ?',
-    documentUrl: 'https://files.catbox.moe/wdmrau.pdf',
+    brochureUrl: '/documents/land-for-business-and-investment.pdf',
+    brochureLabel: 'Feuilleter le guide',
     context: 'Projet réalisé au sein de La Réunion Développement, organisme chargé de promouvoir l\'attractivité économique du territoire. Le service communication souhaitait moderniser sa plaquette investisseurs, devenue obsolète. L\'objectif était de créer un support plus clair, plus actuel et mieux adapté à une cible internationale, en anglais, afin de valoriser les atouts économiques de La Réunion. Le projet a été réalisé de mi-mai à début juillet 2025, incluant veille, création, mise en page et production, sans prestataire externe.',
     slogan: 'Valoriser l\'attractivité économique de La Réunion à l\'international',
     target: {
@@ -227,7 +260,13 @@ export const featuredProjects: Project[] = [
       'Respect strict de la charte graphique institutionnelle',
     ],
     impact: 'Production d\'une nouvelle plaquette investisseurs en anglais, moderne et claire, validée par le service communication. Amélioration significative de la lisibilité du support, renforcement de l\'image institutionnelle et de la qualité perçue du document. Le support est désormais utilisé lors de rendez-vous et présentations auprès de partenaires économiques internationaux, contribuant à valoriser l\'attractivité de La Réunion comme territoire d\'investissement.',
-    gallery: [],
+    gallery: [
+      { image: guideInvestSommaire, caption: 'Sommaire — six chapitres pour structurer le territoire' },
+      { image: guideInvestEurope, caption: 'I. Europe au cœur de l\'océan Indien' },
+      { image: guideInvestMap, caption: 'La Réunion sur la carte économique mondiale' },
+      { image: guideInvestPib, caption: 'PIB par habitant et valeur ajoutée par secteur' },
+      { image: guideInvestRD, caption: 'Recherche, université et écosystème' },
+    ],
   },
 ]
 

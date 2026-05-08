@@ -58,6 +58,44 @@ function SunflowerStaticSVG() {
   )
 }
 
+/* Motif réseau — réplique du graphisme de la couverture du guide investisseur. */
+function GuideNetworkSVG({ stroke = '#7CC4D6', dot = '#7CC4D6' }: { stroke?: string; dot?: string }) {
+  const points: [number, number][] = [
+    [12, 18], [28, 8], [44, 22], [62, 12], [78, 26], [92, 16],
+    [18, 38], [38, 44], [56, 36], [74, 48], [88, 40],
+    [10, 60], [26, 70], [44, 62], [62, 74], [80, 66], [94, 78],
+    [20, 88], [40, 92], [60, 88], [80, 94],
+  ]
+  const lines: [number, number][] = [
+    [0, 1], [1, 2], [2, 3], [3, 4], [4, 5],
+    [0, 6], [1, 7], [2, 8], [3, 9], [4, 10], [5, 10],
+    [6, 7], [7, 8], [8, 9], [9, 10],
+    [6, 11], [7, 12], [8, 13], [9, 14], [10, 16],
+    [11, 12], [12, 13], [13, 14], [14, 15], [15, 16],
+    [11, 17], [12, 17], [13, 18], [14, 19], [15, 20], [16, 20],
+    [17, 18], [18, 19], [19, 20],
+  ]
+  return (
+    <svg viewBox="0 0 100 100" className="w-full h-full">
+      {lines.map(([a, b], i) => (
+        <line
+          key={`l-${i}`}
+          x1={points[a][0]}
+          y1={points[a][1]}
+          x2={points[b][0]}
+          y2={points[b][1]}
+          stroke={stroke}
+          strokeWidth="0.35"
+          opacity="0.55"
+        />
+      ))}
+      {points.map(([x, y], i) => (
+        <circle key={`p-${i}`} cx={x} cy={y} r="1.1" fill={dot} opacity="0.85" />
+      ))}
+    </svg>
+  )
+}
+
 export function ProjectView({ project, onBack }: ProjectViewProps) {
   const [lightboxImage, setLightboxImage] = useState<string | null>(null)
   const [convLightboxOpen, setConvLightboxOpen] = useState(false)
@@ -87,6 +125,12 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
       : totalMedia === 2
         ? 'grid-cols-2 max-w-2xl mx-auto'
         : 'grid-cols-2 md:grid-cols-3'
+
+  // Identité visuelle reprise du guide investisseur (deep navy + cyan + motif réseau).
+  const isGuideTheme = project.id === 'guide-investisseur'
+  const heroBackground = isGuideTheme
+    ? 'linear-gradient(135deg, #0B1A44 0%, #122862 55%, #1C3A8E 100%)'
+    : 'linear-gradient(135deg, #FFFCF4 0%, #FBF4DD 50%, #F5E5C0 100%)'
 
   return (
     <AnimatePresence>
@@ -220,20 +264,43 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
 
         <div className="max-w-6xl mx-auto bg-ivory shadow-[0_4px_40px_-12px_rgba(176,116,16,0.10)] md:rounded-3xl md:my-10 overflow-hidden">
 
-          {/* Hero Section — premium cream + gold */}
+          {/* Hero Section — cream + gold (ou navy + cyan pour le guide investisseur) */}
           <div
             className="relative grid md:grid-cols-2 gap-0"
-            style={{
-              background:
-                'linear-gradient(135deg, #FFFCF4 0%, #FBF4DD 50%, #F5E5C0 100%)',
-            }}
+            style={{ background: heroBackground }}
           >
-            <div
-              className="absolute -top-10 -right-10 w-44 h-44 opacity-20 pointer-events-none"
-              aria-hidden="true"
-            >
-              <SunflowerStaticSVG />
-            </div>
+            {isGuideTheme ? (
+              <>
+                {/* Motif réseau aux deux coins, signature du guide. */}
+                <div
+                  className="absolute -top-12 -right-12 w-72 h-72 opacity-30 pointer-events-none"
+                  aria-hidden="true"
+                >
+                  <GuideNetworkSVG stroke="#7CC4D6" dot="#9DD8E6" />
+                </div>
+                <div
+                  className="absolute -bottom-16 -left-16 w-60 h-60 opacity-20 pointer-events-none"
+                  aria-hidden="true"
+                >
+                  <GuideNetworkSVG stroke="#7CC4D6" dot="#9DD8E6" />
+                </div>
+                {/* Onglet "page" reprenant la signature du document. */}
+                <div className="absolute top-0 right-0 hidden md:flex items-center pointer-events-none">
+                  <div className="bg-ivory px-7 py-2.5 rounded-bl-2xl shadow-md">
+                    <span className="text-[11px] uppercase tracking-[0.32em] text-[#0B1A44]" style={{ fontWeight: 700 }}>
+                      Édition · 2025
+                    </span>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <div
+                className="absolute -top-10 -right-10 w-44 h-44 opacity-20 pointer-events-none"
+                aria-hidden="true"
+              >
+                <SunflowerStaticSVG />
+              </div>
+            )}
 
             <div className="relative overflow-hidden">
               <div
@@ -243,7 +310,11 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
                 <Picture
                   src={project.image}
                   alt={project.title}
-                  imgClassName="w-full h-full object-contain relative z-[2] drop-shadow-[0_10px_28px_rgba(176,116,16,0.20)]"
+                  imgClassName={`w-full h-full object-contain relative z-[2] ${
+                    isGuideTheme
+                      ? 'drop-shadow-[0_18px_40px_rgba(0,0,0,0.55)]'
+                      : 'drop-shadow-[0_10px_28px_rgba(176,116,16,0.20)]'
+                  }`}
                   imgStyle={{ maxHeight: '580px' }}
                   sizes="(max-width: 768px) 100vw, 50vw"
                 />
@@ -251,15 +322,28 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
             </div>
 
             <div className="relative z-[2] p-8 md:p-12 flex flex-col justify-center">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 self-start bg-accent/12 border border-accent/30">
-                <span className="text-sm uppercase tracking-[0.25em] font-medium text-accent-blue" style={{ fontWeight: 600 }}>
+              <div
+                className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 self-start ${
+                  isGuideTheme
+                    ? 'bg-white/10 border border-[#7CC4D6]/40'
+                    : 'bg-accent/12 border border-accent/30'
+                }`}
+              >
+                <span
+                  className={`text-sm uppercase tracking-[0.25em] font-medium ${
+                    isGuideTheme ? 'text-[#9DD8E6]' : 'text-accent-blue'
+                  }`}
+                  style={{ fontWeight: 600 }}
+                >
                   {project.category}
                 </span>
               </div>
 
               <h2
                 id="modal-title"
-                className="text-4xl md:text-5xl mb-6 leading-[1.1] text-night"
+                className={`text-4xl md:text-5xl mb-6 leading-[1.1] ${
+                  isGuideTheme ? 'text-ivory' : 'text-night'
+                }`}
                 style={{ fontFamily: 'var(--font-serif)', fontWeight: 700, letterSpacing: '-0.015em' }}
               >
                 {project.title}
@@ -269,7 +353,11 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
                 {project.tags.map((tag, i) => (
                   <span
                     key={i}
-                    className="px-3 py-1 rounded-full text-sm bg-accent/8 text-accent-blue border border-accent/20"
+                    className={`px-3 py-1 rounded-full text-sm ${
+                      isGuideTheme
+                        ? 'bg-white/8 text-[#C9E7EE] border border-white/15'
+                        : 'bg-accent/8 text-accent-blue border border-accent/20'
+                    }`}
                     style={{ fontWeight: 500 }}
                   >
                     {tag}
@@ -278,9 +366,11 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
               </div>
 
               {project.slogan && (
-                <div className="mb-8 pb-8 border-b border-accent/20">
+                <div className={`mb-8 pb-8 border-b ${isGuideTheme ? 'border-white/15' : 'border-accent/20'}`}>
                   <p
-                    className="text-2xl italic leading-relaxed text-accent-blue"
+                    className={`text-2xl italic leading-relaxed ${
+                      isGuideTheme ? 'text-[#9DD8E6]' : 'text-accent-blue'
+                    }`}
                     style={{ fontFamily: 'var(--font-serif)' }}
                   >
                     &ldquo;{project.slogan}&rdquo;
@@ -290,45 +380,89 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
 
               <div className="mb-6">
                 <div className="flex items-center gap-2 mb-3">
-                  <FileText className="w-5 h-5 text-accent" />
-                  <h3 className="text-lg font-semibold text-night">Type de Projet</h3>
+                  <FileText className={`w-5 h-5 ${isGuideTheme ? 'text-[#9DD8E6]' : 'text-accent'}`} />
+                  <h3 className={`text-lg font-semibold ${isGuideTheme ? 'text-ivory' : 'text-night'}`}>
+                    Type de Projet
+                  </h3>
                 </div>
-                <p className="leading-relaxed text-text-muted">{project.type}</p>
+                <p className={`leading-relaxed ${isGuideTheme ? 'text-white/75' : 'text-text-muted'}`}>
+                  {project.type}
+                </p>
               </div>
 
               {((typeof project.target === 'string' && project.target) ||
                 (typeof project.target === 'object' && (project.target.main || project.target.core || project.target.relay))) && (
                 <div>
                   <div className="flex items-center gap-2 mb-3">
-                    <Users className="w-5 h-5 text-accent" />
-                    <h3 className="text-lg font-semibold text-night">Cible</h3>
+                    <Users className={`w-5 h-5 ${isGuideTheme ? 'text-[#9DD8E6]' : 'text-accent'}`} />
+                    <h3 className={`text-lg font-semibold ${isGuideTheme ? 'text-ivory' : 'text-night'}`}>
+                      Cible
+                    </h3>
                   </div>
                   {typeof project.target === 'string' ? (
-                    <p className="leading-relaxed text-text-muted">{project.target}</p>
+                    <p className={`leading-relaxed ${isGuideTheme ? 'text-white/75' : 'text-text-muted'}`}>
+                      {project.target}
+                    </p>
                   ) : (
                     <div className="space-y-4">
                       {project.target.main && (
-                        <div className="p-4 rounded-lg border bg-ivory border-accent/15">
-                          <p className="font-semibold text-sm mb-2 uppercase tracking-wide text-accent-blue">
+                        <div
+                          className={`p-4 rounded-lg border ${
+                            isGuideTheme
+                              ? 'bg-white/5 border-white/15'
+                              : 'bg-ivory border-accent/15'
+                          }`}
+                        >
+                          <p
+                            className={`font-semibold text-sm mb-2 uppercase tracking-wide ${
+                              isGuideTheme ? 'text-[#9DD8E6]' : 'text-accent-blue'
+                            }`}
+                          >
                             Cible principale
                           </p>
-                          <p className="leading-relaxed text-sm text-text-muted">{project.target.main}</p>
+                          <p className={`leading-relaxed text-sm ${isGuideTheme ? 'text-white/80' : 'text-text-muted'}`}>
+                            {project.target.main}
+                          </p>
                         </div>
                       )}
                       {project.target.core && (
-                        <div className="p-4 rounded-lg border bg-ivory border-accent/15">
-                          <p className="font-semibold text-sm mb-2 uppercase tracking-wide text-accent-blue">
+                        <div
+                          className={`p-4 rounded-lg border ${
+                            isGuideTheme
+                              ? 'bg-white/5 border-white/15'
+                              : 'bg-ivory border-accent/15'
+                          }`}
+                        >
+                          <p
+                            className={`font-semibold text-sm mb-2 uppercase tracking-wide ${
+                              isGuideTheme ? 'text-[#9DD8E6]' : 'text-accent-blue'
+                            }`}
+                          >
                             Coeur de cible
                           </p>
-                          <p className="leading-relaxed text-sm text-text-muted">{project.target.core}</p>
+                          <p className={`leading-relaxed text-sm ${isGuideTheme ? 'text-white/80' : 'text-text-muted'}`}>
+                            {project.target.core}
+                          </p>
                         </div>
                       )}
                       {project.target.relay && (
-                        <div className="p-4 rounded-lg border bg-ivory border-accent/15">
-                          <p className="font-semibold text-sm mb-2 uppercase tracking-wide text-accent-blue">
+                        <div
+                          className={`p-4 rounded-lg border ${
+                            isGuideTheme
+                              ? 'bg-white/5 border-white/15'
+                              : 'bg-ivory border-accent/15'
+                          }`}
+                        >
+                          <p
+                            className={`font-semibold text-sm mb-2 uppercase tracking-wide ${
+                              isGuideTheme ? 'text-[#9DD8E6]' : 'text-accent-blue'
+                            }`}
+                          >
                             Cible relais
                           </p>
-                          <p className="leading-relaxed text-sm text-text-muted">{project.target.relay}</p>
+                          <p className={`leading-relaxed text-sm ${isGuideTheme ? 'text-white/80' : 'text-text-muted'}`}>
+                            {project.target.relay}
+                          </p>
                         </div>
                       )}
                     </div>
@@ -644,7 +778,48 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
 
             {/* Flipbook brochure viewer */}
             {project.brochureUrl && (
-              <FlipbookViewer pdfUrl={project.brochureUrl} title="Feuilleter la brochure" />
+              isGuideTheme ? (
+                <div
+                  className="relative -mx-8 md:-mx-12 px-8 md:px-12 py-12 md:py-16 overflow-hidden"
+                  style={{ background: 'linear-gradient(180deg, #0B1A44 0%, #0F2255 100%)' }}
+                >
+                  <div className="absolute -top-10 -right-10 w-72 h-72 opacity-25 pointer-events-none" aria-hidden="true">
+                    <GuideNetworkSVG stroke="#7CC4D6" dot="#9DD8E6" />
+                  </div>
+                  <div className="absolute -bottom-16 -left-10 w-64 h-64 opacity-15 pointer-events-none" aria-hidden="true">
+                    <GuideNetworkSVG stroke="#7CC4D6" dot="#9DD8E6" />
+                  </div>
+                  <div className="relative max-w-3xl mx-auto text-center mb-2">
+                    <span
+                      className="block text-[11px] uppercase tracking-[0.4em] text-[#9DD8E6] mb-3"
+                      style={{ fontWeight: 700 }}
+                    >
+                      The complete guide
+                    </span>
+                    <h3
+                      className="text-3xl md:text-4xl text-ivory leading-[1.1]"
+                      style={{ fontFamily: 'var(--font-serif)', fontWeight: 700 }}
+                    >
+                      Land for business and Investment
+                    </h3>
+                    <div className="mx-auto mt-4 mb-2 h-[2px] w-16 bg-[#7CC4D6]/60" />
+                    <p className="text-sm text-white/70 mt-3">
+                      27 pages — feuilletez l'intégralité du document tel qu'il a été livré.
+                    </p>
+                  </div>
+                  <div className="relative [&_.text-night-secondary]:text-ivory [&_h3]:text-ivory">
+                    <FlipbookViewer
+                      pdfUrl={project.brochureUrl}
+                      title={project.brochureLabel || 'Feuilleter la brochure'}
+                    />
+                  </div>
+                </div>
+              ) : (
+                <FlipbookViewer
+                  pdfUrl={project.brochureUrl}
+                  title={project.brochureLabel || 'Feuilleter la brochure'}
+                />
+              )
             )}
 
             {/* LinkedIn carousel viewer */}

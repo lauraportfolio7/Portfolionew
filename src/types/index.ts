@@ -47,6 +47,7 @@ export interface Project {
   creativeChoices?: string[]
   documentUrl?: string
   brochureUrl?: string
+  brochureLabel?: string
   documentLabel?: string
   videoUrl?: string
   brandbookUrl?: string

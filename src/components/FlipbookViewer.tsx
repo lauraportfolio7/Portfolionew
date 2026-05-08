@@ -153,7 +153,7 @@ export function FlipbookViewer({ pdfUrl, title }: FlipbookViewerProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[70] bg-black/95 flex flex-col items-center justify-center"
+            className="fixed inset-0 z-[70] bg-black/70 backdrop-blur-md flex flex-col items-center justify-center"
             onClick={() => setFullscreen(false)}
           >
             <div className="absolute top-4 right-4 z-10">

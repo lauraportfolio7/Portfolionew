@@ -14,7 +14,7 @@ import vergelegenCover from '@/assets/vergelegen/cover.jpg'
 import vergelegenPage1 from '@/assets/vergelegen/page-1.jpg'
 import vergelegenPage2 from '@/assets/vergelegen/page-2.jpg'
 
-const PREMIUM_CARD_BG = {
+const EDITORIAL_CARD_BG = {
   background:
     'linear-gradient(135deg, #FFFCF4 0%, #FBF4DD 50%, #F5E5C0 100%)',
 }
@@ -255,7 +255,7 @@ export function Projects() {
                     <div className="grid md:grid-cols-2 gap-0 relative z-[2] flex-1">
                       <div
                         className="h-[360px] md:h-auto md:min-h-[480px] relative overflow-hidden rounded-t-3xl md:rounded-l-3xl md:rounded-tr-none flex items-center justify-center"
-                        style={PREMIUM_CARD_BG}
+                        style={EDITORIAL_CARD_BG}
                       >
                         <Picture
                           src={project.image}

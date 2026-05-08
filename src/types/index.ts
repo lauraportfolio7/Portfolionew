@@ -18,6 +18,12 @@ export interface ConversationGroup {
   images: string[]
 }
 
+export interface CarouselItem {
+  label: string
+  pdfUrl: string
+  cover: string
+}
+
 export interface GalleryItem {
   image: string
   caption?: string
@@ -53,6 +59,7 @@ export interface Project {
   brandbookUrl?: string
   videos?: string[]
   conversationGroup?: ConversationGroup
+  carousels?: CarouselItem[]
   tabletMockup?: boolean
   laptopMockup?: boolean
   bookletMockup?: boolean

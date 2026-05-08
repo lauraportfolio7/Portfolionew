@@ -17,11 +17,107 @@ import {
   Images,
   ArrowLeft,
 } from 'lucide-react'
-import { useEffect, useState } from 'react'
-import type { Project } from '@/types'
+import { useEffect, useState, useRef, useCallback } from 'react'
+import * as pdfjsLib from 'pdfjs-dist'
+import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.min.mjs?url'
+import type { Project, CarouselItem } from '@/types'
 import { SlideViewer } from '@/components/SlideViewer'
 import { FlipbookViewer } from '@/components/FlipbookViewer'
 import { Picture } from '@/components/Picture'
+
+pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker
+
+/* Lightbox plein écran pour parcourir un carrousel PDF page par page. */
+function CarouselLightbox({ item, onClose }: { item: CarouselItem; onClose: () => void }) {
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const [pdfDoc, setPdfDoc] = useState<pdfjsLib.PDFDocumentProxy | null>(null)
+  const [page, setPage] = useState(1)
+  const [total, setTotal] = useState(0)
+
+  useEffect(() => {
+    setPage(1); setPdfDoc(null); setTotal(0)
+    pdfjsLib.getDocument(item.pdfUrl).promise.then((doc) => {
+      setPdfDoc(doc); setTotal(doc.numPages)
+    })
+  }, [item.pdfUrl])
+
+  const render = useCallback(async () => {
+    if (!pdfDoc || !canvasRef.current) return
+    const p = await pdfDoc.getPage(page)
+    const vp = p.getViewport({ scale: 1 })
+    const dpr = window.devicePixelRatio || 1
+    const maxW = window.innerWidth * 0.85
+    const maxH = window.innerHeight * 0.78
+    const scale = Math.min(maxW / vp.width, maxH / vp.height)
+    const scaled = p.getViewport({ scale: scale * dpr })
+    const canvas = canvasRef.current
+    canvas.width = scaled.width
+    canvas.height = scaled.height
+    canvas.style.width = `${scaled.width / dpr}px`
+    canvas.style.height = `${scaled.height / dpr}px`
+    const ctx = canvas.getContext('2d')!
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    await p.render({ canvasContext: ctx, viewport: scaled } as any).promise
+  }, [pdfDoc, page])
+
+  useEffect(() => { render() }, [render])
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') setPage((p) => Math.min(p + 1, total))
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') setPage((p) => Math.max(p - 1, 1))
+      else if (e.key === 'Escape') onClose()
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [total, onClose])
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[70] flex flex-col items-center justify-center bg-black/70 backdrop-blur-md"
+      onClick={onClose}
+    >
+      <button
+        onClick={onClose}
+        className="absolute top-5 right-5 z-10 w-11 h-11 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center text-white transition-colors"
+        aria-label="Fermer"
+      >
+        <X className="w-5 h-5" />
+      </button>
+
+      <div onClick={(e) => e.stopPropagation()} className="flex flex-col items-center gap-5 max-w-[95vw]">
+        <canvas ref={canvasRef} className="rounded-lg shadow-2xl" style={{ display: 'block' }} />
+
+        {total > 0 && (
+          <div className="flex items-center gap-5 text-white">
+            <button
+              onClick={() => setPage((p) => Math.max(p - 1, 1))}
+              disabled={page === 1}
+              className="w-11 h-11 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center disabled:opacity-30 transition-colors"
+              aria-label="Précédent"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <span className="text-sm tabular-nums">
+              {page} / {total} — {item.label}
+            </span>
+            <button
+              onClick={() => setPage((p) => Math.min(p + 1, total))}
+              disabled={page === total}
+              className="w-11 h-11 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center disabled:opacity-30 transition-colors"
+              aria-label="Suivant"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </div>
+        )}
+      </div>
+    </motion.div>
+  )
+}
 
 interface ProjectViewProps {
   project: Project
@@ -159,6 +255,7 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
   const [lightboxImage, setLightboxImage] = useState<string | null>(null)
   const [convLightboxOpen, setConvLightboxOpen] = useState(false)
   const [convLightboxIndex, setConvLightboxIndex] = useState(0)
+  const [carouselLightbox, setCarouselLightbox] = useState<CarouselItem | null>(null)
 
   // Remonte en haut de page à l'arrivée sur la page projet
   useEffect(() => {
@@ -170,14 +267,18 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
       if (e.key === 'Escape') {
         if (lightboxImage) setLightboxImage(null)
         else if (convLightboxOpen) setConvLightboxOpen(false)
+        else if (carouselLightbox) setCarouselLightbox(null)
       }
     }
     window.addEventListener('keydown', handleEscape)
     return () => window.removeEventListener('keydown', handleEscape)
-  }, [lightboxImage, convLightboxOpen])
+  }, [lightboxImage, convLightboxOpen, carouselLightbox])
 
   const totalMedia =
-    project.gallery.length + (project.videos?.length || 0) + (project.conversationGroup ? 1 : 0)
+    project.gallery.length +
+    (project.videos?.length || 0) +
+    (project.conversationGroup ? 1 : 0) +
+    (project.carousels?.length || 0)
   const gridClass =
     totalMedia === 1
       ? 'grid-cols-1 max-w-md mx-auto'
@@ -214,11 +315,19 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
 
   return (
     <AnimatePresence>
+      {carouselLightbox && (
+        <CarouselLightbox
+          key="carousel-lightbox"
+          item={carouselLightbox}
+          onClose={() => setCarouselLightbox(null)}
+        />
+      )}
+
       {/* Image Lightbox */}
       {lightboxImage && (
         <div
           key="lightbox"
-          className="fixed inset-0 z-[60] flex items-center justify-center bg-black/90 backdrop-blur-md"
+          className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 backdrop-blur-md"
           onClick={() => setLightboxImage(null)}
         >
           <motion.div
@@ -251,7 +360,7 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
       {convLightboxOpen && project.conversationGroup && (
         <div
           key="convLightbox"
-          className="fixed inset-0 z-[60] flex items-center justify-center bg-black/90 backdrop-blur-md"
+          className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 backdrop-blur-md"
           onClick={() => setConvLightboxOpen(false)}
         >
           <motion.div
@@ -869,6 +978,44 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
                       </div>
                     </motion.div>
                   )}
+
+                  {project.carousels?.map((carousel, i) => {
+                    const offset = project.gallery.length + (project.videos?.length || 0) + (project.conversationGroup ? 1 : 0)
+                    return (
+                      <motion.div
+                        key={`carousel-${i}`}
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: (offset + i) * 0.1 }}
+                        className="relative group rounded-2xl overflow-hidden shadow-[0_4px_24px_rgba(0,0,0,0.06)] hover:shadow-[0_8px_40px_rgba(0,0,0,0.12)] transition-all duration-500 hover:-translate-y-1 bg-ivory-warm/30 cursor-pointer"
+                        onClick={() => setCarouselLightbox(carousel)}
+                      >
+                        <div className="flex items-center justify-center p-2 aspect-square bg-ivory-warm/40 relative">
+                          <Picture
+                            src={carousel.cover}
+                            alt={carousel.label}
+                            imgClassName="max-w-full max-h-full object-contain rounded"
+                            sizes="(max-width: 768px) 80vw, (max-width: 1280px) 40vw, 25vw"
+                          />
+                        </div>
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent flex flex-col items-center justify-end pb-5">
+                          <div className="flex items-center gap-2 px-3.5 py-1.5 bg-white/90 backdrop-blur-sm rounded-full shadow-lg">
+                            <Images className="w-3.5 h-3.5 text-accent" />
+                            <span className="text-xs text-night uppercase tracking-wide" style={{ fontWeight: 600 }}>
+                              Carrousel
+                            </span>
+                          </div>
+                        </div>
+                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300 flex items-center justify-center">
+                          <div className="opacity-0 group-hover:opacity-100 transition-all duration-300 transform scale-90 group-hover:scale-100">
+                            <div className="w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm shadow-lg flex items-center justify-center">
+                              <Maximize2 className="w-5 h-5 text-night" />
+                            </div>
+                          </div>
+                        </div>
+                      </motion.div>
+                    )
+                  })}
                 </div>
               </div>
             )}

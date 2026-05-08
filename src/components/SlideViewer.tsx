@@ -29,12 +29,14 @@ export function SlideViewer({ pdfUrl, title }: SlideViewerProps) {
     })
   }, [pdfUrl])
 
-  const renderPage = useCallback(async (canvas: HTMLCanvasElement | null, pageNum: number, maxWidth: number) => {
+  const renderPage = useCallback(async (canvas: HTMLCanvasElement | null, pageNum: number, maxWidth: number, maxHeight?: number) => {
     if (!pdfDoc || !canvas) return
     const page = await pdfDoc.getPage(pageNum)
     const viewport = page.getViewport({ scale: 1 })
     const dpr = window.devicePixelRatio || 1
-    const scale = maxWidth / viewport.width
+    const scale = maxHeight
+      ? Math.min(maxWidth / viewport.width, maxHeight / viewport.height)
+      : maxWidth / viewport.width
     const scaled = page.getViewport({ scale: scale * dpr })
     canvas.width = scaled.width
     canvas.height = scaled.height
@@ -63,7 +65,12 @@ export function SlideViewer({ pdfUrl, title }: SlideViewerProps) {
 
   useEffect(() => {
     if (!pdfDoc || !fullscreen) return
-    renderPage(fullscreenCanvasRef.current, currentPage, Math.min(window.innerWidth * 0.9, 1400))
+    renderPage(
+      fullscreenCanvasRef.current,
+      currentPage,
+      Math.min(window.innerWidth * 0.85, 1300),
+      window.innerHeight * 0.78,
+    )
   }, [pdfDoc, currentPage, fullscreen, renderPage])
 
   useEffect(() => {
@@ -131,7 +138,7 @@ export function SlideViewer({ pdfUrl, title }: SlideViewerProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[70] bg-black/95 flex flex-col items-center justify-center"
+            className="fixed inset-0 z-[70] bg-black/70 backdrop-blur-md flex flex-col items-center justify-center"
             onClick={() => setFullscreen(false)}
           >
             <div className="absolute top-4 right-4 flex gap-2 z-10">

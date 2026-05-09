@@ -4,8 +4,6 @@ import { motion } from 'motion/react'
 export function Footer() {
   return (
     <footer className="relative overflow-hidden">
-      <div className="h-6 bg-gradient-to-b from-sky-light to-night-secondary" aria-hidden="true" />
-
       <div className="bg-night-secondary text-white/80">
         <div className="max-w-6xl mx-auto px-6 py-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-5">

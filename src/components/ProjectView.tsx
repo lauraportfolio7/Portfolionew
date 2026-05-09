@@ -190,25 +190,33 @@ function StarFieldSVG() {
   )
 }
 
-/* Silhouette de clap — clin d'œil au clap de cinéma sur l'affiche. */
-function ClapBoardSVG({ color = '#0E1A3A' }: { color?: string }) {
+/* Silhouette de chaise de réalisateur — l'élément central au premier plan de l'affiche. */
+function DirectorChairSVG({ color = '#0A0A0A' }: { color?: string }) {
   return (
-    <svg viewBox="0 0 100 100" className="w-full h-full">
+    <svg viewBox="0 0 100 120" className="w-full h-full">
       <g fill={color}>
-        {/* Plaque arrière. */}
-        <rect x="14" y="32" width="72" height="44" rx="2" />
-        {/* Bras supérieur (clap ouvert). */}
-        <polygon points="14,28 86,18 88,28 16,38" />
-        {/* Charnière. */}
-        <circle cx="14" cy="32" r="2.4" fill="#C77A48" />
+        {/* Dossier (toile entre deux montants). */}
+        <rect x="22" y="24" width="56" height="4" rx="0.5" />
+        <rect x="22" y="46" width="56" height="4" rx="0.5" />
+        <rect x="22" y="28" width="56" height="18" />
+        {/* Montants verticaux du dossier. */}
+        <rect x="20" y="22" width="3" height="32" />
+        <rect x="77" y="22" width="3" height="32" />
+        {/* Toile d'assise. */}
+        <rect x="20" y="62" width="60" height="10" />
+        {/* Pieds en X (avant). */}
+        <line x1="22" y1="58" x2="60" y2="116" stroke={color} strokeWidth="2.6" strokeLinecap="round" />
+        <line x1="78" y1="58" x2="40" y2="116" stroke={color} strokeWidth="2.6" strokeLinecap="round" />
+        {/* Pieds en X (arrière). */}
+        <line x1="28" y1="58" x2="56" y2="116" stroke={color} strokeWidth="2.2" strokeLinecap="round" opacity="0.55" />
+        <line x1="72" y1="58" x2="44" y2="116" stroke={color} strokeWidth="2.2" strokeLinecap="round" opacity="0.55" />
+        {/* Traverses entre les pieds. */}
+        <rect x="34" y="86" width="32" height="2" />
+        <rect x="36" y="100" width="28" height="2" />
       </g>
-      {/* Bandes diagonales du clap (alternance crème/navy). */}
-      <g>
-        <polygon points="20,20 30,18.5 26,28 16,29.5" fill="#F2EBDA" />
-        <polygon points="40,17 50,15.5 46,26 36,27.5" fill="#F2EBDA" />
-        <polygon points="60,15 70,13.5 66,24 56,25.5" fill="#F2EBDA" />
-        <polygon points="80,13 86,12 88,28 84,28" fill="#F2EBDA" opacity="0.0" />
-      </g>
+      {/* Toile de la chaise — accent crème comme l'assise du clap visible sur l'affiche. */}
+      <rect x="22" y="30" width="56" height="14" fill="#EDE3CD" />
+      <rect x="22" y="64" width="56" height="6" fill="#EDE3CD" />
     </svg>
   )
 }
@@ -296,7 +304,7 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
   const heroBackground = isGuideTheme
     ? 'linear-gradient(135deg, #0B1A44 0%, #122862 55%, #1C3A8E 100%)'
     : isCinemaTheme
-      ? 'linear-gradient(180deg, #0A1733 0%, #1C2350 35%, #4F2C2A 75%, #C77A48 100%)'
+      ? 'linear-gradient(180deg, #050818 0%, #0E1834 22%, #2E1F30 48%, #5A2E22 70%, #8E4F2A 88%, #B26340 100%)'
       : 'linear-gradient(135deg, #FFFCF4 0%, #FBF4DD 50%, #F5E5C0 100%)'
   // Accent texte selon thème (cyan pour le guide, crème chaud pour le ciné, doré sinon).
   const heroAccentText = isGuideTheme
@@ -488,25 +496,40 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
 
             {isCinemaTheme && (
               <>
-                {/* Champ d'étoiles diffus sur l'ensemble du hero. */}
-                <div className="absolute inset-0 opacity-90 pointer-events-none" aria-hidden="true">
+                {/* Champ d'étoiles dense sur la moitié haute (ciel cosmique de l'affiche). */}
+                <div className="absolute inset-x-0 top-0 h-3/5 opacity-100 pointer-events-none" aria-hidden="true">
                   <StarFieldSVG />
                 </div>
-                {/* Halo terracotta qui rappelle l'horizon de l'affiche. */}
+                {/* Voie lactée orange/rose en diagonale, signature du ciel de l'affiche. */}
                 <div
-                  className="absolute -bottom-10 -right-12 w-72 h-72 rounded-full opacity-40 pointer-events-none"
-                  style={{ background: 'radial-gradient(circle, #E8A77B 0%, transparent 70%)' }}
+                  className="absolute top-0 -right-20 w-[140%] h-1/2 opacity-55 pointer-events-none mix-blend-screen"
+                  style={{
+                    background:
+                      'radial-gradient(ellipse 80% 35% at 70% 35%, #C9663A 0%, #8E3A2E 30%, transparent 65%)',
+                    transform: 'rotate(-8deg)',
+                  }}
                   aria-hidden="true"
                 />
-                {/* Silhouette de clap, clin d'œil au visuel principal. */}
+                {/* Horizon volcanique chaud en bas. */}
                 <div
-                  className="absolute -bottom-6 -left-6 w-32 h-32 opacity-70 pointer-events-none rotate-[-8deg]"
+                  className="absolute -bottom-16 -right-20 w-96 h-96 rounded-full opacity-55 pointer-events-none"
+                  style={{ background: 'radial-gradient(circle, #D17542 0%, #8E4F2A 50%, transparent 75%)' }}
+                  aria-hidden="true"
+                />
+                <div
+                  className="absolute -bottom-20 -left-16 w-80 h-80 rounded-full opacity-35 pointer-events-none"
+                  style={{ background: 'radial-gradient(circle, #B26340 0%, transparent 70%)' }}
+                  aria-hidden="true"
+                />
+                {/* Silhouette de chaise de réalisateur (premier plan de l'affiche). */}
+                <div
+                  className="absolute bottom-2 right-6 w-20 h-24 md:w-28 md:h-32 opacity-90 pointer-events-none drop-shadow-[0_8px_18px_rgba(0,0,0,0.55)]"
                   aria-hidden="true"
                 >
-                  <ClapBoardSVG color="#0A1733" />
+                  <DirectorChairSVG color="#080808" />
                 </div>
                 {/* Étiquette "événement" en haut à droite. */}
-                <div className="absolute top-0 right-0 hidden md:flex items-center pointer-events-none">
+                <div className="absolute top-0 right-0 hidden md:flex items-center pointer-events-none z-[3]">
                   <div className="bg-[#C77A48] px-7 py-2.5 rounded-bl-2xl shadow-md">
                     <span className="text-[11px] uppercase tracking-[0.32em] text-ivory" style={{ fontWeight: 700 }}>
                       29 sept. — 4 oct. 2025
@@ -562,15 +585,36 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
                 </span>
               </div>
 
-              <h2
-                id="modal-title"
-                className={`text-4xl md:text-5xl mb-6 leading-[1.1] ${
-                  isDarkTheme ? 'text-ivory' : 'text-night'
-                }`}
-                style={{ fontFamily: 'var(--font-serif)', fontWeight: 700, letterSpacing: '-0.015em' }}
-              >
-                {project.title}
-              </h2>
+              {isCinemaTheme ? (
+                <h2
+                  id="modal-title"
+                  className="mb-6 text-ivory leading-[0.9]"
+                  style={{ fontFamily: 'var(--font-serif)', fontWeight: 700 }}
+                >
+                  <span
+                    className="block text-5xl md:text-7xl italic"
+                    style={{ letterSpacing: '-0.02em' }}
+                  >
+                    La Réunion
+                  </span>
+                  <span
+                    className="block mt-2 text-2xl md:text-3xl uppercase"
+                    style={{ fontWeight: 600, letterSpacing: '0.18em', fontFamily: 'var(--font-serif)' }}
+                  >
+                    à l'écran
+                  </span>
+                </h2>
+              ) : (
+                <h2
+                  id="modal-title"
+                  className={`text-4xl md:text-5xl mb-6 leading-[1.1] ${
+                    isDarkTheme ? 'text-ivory' : 'text-night'
+                  }`}
+                  style={{ fontFamily: 'var(--font-serif)', fontWeight: 700, letterSpacing: '-0.015em' }}
+                >
+                  {project.title}
+                </h2>
+              )}
 
               <div className="flex flex-wrap gap-2 mb-8">
                 {project.tags.map((tag, i) => (
@@ -589,14 +633,52 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
               </div>
 
               {project.slogan && (
-                <div className={`mb-8 pb-8 border-b ${isDarkTheme ? 'border-white/15' : 'border-accent/20'}`}>
-                  <p
-                    className={`text-2xl italic leading-relaxed ${heroAccentBlueText}`}
-                    style={{ fontFamily: 'var(--font-serif)' }}
-                  >
-                    &ldquo;{project.slogan}&rdquo;
-                  </p>
-                </div>
+                isCinemaTheme ? (
+                  <div className="mb-8 pb-8 border-b border-white/15 space-y-3">
+                    <span className="inline-block bg-ivory text-[#1A1228] px-4 py-2.5 shadow-md">
+                      <span
+                        className="text-sm md:text-base uppercase"
+                        style={{ fontWeight: 800, letterSpacing: '0.25em' }}
+                      >
+                        Une île de talents
+                      </span>
+                    </span>
+                    <span className="block">
+                      <span className="inline-block bg-ivory text-[#1A1228] px-4 py-2.5 shadow-md">
+                        <span
+                          className="text-sm md:text-base uppercase"
+                          style={{ fontWeight: 800, letterSpacing: '0.25em' }}
+                        >
+                          et de kréations
+                        </span>
+                      </span>
+                    </span>
+                    {/* Pin "MARS — Plaine des Sables" repris de l'affiche. */}
+                    <span className="inline-flex items-center gap-2 mt-2 text-[#FFD8A0]">
+                      <span
+                        className="inline-flex items-center justify-center w-6 h-6 rounded-full border border-[#FFD8A0]"
+                        style={{ fontWeight: 700 }}
+                      >
+                        <span className="text-[10px]">●</span>
+                      </span>
+                      <span className="text-[11px] md:text-xs uppercase tracking-[0.32em]" style={{ fontWeight: 700 }}>
+                        Mars
+                      </span>
+                      <span className="italic text-base md:text-lg" style={{ fontFamily: 'var(--font-serif)' }}>
+                        Plaine des Sables
+                      </span>
+                    </span>
+                  </div>
+                ) : (
+                  <div className={`mb-8 pb-8 border-b ${isDarkTheme ? 'border-white/15' : 'border-accent/20'}`}>
+                    <p
+                      className={`text-2xl italic leading-relaxed ${heroAccentBlueText}`}
+                      style={{ fontFamily: 'var(--font-serif)' }}
+                    >
+                      &ldquo;{project.slogan}&rdquo;
+                    </p>
+                  </div>
+                )
               )}
 
               <div className="mb-6">

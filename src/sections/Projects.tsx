@@ -62,15 +62,31 @@ function ProjectRow({
       data-cursor="hover"
     >
       <div className="grid md:grid-cols-12 gap-8 md:gap-12 lg:gap-16 items-center">
-        {/* Image — col-span-7, alterne G/D selon l'index. L'image flotte sans cadre, juste avec son ombre portée. */}
+        {/* Image — col-span-7, alterne G/D selon l'index. L'image flotte sans cadre,
+            mais un halo flouté reprenant ses couleurs l'ancre dans la section. */}
         <div className={`md:col-span-7 ${reversed ? 'md:order-2' : ''}`}>
           <div
             className={`relative max-h-[75vh] flex items-center justify-center transition-[filter] duration-500 ${imageShadow}`}
           >
+            {/* Halo de couleur : copie floutée et agrandie de l'image, en arrière-plan. */}
+            <img
+              src={typeof project.image === 'string' ? project.image : (project.image as any).src ?? project.image}
+              alt=""
+              aria-hidden="true"
+              className={`absolute inset-0 w-full h-full max-h-[75vh] object-contain pointer-events-none select-none transition-opacity duration-500 ${
+                dark ? 'opacity-55 group-hover:opacity-70' : 'opacity-45 group-hover:opacity-60'
+              }`}
+              style={{
+                filter: 'blur(48px) saturate(1.4)',
+                transform: 'scale(1.08)',
+                transformOrigin: 'center',
+              }}
+              loading="lazy"
+            />
             <Picture
               src={project.image}
               alt={project.title}
-              imgClassName="w-full h-auto max-h-[75vh] object-contain block transition-transform duration-700 ease-out group-hover:scale-[1.02]"
+              imgClassName="relative z-[1] w-full h-auto max-h-[75vh] object-contain block transition-transform duration-700 ease-out group-hover:scale-[1.02]"
               sizes="(max-width: 768px) 100vw, 60vw"
             />
             {extraButton && (

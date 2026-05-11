@@ -44,7 +44,9 @@ function ProjectRow({
     ? 'border-accent/25 text-accent bg-accent/[0.08]'
     : 'border-accent-blue/30 text-accent-blue bg-accent-blue/[0.05]'
   const ctaText = dark ? 'text-accent group-hover:text-ivory' : 'text-accent-blue group-hover:text-night'
-  const imageBg = dark ? 'bg-night-light/40 border-accent/15' : 'bg-white border-accent/15'
+  const imageShadow = dark
+    ? 'drop-shadow-[0_18px_42px_rgba(0,0,0,0.45)] group-hover:drop-shadow-[0_30px_64px_rgba(0,0,0,0.55)]'
+    : 'drop-shadow-[0_14px_36px_rgba(120,80,15,0.18)] group-hover:drop-shadow-[0_28px_60px_rgba(120,80,15,0.28)]'
   const ctaBorder = dark
     ? 'border-accent/40 group-hover:border-accent group-hover:bg-accent'
     : 'border-accent-blue/40 group-hover:border-accent-blue group-hover:bg-accent-blue'
@@ -60,19 +62,17 @@ function ProjectRow({
       data-cursor="hover"
     >
       <div className="grid md:grid-cols-12 gap-8 md:gap-12 lg:gap-16 items-center">
-        {/* Image — col-span-7, alterne G/D selon l'index */}
+        {/* Image — col-span-7, alterne G/D selon l'index. L'image flotte sans cadre, juste avec son ombre portée. */}
         <div className={`md:col-span-7 ${reversed ? 'md:order-2' : ''}`}>
           <div
-            className={`relative overflow-hidden rounded-2xl border ${imageBg} transition-shadow duration-500 group-hover:shadow-[0_30px_70px_-20px_rgba(176,116,16,0.30)]`}
+            className={`relative max-h-[75vh] flex items-center justify-center transition-[filter] duration-500 ${imageShadow}`}
           >
-            <div className="relative max-h-[75vh] overflow-hidden flex items-center justify-center">
-              <Picture
-                src={project.image}
-                alt={project.title}
-                imgClassName="w-full h-auto max-h-[75vh] object-contain block transition-transform duration-700 ease-out group-hover:scale-[1.02]"
-                sizes="(max-width: 768px) 100vw, 60vw"
-              />
-            </div>
+            <Picture
+              src={project.image}
+              alt={project.title}
+              imgClassName="w-full h-auto max-h-[75vh] object-contain block transition-transform duration-700 ease-out group-hover:scale-[1.02]"
+              sizes="(max-width: 768px) 100vw, 60vw"
+            />
             {extraButton && (
               <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-[2]">
                 {extraButton}

@@ -129,38 +129,6 @@ export function About() {
 
           </motion.div>
         </div>
-
-        {/* Champs d'expression — tags brutalistes, pleine largeur en bas de section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-20 md:mt-28 border-t border-night/15 pt-8"
-        >
-          <div className="font-mono text-[10px] uppercase tracking-[0.3em] mb-5 text-accent-blue">
-            Champs d'expression
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {[
-              'BTS Communication',
-              'Alternance',
-              'Son & Image',
-              'Création',
-              'Éditorial',
-              'Direction artistique',
-              'Branding',
-              'Événementiel',
-            ].map((tag) => (
-              <span
-                key={tag}
-                className="font-mono text-[10px] uppercase tracking-[0.25em] px-4 py-2.5 border border-night text-night hover:bg-night hover:text-ivory transition-colors duration-200"
-                data-cursor="hover"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-        </motion.div>
       </div>
     </section>
   )

@@ -14,7 +14,13 @@ export function SunflowerThread() {
 
   return (
     <div
-      className="fixed top-0 left-4 lg:left-6 h-screen z-[40] pointer-events-none hidden md:flex flex-col items-center"
+      className="fixed top-0 h-screen z-[40] pointer-events-none hidden xl:flex flex-col items-center"
+      style={{
+        // Se cale dynamiquement dans la marge gauche du contenu (max-w-7xl = 80rem centré).
+        // - Sur écran large : à 2.5rem avant le bord gauche du contenu (donc dans la gouttière).
+        // - Sur écran étroit : recule jusqu'à 0.5rem du bord du viewport, sans jamais entrer dans le contenu.
+        left: 'max(0.5rem, calc((100vw - 80rem) / 2 - 2.5rem))',
+      }}
       aria-hidden="true"
     >
       {/* Top tick */}

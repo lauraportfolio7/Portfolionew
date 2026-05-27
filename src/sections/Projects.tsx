@@ -19,30 +19,6 @@ const EDITORIAL_CARD_BG = {
     'linear-gradient(135deg, #FFFCF4 0%, #FBF4DD 50%, #F5E5C0 100%)',
 }
 
-/* Marqueur de coin façon repère typographique — deux barres formant un L,
-   invisible au repos, qui s'éclaire à l'approche du hover. Marque l'image
-   comme une planche éditoriale plutôt que comme une simple illustration. */
-function CornerMark({ position, color }: { position: 'tl' | 'tr' | 'bl' | 'br'; color: string }) {
-  const horizontal = position === 'tl' || position === 'bl' ? 'left-0' : 'right-0'
-  const vertical = position === 'tl' || position === 'tr' ? 'top-0' : 'bottom-0'
-  const offsetH = position === 'tl' || position === 'bl' ? '-translate-x-4' : 'translate-x-4'
-  const offsetV = position === 'tl' || position === 'tr' ? '-translate-y-4' : 'translate-y-4'
-
-  return (
-    <div
-      className={`absolute ${horizontal} ${vertical} ${offsetH} ${offsetV} w-6 h-6 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-out z-[2]`}
-      aria-hidden="true"
-    >
-      <span
-        className={`absolute ${vertical} ${horizontal} w-6 h-px transition-colors duration-500 ${color}`}
-      />
-      <span
-        className={`absolute ${vertical} ${horizontal} h-6 w-px transition-colors duration-500 ${color}`}
-      />
-    </div>
-  )
-}
-
 /* Ligne projet éditoriale — pleine largeur, alternance gauche/droite, format natif respecté. */
 function ProjectRow({
   project,
@@ -68,17 +44,17 @@ function ProjectRow({
     ? 'border-accent/25 text-accent bg-accent/[0.08]'
     : 'border-accent-blue/30 text-accent-blue bg-accent-blue/[0.05]'
   const ctaText = dark ? 'text-accent group-hover:text-ivory' : 'text-accent-blue group-hover:text-night'
-  // Ombres multicouches (ambiante diffuse + ombre rapprochée + contact au sol) façon studio photo.
+  // Ombres en deux couches mesurées.
   const imageShadow = dark
-    ? 'drop-shadow-[0_2px_4px_rgba(0,0,0,0.35)] drop-shadow-[0_12px_28px_rgba(0,0,0,0.4)] drop-shadow-[0_32px_64px_rgba(0,0,0,0.45)] group-hover:drop-shadow-[0_2px_6px_rgba(0,0,0,0.4)] group-hover:drop-shadow-[0_22px_44px_rgba(0,0,0,0.45)] group-hover:drop-shadow-[0_48px_80px_rgba(0,0,0,0.5)]'
-    : 'drop-shadow-[0_2px_3px_rgba(80,55,15,0.18)] drop-shadow-[0_10px_24px_rgba(120,80,15,0.18)] drop-shadow-[0_28px_56px_rgba(120,80,15,0.16)] group-hover:drop-shadow-[0_2px_5px_rgba(80,55,15,0.22)] group-hover:drop-shadow-[0_20px_38px_rgba(120,80,15,0.24)] group-hover:drop-shadow-[0_42px_72px_rgba(120,80,15,0.22)]'
+    ? 'drop-shadow-[0_8px_20px_rgba(0,0,0,0.35)] drop-shadow-[0_24px_50px_rgba(0,0,0,0.35)] group-hover:drop-shadow-[0_14px_28px_rgba(0,0,0,0.4)] group-hover:drop-shadow-[0_36px_64px_rgba(0,0,0,0.4)]'
+    : 'drop-shadow-[0_6px_18px_rgba(120,80,15,0.14)] drop-shadow-[0_20px_44px_rgba(120,80,15,0.14)] group-hover:drop-shadow-[0_12px_26px_rgba(120,80,15,0.18)] group-hover:drop-shadow-[0_30px_58px_rgba(120,80,15,0.18)]'
   const ctaBorder = dark
     ? 'border-accent/40 group-hover:border-accent group-hover:bg-accent'
     : 'border-accent-blue/40 group-hover:border-accent-blue group-hover:bg-accent-blue'
-  // Couleur des marqueurs de coin (cadre éditorial discret).
-  const cornerColor = dark ? 'bg-accent/0 group-hover:bg-accent/70' : 'bg-accent-blue/0 group-hover:bg-accent-blue/60'
-  // Couleur du numéro vertical en regard de l'image.
-  const figureLabelColor = dark ? 'text-accent/65' : 'text-accent-blue/70'
+  // Fond discret qui plaque l'image dans la section, légèrement plus chaud que le bg.
+  const backdropPanel = dark
+    ? 'bg-gradient-to-br from-white/[0.025] via-white/[0.04] to-white/[0.015]'
+    : 'bg-gradient-to-br from-[#B07410]/[0.025] via-[#B07410]/[0.05] to-[#B07410]/[0.02]'
 
   return (
     <motion.article
@@ -91,60 +67,48 @@ function ProjectRow({
       data-cursor="hover"
     >
       <div className="grid md:grid-cols-12 gap-8 md:gap-12 lg:gap-16 items-center">
-        {/* Image — col-span-7. Présentation éditoriale : halo de couleur diffus,
-            ombres multicouches, coins accents qui apparaissent au hover, marqueur
-            de figure typographique en regard. */}
-        <div className={`md:col-span-7 ${reversed ? 'md:order-2' : ''} relative`}>
-          {/* Marqueur de figure — petite mention typographique verticale en regard de l'image. */}
-          <div
-            className={`hidden lg:flex items-center gap-2 absolute top-2 ${reversed ? 'right-0 translate-x-6' : 'left-0 -translate-x-6'} -translate-y-1 font-mono text-[10px] uppercase tracking-[0.32em] ${figureLabelColor}`}
-            style={{ writingMode: 'vertical-rl', fontWeight: 600 }}
-            aria-hidden="true"
-          >
-            <span>Figure&nbsp;{String(index + 1).padStart(2, '0')}</span>
-          </div>
+        {/* Image — col-span-7. Présentation contenue : l'image est posée sur un fond
+            chaud discret, avec un halo de couleur très diffus en arrière. */}
+        <div className={`md:col-span-7 ${reversed ? 'md:order-2' : ''}`}>
+          <div className="relative flex items-center justify-center py-8 md:py-10 px-6 md:px-10">
+            {/* Plaque de fond — léger panneau aux coins doux qui contient l'image. */}
+            <div
+              className={`absolute inset-0 rounded-[2.5rem] ${backdropPanel} transition-opacity duration-500 ease-out ${
+                dark ? 'group-hover:opacity-[1.4]' : 'group-hover:opacity-[1.2]'
+              }`}
+              aria-hidden="true"
+            />
 
-          {/* Halo de couleur très diffus, plus large que l'image — atmosphère. */}
-          <div
-            className="absolute inset-0 pointer-events-none flex items-center justify-center"
-            aria-hidden="true"
-          >
+            {/* Halo de couleur tiré de l'image, très diffus pour l'atmosphère. */}
             <img
               src={typeof project.image === 'string' ? project.image : (project.image as any).src ?? project.image}
               alt=""
-              className={`w-[115%] h-[115%] max-h-[85vh] object-contain select-none transition-all duration-700 ease-out ${
-                dark
-                  ? 'opacity-50 group-hover:opacity-65'
-                  : 'opacity-40 group-hover:opacity-55'
+              aria-hidden="true"
+              className={`absolute w-3/4 h-3/4 max-h-[55vh] object-contain pointer-events-none select-none transition-opacity duration-700 ease-out ${
+                dark ? 'opacity-35 group-hover:opacity-50' : 'opacity-30 group-hover:opacity-45'
               }`}
               style={{
-                filter: 'blur(72px) saturate(1.5)',
+                filter: 'blur(64px) saturate(1.4)',
               }}
               loading="lazy"
             />
-          </div>
 
-          <div
-            className={`relative max-h-[75vh] flex items-center justify-center transition-[filter,transform] duration-500 ease-out ${imageShadow} group-hover:-translate-y-1`}
-          >
-            <Picture
-              src={project.image}
-              alt={project.title}
-              imgClassName="relative z-[1] w-full h-auto max-h-[75vh] object-contain block transition-transform duration-700 ease-out group-hover:scale-[1.025]"
-              sizes="(max-width: 768px) 100vw, 60vw"
-            />
+            <div
+              className={`relative max-h-[58vh] flex items-center justify-center transition-[filter,transform] duration-500 ease-out ${imageShadow} group-hover:-translate-y-0.5`}
+            >
+              <Picture
+                src={project.image}
+                alt={project.title}
+                imgClassName="relative z-[1] w-full h-auto max-h-[58vh] object-contain block transition-transform duration-700 ease-out group-hover:scale-[1.015]"
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
 
-            {/* Cadre éditorial — quatre coins accents qui révèlent l'image au hover. */}
-            <CornerMark position="tl" color={cornerColor} />
-            <CornerMark position="tr" color={cornerColor} />
-            <CornerMark position="bl" color={cornerColor} />
-            <CornerMark position="br" color={cornerColor} />
-
-            {extraButton && (
-              <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-[2]">
-                {extraButton}
-              </div>
-            )}
+              {extraButton && (
+                <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-[2]">
+                  {extraButton}
+                </div>
+              )}
+            </div>
           </div>
         </div>
 

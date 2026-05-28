@@ -229,7 +229,6 @@ export const featuredProjects: Project[] = [
     category: 'Entreprise',
     tags: ['Édition', 'Communication institutionnelle', 'Mise en page'],
     type: 'Projet entreprise – communication institutionnelle / édition / mise en page',
-    problematic: 'Comment moderniser une plaquette investisseurs devenue obsolète afin de proposer un support clair, actuel, professionnel et adapté à une cible internationale en anglais, tout en respectant la charte graphique institutionnelle et la fiabilité des données économiques ?',
     brochureUrl: '/documents/land-for-business-and-investment.pdf',
     brochureLabel: 'Feuilleter le guide',
     context: 'Projet réalisé au sein de La Réunion Développement, organisme chargé de promouvoir l\'attractivité économique du territoire. Le service communication souhaitait moderniser sa plaquette investisseurs, devenue obsolète. L\'objectif était de créer un support plus clair, plus actuel et mieux adapté à une cible internationale, en anglais, afin de valoriser les atouts économiques de La Réunion. Le projet a été réalisé de mi-mai à début juillet 2025, incluant veille, création, mise en page et production, sans prestataire externe.',

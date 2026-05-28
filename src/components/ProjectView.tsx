@@ -929,7 +929,7 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
               <div className="bg-white p-8 rounded-2xl border border-night/5">
                 <h3 className="text-2xl mb-6 flex items-center gap-3 text-night" style={{ fontFamily: 'var(--font-serif)' }}>
                   <div className="w-2 h-8 bg-accent rounded-full" />
-                  Supports Réalisés
+                  Réalisations
                 </h3>
                 <div className="grid md:grid-cols-2 gap-4">
                   {project.supports.map((support, i) => (

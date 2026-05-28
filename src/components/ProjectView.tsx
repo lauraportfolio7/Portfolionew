@@ -465,7 +465,7 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
 
           {/* Hero Section — cream + gold (ou navy + cyan pour le guide investisseur) */}
           <div
-            className={`relative grid gap-0 ${hideHeroImage ? 'md:grid-cols-1' : 'md:grid-cols-2'}`}
+            className={`relative grid gap-0 items-stretch ${hideHeroImage ? 'md:grid-cols-1' : 'md:grid-cols-2'}`}
             style={{ background: heroBackground }}
           >
             {isGuideTheme && (
@@ -550,10 +550,7 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
 
             {!hideHeroImage && (
               <div className="relative overflow-hidden">
-                <div
-                  className="aspect-[3/4] md:aspect-auto flex items-center justify-center p-6"
-                  style={{ maxHeight: '600px' }}
-                >
+                <div className="aspect-[3/4] md:aspect-auto md:min-h-[440px] flex items-center justify-center p-6 h-full">
                   <Picture
                     src={project.image}
                     alt={project.title}
@@ -562,7 +559,6 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
                         ? 'drop-shadow-[0_18px_40px_rgba(0,0,0,0.55)]'
                         : 'drop-shadow-[0_10px_28px_rgba(176,116,16,0.20)]'
                     }`}
-                    imgStyle={{ maxHeight: '580px' }}
                     sizes="(max-width: 768px) 100vw, 50vw"
                   />
                 </div>
@@ -681,7 +677,7 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
                 )
               )}
 
-              <div className="mb-6">
+              <div>
                 <div className="flex items-center gap-2 mb-3">
                   <FileText className={`w-5 h-5 ${heroAccentText}`} />
                   <h3 className={`text-lg font-semibold ${isDarkTheme ? 'text-ivory' : 'text-night'}`}>
@@ -692,80 +688,6 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
                   {project.type}
                 </p>
               </div>
-
-              {((typeof project.target === 'string' && project.target) ||
-                (typeof project.target === 'object' && (project.target.main || project.target.core || project.target.relay))) && (
-                <div>
-                  <div className="flex items-center gap-2 mb-3">
-                    <Users className={`w-5 h-5 ${heroAccentText}`} />
-                    <h3 className={`text-lg font-semibold ${isDarkTheme ? 'text-ivory' : 'text-night'}`}>
-                      Cible
-                    </h3>
-                  </div>
-                  {typeof project.target === 'string' ? (
-                    <p className={`leading-relaxed ${isDarkTheme ? 'text-white/75' : 'text-text-muted'}`}>
-                      {project.target}
-                    </p>
-                  ) : (
-                    <div className="space-y-4">
-                      {project.target.main && (
-                        <div
-                          className={`p-4 rounded-lg border ${
-                            isDarkTheme
-                              ? 'bg-white/5 border-white/15'
-                              : 'bg-ivory border-accent/15'
-                          }`}
-                        >
-                          <p
-                            className={`font-semibold text-sm mb-2 uppercase tracking-wide ${heroAccentBlueText}`}
-                          >
-                            Cible principale
-                          </p>
-                          <p className={`leading-relaxed text-sm ${isDarkTheme ? 'text-white/80' : 'text-text-muted'}`}>
-                            {project.target.main}
-                          </p>
-                        </div>
-                      )}
-                      {project.target.core && (
-                        <div
-                          className={`p-4 rounded-lg border ${
-                            isDarkTheme
-                              ? 'bg-white/5 border-white/15'
-                              : 'bg-ivory border-accent/15'
-                          }`}
-                        >
-                          <p
-                            className={`font-semibold text-sm mb-2 uppercase tracking-wide ${heroAccentBlueText}`}
-                          >
-                            Coeur de cible
-                          </p>
-                          <p className={`leading-relaxed text-sm ${isDarkTheme ? 'text-white/80' : 'text-text-muted'}`}>
-                            {project.target.core}
-                          </p>
-                        </div>
-                      )}
-                      {project.target.relay && (
-                        <div
-                          className={`p-4 rounded-lg border ${
-                            isDarkTheme
-                              ? 'bg-white/5 border-white/15'
-                              : 'bg-ivory border-accent/15'
-                          }`}
-                        >
-                          <p
-                            className={`font-semibold text-sm mb-2 uppercase tracking-wide ${heroAccentBlueText}`}
-                          >
-                            Cible relais
-                          </p>
-                          <p className={`leading-relaxed text-sm ${isDarkTheme ? 'text-white/80' : 'text-text-muted'}`}>
-                            {project.target.relay}
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </div>
-              )}
             </div>
           </div>
 
@@ -788,6 +710,46 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
                   Contexte
                 </h3>
                 <p className="text-lg text-text-muted leading-relaxed">{project.context}</p>
+              </div>
+            )}
+
+            {((typeof project.target === 'string' && project.target) ||
+              (typeof project.target === 'object' && (project.target.main || project.target.core || project.target.relay))) && (
+              <div className="bg-white p-8 rounded-2xl border border-night/5">
+                <h3 className="text-2xl mb-5 flex items-center gap-3 text-night" style={{ fontFamily: 'var(--font-serif)' }}>
+                  <Users className="w-6 h-6 text-accent" />
+                  Cible
+                </h3>
+                {typeof project.target === 'string' ? (
+                  <p className="text-lg text-text-muted leading-relaxed">{project.target}</p>
+                ) : (
+                  <div className="grid md:grid-cols-3 gap-4">
+                    {project.target.main && (
+                      <div className="p-5 rounded-xl bg-ivory border border-accent/15">
+                        <p className="font-semibold text-sm mb-2 uppercase tracking-wide text-accent-blue">
+                          Cible principale
+                        </p>
+                        <p className="leading-relaxed text-sm text-text-muted">{project.target.main}</p>
+                      </div>
+                    )}
+                    {project.target.core && (
+                      <div className="p-5 rounded-xl bg-ivory border border-accent/15">
+                        <p className="font-semibold text-sm mb-2 uppercase tracking-wide text-accent-blue">
+                          Coeur de cible
+                        </p>
+                        <p className="leading-relaxed text-sm text-text-muted">{project.target.core}</p>
+                      </div>
+                    )}
+                    {project.target.relay && (
+                      <div className="p-5 rounded-xl bg-ivory border border-accent/15">
+                        <p className="font-semibold text-sm mb-2 uppercase tracking-wide text-accent-blue">
+                          Cible relais
+                        </p>
+                        <p className="leading-relaxed text-sm text-text-muted">{project.target.relay}</p>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             )}
 

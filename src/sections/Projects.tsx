@@ -1,6 +1,6 @@
 import { motion } from 'motion/react'
 import { useInView } from '@/hooks/useInView'
-import { GraduationCap, Briefcase, ExternalLink, BookOpen } from 'lucide-react'
+import { GraduationCap, Briefcase, ExternalLink, BookOpen, ArrowUpRight } from 'lucide-react'
 import { useNavigate } from 'react-router'
 import { CatalogueViewer } from '@/components/CatalogueViewer'
 import { Carousel, CarouselSlide } from '@/components/Carousel'
@@ -44,17 +44,13 @@ function ProjectRow({
     ? 'border-accent/25 text-accent bg-accent/[0.08]'
     : 'border-accent-blue/30 text-accent-blue bg-accent-blue/[0.05]'
   const ctaText = dark ? 'text-accent group-hover:text-ivory' : 'text-accent-blue group-hover:text-night'
-  // Ombres en deux couches mesurées.
+  // Ombre en deux couches discrètes.
   const imageShadow = dark
-    ? 'drop-shadow-[0_8px_20px_rgba(0,0,0,0.35)] drop-shadow-[0_24px_50px_rgba(0,0,0,0.35)] group-hover:drop-shadow-[0_14px_28px_rgba(0,0,0,0.4)] group-hover:drop-shadow-[0_36px_64px_rgba(0,0,0,0.4)]'
-    : 'drop-shadow-[0_6px_18px_rgba(120,80,15,0.14)] drop-shadow-[0_20px_44px_rgba(120,80,15,0.14)] group-hover:drop-shadow-[0_12px_26px_rgba(120,80,15,0.18)] group-hover:drop-shadow-[0_30px_58px_rgba(120,80,15,0.18)]'
+    ? 'drop-shadow-[0_8px_22px_rgba(0,0,0,0.4)] drop-shadow-[0_26px_50px_rgba(0,0,0,0.35)]'
+    : 'drop-shadow-[0_6px_18px_rgba(120,80,15,0.16)] drop-shadow-[0_22px_44px_rgba(120,80,15,0.14)]'
   const ctaBorder = dark
     ? 'border-accent/40 group-hover:border-accent group-hover:bg-accent'
     : 'border-accent-blue/40 group-hover:border-accent-blue group-hover:bg-accent-blue'
-  // Fond discret qui plaque l'image dans la section, légèrement plus chaud que le bg.
-  const backdropPanel = dark
-    ? 'bg-gradient-to-br from-white/[0.025] via-white/[0.04] to-white/[0.015]'
-    : 'bg-gradient-to-br from-[#B07410]/[0.025] via-[#B07410]/[0.05] to-[#B07410]/[0.02]'
 
   return (
     <motion.article
@@ -67,44 +63,34 @@ function ProjectRow({
       data-cursor="hover"
     >
       <div className="grid md:grid-cols-12 gap-8 md:gap-12 lg:gap-16 items-center">
-        {/* Image — col-span-7. Présentation contenue : l'image est posée sur un fond
-            chaud discret, avec un halo de couleur très diffus en arrière. */}
+        {/* Image — col-span-7. Image seule aux bords arrondis, voile + bouton
+            "Découvrir ce projet" qui apparaît au survol. */}
         <div className={`md:col-span-7 ${reversed ? 'md:order-2' : ''}`}>
-          <div className="relative flex items-center justify-center py-8 md:py-10 px-6 md:px-10">
-            {/* Plaque de fond — léger panneau aux coins doux qui contient l'image. */}
-            <div
-              className={`absolute inset-0 rounded-[2.5rem] ${backdropPanel} transition-opacity duration-500 ease-out ${
-                dark ? 'group-hover:opacity-[1.4]' : 'group-hover:opacity-[1.2]'
-              }`}
-              aria-hidden="true"
-            />
-
-            {/* Halo de couleur tiré de l'image, très diffus pour l'atmosphère. */}
-            <img
-              src={typeof project.image === 'string' ? project.image : (project.image as any).src ?? project.image}
-              alt=""
-              aria-hidden="true"
-              className={`absolute w-3/4 h-3/4 max-h-[55vh] object-contain pointer-events-none select-none transition-opacity duration-700 ease-out ${
-                dark ? 'opacity-35 group-hover:opacity-50' : 'opacity-30 group-hover:opacity-45'
-              }`}
-              style={{
-                filter: 'blur(64px) saturate(1.4)',
-              }}
-              loading="lazy"
-            />
-
-            <div
-              className={`relative max-h-[58vh] flex items-center justify-center transition-[filter,transform] duration-500 ease-out ${imageShadow} group-hover:-translate-y-0.5`}
-            >
+          <div
+            className={`flex items-center justify-center transition-[filter] duration-500 ease-out ${imageShadow}`}
+          >
+            {/* Wrapper inline-block : se cale exactement sur l'image pour que le
+                voile au hover épouse précisément ses bords. */}
+            <div className="relative inline-block overflow-hidden rounded-2xl">
               <Picture
                 src={project.image}
                 alt={project.title}
-                imgClassName="relative z-[1] w-full h-auto max-h-[58vh] object-contain block transition-transform duration-700 ease-out group-hover:scale-[1.015]"
+                imgClassName="block max-w-full max-h-[58vh] w-auto h-auto transition-transform duration-700 ease-out group-hover:scale-[1.025]"
                 sizes="(max-width: 768px) 100vw, 50vw"
               />
 
+              {/* Voile sombre + bouton "Découvrir ce projet" au hover. */}
+              <div className="absolute inset-0 bg-night/0 group-hover:bg-night/55 transition-colors duration-500 ease-out flex items-center justify-center pointer-events-none">
+                <span className="inline-flex items-center gap-3 px-6 py-3.5 rounded-full bg-ivory text-night shadow-[0_10px_30px_-10px_rgba(0,0,0,0.4)] opacity-0 translate-y-3 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-out">
+                  <span className="text-[11px] uppercase tracking-[0.28em]" style={{ fontWeight: 700 }}>
+                    Découvrir ce projet
+                  </span>
+                  <ArrowUpRight className="w-4 h-4" />
+                </span>
+              </div>
+
               {extraButton && (
-                <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-[2]">
+                <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-[3]">
                   {extraButton}
                 </div>
               )}

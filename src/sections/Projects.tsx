@@ -1,6 +1,6 @@
 import { motion } from 'motion/react'
 import { useInView } from '@/hooks/useInView'
-import { GraduationCap, Briefcase, ExternalLink, BookOpen, ArrowUpRight } from 'lucide-react'
+import { GraduationCap, Briefcase, BookOpen, ArrowUpRight } from 'lucide-react'
 import { useNavigate } from 'react-router'
 import { CatalogueViewer } from '@/components/CatalogueViewer'
 import { Carousel, CarouselSlide } from '@/components/Carousel'
@@ -245,7 +245,9 @@ export function Projects() {
               {featuredProjects.map((project, idx) => (
                 <CarouselSlide key={project.id}>
                   <div
-                    className="rounded-3xl overflow-hidden transition-all duration-500 hover:translate-y-[-2px] relative h-full min-h-[480px] md:min-h-[520px] flex flex-col bg-ivory border border-accent/15"
+                    onClick={() => openProject(project)}
+                    data-cursor="hover"
+                    className="group rounded-3xl overflow-hidden transition-all duration-500 hover:translate-y-[-2px] relative h-full min-h-[480px] md:min-h-[520px] flex flex-col bg-ivory border border-accent/15 cursor-pointer"
                     style={{
                       boxShadow:
                         '0 14px 50px -10px rgba(176,116,16,0.18), 0 4px 18px -4px rgba(229,168,35,0.10)',
@@ -262,9 +264,19 @@ export function Projects() {
                         <Picture
                           src={project.image}
                           alt={project.title}
-                          imgClassName="w-full h-full object-contain relative z-[1] p-6"
+                          imgClassName="w-full h-full object-contain relative z-[1] p-6 transition-transform duration-700 ease-out group-hover:scale-[1.03]"
                           sizes="(max-width: 768px) 100vw, (max-width: 1280px) 60vw, 50vw"
                         />
+
+                        {/* Voile sombre + pilule "Découvrir ce projet" au hover. */}
+                        <div className="absolute inset-0 bg-night/0 group-hover:bg-night/55 transition-colors duration-500 ease-out flex items-center justify-center pointer-events-none z-[2]">
+                          <span className="inline-flex items-center gap-3 px-6 py-3.5 rounded-full bg-ivory text-night shadow-[0_10px_30px_-10px_rgba(0,0,0,0.4)] opacity-0 translate-y-3 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-out">
+                            <span className="text-[11px] uppercase tracking-[0.28em]" style={{ fontWeight: 700 }}>
+                              Découvrir ce projet
+                            </span>
+                            <ArrowUpRight className="w-4 h-4" />
+                          </span>
+                        </div>
                       </div>
                       <div className="p-8 md:p-10 flex flex-col justify-center">
                         <div className="flex items-center gap-3 mb-5">
@@ -285,7 +297,7 @@ export function Projects() {
                         <p className="mb-7 leading-[1.8] text-text-muted">
                           {project.description}
                         </p>
-                        <div className="flex flex-wrap gap-2 mb-8">
+                        <div className="flex flex-wrap gap-2">
                           {project.tags.map((tag, i) => (
                             <span
                               key={i}
@@ -296,15 +308,6 @@ export function Projects() {
                             </span>
                           ))}
                         </div>
-                        <button
-                          onClick={() => openProject(project)}
-                          className="inline-flex items-center gap-2.5 self-start group/btn transition-all duration-300 text-night hover:text-accent-blue"
-                        >
-                          <span className="tracking-wide" style={{ fontWeight: 600 }}>Voir le projet</span>
-                          <span className="relative w-7 h-7 rounded-full border border-accent/30 group-hover/btn:bg-accent group-hover/btn:border-accent flex items-center justify-center transition-all duration-300">
-                            <ExternalLink className="w-3.5 h-3.5 text-accent group-hover/btn:text-night transition-colors duration-300" />
-                          </span>
-                        </button>
                       </div>
                     </div>
                   </div>

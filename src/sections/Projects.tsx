@@ -43,14 +43,10 @@ function ProjectRow({
   const tagBorder = dark
     ? 'border-accent/25 text-accent bg-accent/[0.08]'
     : 'border-accent-blue/30 text-accent-blue bg-accent-blue/[0.05]'
-  const ctaText = dark ? 'text-accent group-hover:text-ivory' : 'text-accent-blue group-hover:text-night'
   // Ombre en deux couches discrètes.
   const imageShadow = dark
     ? 'drop-shadow-[0_8px_22px_rgba(0,0,0,0.4)] drop-shadow-[0_26px_50px_rgba(0,0,0,0.35)]'
     : 'drop-shadow-[0_6px_18px_rgba(120,80,15,0.16)] drop-shadow-[0_22px_44px_rgba(120,80,15,0.14)]'
-  const ctaBorder = dark
-    ? 'border-accent/40 group-hover:border-accent group-hover:bg-accent'
-    : 'border-accent-blue/40 group-hover:border-accent-blue group-hover:bg-accent-blue'
 
   return (
     <motion.article
@@ -118,7 +114,7 @@ function ProjectRow({
 
           <p className={`leading-[1.75] mb-7 ${descColor}`}>{project.description}</p>
 
-          <div className="flex flex-wrap gap-2 mb-8">
+          <div className="flex flex-wrap gap-2">
             {project.tags.slice(0, 4).map((tag) => (
               <span
                 key={tag}
@@ -129,17 +125,6 @@ function ProjectRow({
               </span>
             ))}
           </div>
-
-          <span className={`inline-flex items-center gap-3 transition-colors duration-300 ${ctaText}`}>
-            <span className="text-[12px] uppercase tracking-[0.3em]" style={{ fontWeight: 700 }}>
-              Voir le projet
-            </span>
-            <span
-              className={`relative w-9 h-9 rounded-full border flex items-center justify-center transition-all duration-300 ${ctaBorder}`}
-            >
-              <ExternalLink className="w-3.5 h-3.5 transition-colors duration-300" />
-            </span>
-          </span>
         </div>
       </div>
     </motion.article>

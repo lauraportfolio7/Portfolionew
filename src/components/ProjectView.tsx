@@ -899,8 +899,8 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
                     </h3>
                     <ul className="space-y-3">
                       {project.proofs.map((proof, i) => (
-                        <li key={i} className="flex items-center gap-3 text-text-muted">
-                          <div className="w-1.5 h-1.5 rounded-full bg-accent shrink-0" />
+                        <li key={i} className="flex items-start gap-3 text-text-muted">
+                          <div className="w-1.5 h-1.5 rounded-full bg-accent shrink-0 mt-[0.6rem]" />
                           <span className="leading-relaxed">{proof}</span>
                         </li>
                       ))}

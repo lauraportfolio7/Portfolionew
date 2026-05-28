@@ -221,6 +221,43 @@ function DirectorChairSVG({ color = '#0A0A0A' }: { color?: string }) {
   )
 }
 
+/* Sphère de mémoire — translucide, lumineuse, reprend les boules de souvenirs
+   de Vice Versa qui changent de couleur selon l'émotion dominante. */
+function MemoryOrb({
+  color,
+  secondary,
+  className,
+}: {
+  color: string
+  secondary: string
+  className?: string
+}) {
+  return (
+    <div
+      className={`absolute rounded-full pointer-events-none ${className ?? ''}`}
+      style={{
+        background: `radial-gradient(circle at 32% 28%, rgba(255,255,255,0.95) 0%, ${color} 22%, ${secondary} 65%, ${secondary}00 100%)`,
+        boxShadow: `0 0 60px 5px ${color}55, inset -6px -8px 24px ${secondary}66`,
+      }}
+      aria-hidden="true"
+    >
+      {/* Reflet lustré façon bulle de verre. */}
+      <div
+        className="absolute rounded-full"
+        style={{
+          top: '15%',
+          left: '20%',
+          width: '32%',
+          height: '22%',
+          background:
+            'radial-gradient(ellipse at center, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0) 70%)',
+          transform: 'rotate(-25deg)',
+        }}
+      />
+    </div>
+  )
+}
+
 /* Motif réseau — réplique du graphisme de la couverture du guide investisseur. */
 function GuideNetworkSVG({ stroke = '#7CC4D6', dot = '#7CC4D6' }: { stroke?: string; dot?: string }) {
   const points: [number, number][] = [
@@ -298,30 +335,40 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
   const isGuideTheme = project.id === 'guide-investisseur'
   // Identité visuelle reprise de l'affiche La Réunion à l'écran (ciel étoilé + terracotta).
   const isCinemaTheme = project.id === 'reunion-ecran'
-  const isDarkTheme = isGuideTheme || isCinemaTheme
+  // Identité visuelle reprise de l'univers Vice Versa (cosmos onirique + sphères de mémoire).
+  const isViceVersaTheme = project.id === 'disney-100-ans'
+  const isDarkTheme = isGuideTheme || isCinemaTheme || isViceVersaTheme
   // Pour l'infographie, on n'affiche pas le visuel dans le hero (le SlideViewer du PDF suffit).
   const hideHeroImage = project.id === 'infographie-publicite-contextuelle'
   const heroBackground = isGuideTheme
     ? 'linear-gradient(135deg, #0B1A44 0%, #122862 55%, #1C3A8E 100%)'
     : isCinemaTheme
       ? 'linear-gradient(180deg, #050818 0%, #0E1834 22%, #2E1F30 48%, #5A2E22 70%, #8E4F2A 88%, #B26340 100%)'
-      : 'linear-gradient(135deg, #FFFCF4 0%, #FBF4DD 50%, #F5E5C0 100%)'
-  // Accent texte selon thème (cyan pour le guide, crème chaud pour le ciné, doré sinon).
+      : isViceVersaTheme
+        ? 'linear-gradient(180deg, #0F1842 0%, #1F2768 25%, #3A2B72 50%, #6E3580 70%, #B8568C 88%, #F0A26E 100%)'
+        : 'linear-gradient(135deg, #FFFCF4 0%, #FBF4DD 50%, #F5E5C0 100%)'
+  // Accent texte selon thème (cyan pour le guide, crème chaud pour le ciné, jaune Joie pour Vice Versa, doré sinon).
   const heroAccentText = isGuideTheme
     ? 'text-[#9DD8E6]'
     : isCinemaTheme
       ? 'text-[#FFD8A0]'
-      : 'text-accent'
+      : isViceVersaTheme
+        ? 'text-[#FFD05A]'
+        : 'text-accent'
   const heroAccentBlueText = isGuideTheme
     ? 'text-[#9DD8E6]'
     : isCinemaTheme
       ? 'text-[#FFD8A0]'
-      : 'text-accent-blue'
+      : isViceVersaTheme
+        ? 'text-[#FFD05A]'
+        : 'text-accent-blue'
   const heroAccentBorder = isGuideTheme
     ? 'border-[#7CC4D6]/40'
     : isCinemaTheme
       ? 'border-[#FFD8A0]/40'
-      : 'border-accent/30'
+      : isViceVersaTheme
+        ? 'border-[#FFD05A]/40'
+        : 'border-accent/30'
 
   return (
     <AnimatePresence>
@@ -533,6 +580,72 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
                   <div className="bg-[#C77A48] px-7 py-2.5 rounded-bl-2xl shadow-md">
                     <span className="text-[11px] uppercase tracking-[0.32em] text-ivory" style={{ fontWeight: 700 }}>
                       29 sept. — 4 oct. 2025
+                    </span>
+                  </div>
+                </div>
+              </>
+            )}
+
+            {isViceVersaTheme && (
+              <>
+                {/* Champ d'étoiles léger dans le ciel cosmique. */}
+                <div className="absolute inset-x-0 top-0 h-3/5 opacity-80 pointer-events-none" aria-hidden="true">
+                  <StarFieldSVG />
+                </div>
+
+                {/* Sphères de mémoire flottantes — une par émotion Vice Versa. */}
+                {/* Joie — jaune solaire, en haut à droite, la plus grande. */}
+                <MemoryOrb
+                  color="#FFD05A"
+                  secondary="#E8A82E"
+                  className="top-8 right-10 w-32 h-32 md:w-44 md:h-44 opacity-90"
+                />
+                {/* Tristesse — bleu doux, milieu gauche. */}
+                <MemoryOrb
+                  color="#6FA8E0"
+                  secondary="#3B6AA8"
+                  className="top-1/3 left-6 w-20 h-20 md:w-28 md:h-28 opacity-85"
+                />
+                {/* Peur — violet, en haut à gauche. */}
+                <MemoryOrb
+                  color="#A98BD8"
+                  secondary="#6C4FA8"
+                  className="top-10 left-1/4 w-14 h-14 md:w-20 md:h-20 opacity-80"
+                />
+                {/* Dégoût — vert tendre, milieu droite. */}
+                <MemoryOrb
+                  color="#92D67E"
+                  secondary="#5DA64A"
+                  className="top-1/2 right-1/3 w-12 h-12 md:w-16 md:h-16 opacity-75"
+                />
+                {/* Anxiété — orange, bas droite. */}
+                <MemoryOrb
+                  color="#F3A65E"
+                  secondary="#C26F2E"
+                  className="bottom-12 right-16 w-16 h-16 md:w-24 md:h-24 opacity-85"
+                />
+                {/* Colère — rouge, bas gauche, plus discrète. */}
+                <MemoryOrb
+                  color="#E96250"
+                  secondary="#B33C2C"
+                  className="bottom-6 left-12 w-12 h-12 md:w-16 md:h-16 opacity-80"
+                />
+
+                {/* Halo aurore en bas pour la transition coral → orange. */}
+                <div
+                  className="absolute -bottom-24 inset-x-0 h-64 opacity-50 pointer-events-none mix-blend-screen"
+                  style={{
+                    background:
+                      'radial-gradient(ellipse 80% 100% at 50% 100%, #FFB37A 0%, #E86A8E 35%, transparent 70%)',
+                  }}
+                  aria-hidden="true"
+                />
+
+                {/* Étiquette "Disney 100" en haut à droite. */}
+                <div className="absolute top-0 right-0 hidden md:flex items-center pointer-events-none z-[3]">
+                  <div className="bg-[#FFD05A] px-7 py-2.5 rounded-bl-2xl shadow-md">
+                    <span className="text-[11px] uppercase tracking-[0.32em] text-[#1F2768]" style={{ fontWeight: 800 }}>
+                      Disney 100 · Grand Rex
                     </span>
                   </div>
                 </div>

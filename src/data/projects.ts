@@ -218,7 +218,7 @@ export const featuredProjects: Project[] = [
       'Panel qualitatif 18-22 ans : tous ont vu Vice Versa 1/2 — personnages marquants : Anxiété, Dégoût, Joie, Embarras',
     ],
     impact: 'Une campagne qui ne se limite pas à promouvoir un film : elle permet aux jeunes adultes de mieux comprendre et exprimer leurs émotions, à travers une expérience immersive, bienveillante et utile. La performance sera mesurée via le taux de remplissage de la salle, les scans du QR code, les performances réseaux sociaux (Instagram Insights, TikTok Analytics) et les retours qualitatifs recueillis dans la safe place et en ligne.',
-    gallery: [disneyCarte],
+    gallery: [],
   },
   {
     id: 'guide-investisseur',

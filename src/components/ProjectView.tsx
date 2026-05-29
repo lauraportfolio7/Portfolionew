@@ -221,6 +221,95 @@ function DirectorChairSVG({ color = '#0A0A0A' }: { color?: string }) {
   )
 }
 
+/* Mini-livre auto-animé qui tourne ses pages en boucle — utilisé dans le hero
+   du guide investisseur pour faire vivre la couverture comme un livre ouvert. */
+function AutoFlipPage({
+  pages,
+  interval = 3800,
+  duration = 1350,
+  className,
+  imgClassName,
+}: {
+  pages: string[]
+  interval?: number
+  duration?: number
+  className?: string
+  imgClassName?: string
+}) {
+  const [current, setCurrent] = useState(0)
+  const [flipping, setFlipping] = useState(false)
+  const nextIdx = (current + 1) % Math.max(pages.length, 1)
+
+  useEffect(() => {
+    if (flipping || pages.length < 2) return
+    const id = setTimeout(() => setFlipping(true), interval)
+    return () => clearTimeout(id)
+  }, [flipping, current, interval, pages.length])
+
+  if (pages.length === 0) return null
+
+  return (
+    <div className={`relative ${className ?? ''}`} style={{ perspective: 2000 }}>
+      {/* Page courante au repos. */}
+      <img
+        src={pages[current]}
+        alt=""
+        draggable={false}
+        className={`block w-full h-full select-none ${imgClassName ?? ''}`}
+      />
+
+      {/* Page en train de tourner — montée uniquement pendant le flip. */}
+      <AnimatePresence>
+        {flipping && (
+          <motion.div
+            key={`flip-${current}`}
+            className="absolute inset-0"
+            initial={{ rotateY: 0 }}
+            animate={{ rotateY: -180 }}
+            transition={{ duration: duration / 1000, ease: [0.45, 0, 0.55, 1] }}
+            onAnimationComplete={() => {
+              setCurrent((c) => (c + 1) % pages.length)
+              setFlipping(false)
+            }}
+            style={{
+              transformOrigin: 'left center',
+              transformStyle: 'preserve-3d',
+            }}
+          >
+            <img
+              src={pages[current]}
+              alt=""
+              draggable={false}
+              className={`absolute inset-0 w-full h-full select-none ${imgClassName ?? ''}`}
+              style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' as any }}
+            />
+            <img
+              src={pages[nextIdx]}
+              alt=""
+              draggable={false}
+              className={`absolute inset-0 w-full h-full select-none ${imgClassName ?? ''}`}
+              style={{
+                backfaceVisibility: 'hidden',
+                WebkitBackfaceVisibility: 'hidden' as any,
+                transform: 'rotateY(180deg)',
+              }}
+            />
+            {/* Ombre douce sur le pli pendant la rotation. */}
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                background:
+                  'linear-gradient(to left, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0) 30%, rgba(255,255,255,0.18) 70%, rgba(255,255,255,0) 100%)',
+                opacity: 0.6,
+              }}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  )
+}
+
 /* Sphère de mémoire — translucide, lumineuse, reprend les boules de souvenirs
    de Vice Versa qui changent de couleur selon l'émotion dominante. */
 function MemoryOrb({
@@ -664,16 +753,32 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
             {!hideHeroImage && (
               <div className="relative overflow-hidden">
                 <div className="aspect-[3/4] md:aspect-auto md:min-h-[440px] flex items-center justify-center p-6 h-full">
-                  <Picture
-                    src={project.image}
-                    alt={project.title}
-                    imgClassName={`w-full h-full object-contain relative z-[2] ${
-                      isDarkTheme
-                        ? 'drop-shadow-[0_18px_40px_rgba(0,0,0,0.55)]'
-                        : 'drop-shadow-[0_10px_28px_rgba(176,116,16,0.20)]'
-                    }`}
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                  />
+                  {isGuideTheme ? (
+                    /* Guide investisseur — la couverture et les pages-clés tournent en boucle
+                       dans le hero pour évoquer un livre que l'on feuillette. */
+                    <AutoFlipPage
+                      pages={[
+                        typeof project.image === 'string' ? project.image : ((project.image as any).src ?? project.image),
+                        ...project.gallery.map((item) => {
+                          const src = typeof item === 'string' ? item : item.image
+                          return typeof src === 'string' ? src : ((src as any).src ?? src)
+                        }),
+                      ]}
+                      className="relative z-[2] max-w-full max-h-full drop-shadow-[0_18px_40px_rgba(0,0,0,0.55)]"
+                      imgClassName="object-contain rounded-sm"
+                    />
+                  ) : (
+                    <Picture
+                      src={project.image}
+                      alt={project.title}
+                      imgClassName={`w-full h-full object-contain relative z-[2] ${
+                        isDarkTheme
+                          ? 'drop-shadow-[0_18px_40px_rgba(0,0,0,0.55)]'
+                          : 'drop-shadow-[0_10px_28px_rgba(176,116,16,0.20)]'
+                      }`}
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                    />
+                  )}
                 </div>
               </div>
             )}

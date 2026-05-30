@@ -37,6 +37,9 @@ import type {
   PerformanceMetric,
   Moodboard,
   MoodboardAxis,
+  VisualIdentity,
+  PosterProposal,
+  FontChoice,
 } from '@/types'
 import { SlideViewer } from '@/components/SlideViewer'
 import { FlipbookViewer } from '@/components/FlipbookViewer'
@@ -927,6 +930,258 @@ function MoodboardSection({ data, onZoom }: { data: Moodboard; onZoom: (src: str
   )
 }
 
+/* Carte d'une proposition d'affiche (piste graphique). */
+function PosterCard({
+  proposal,
+  badge,
+  onZoom,
+  featured,
+}: {
+  proposal: PosterProposal
+  badge: string
+  onZoom: (src: string) => void
+  featured?: boolean
+}) {
+  return (
+    <figure className="m-0">
+      <button
+        type="button"
+        onClick={() => onZoom(proposal.src)}
+        data-cursor="hover"
+        className={`group/p relative block w-full rounded-2xl overflow-hidden cursor-pointer transition-shadow duration-500 ${
+          proposal.selected
+            ? 'ring-2 ring-accent shadow-[0_20px_50px_-18px_rgba(176,116,16,0.5)]'
+            : 'border border-night/10 shadow-[0_10px_30px_-16px_rgba(0,0,0,0.35)] hover:shadow-[0_20px_44px_-18px_rgba(0,0,0,0.4)]'
+        }`}
+        aria-label={proposal.title}
+      >
+        {proposal.selected && (
+          <span className="absolute top-3 left-3 z-[2] inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-accent text-night shadow-md">
+            <CheckCircle2 className="w-3.5 h-3.5" />
+            <span className="text-[10px] uppercase tracking-[0.18em]" style={{ fontWeight: 800 }}>
+              {badge}
+            </span>
+          </span>
+        )}
+        <Picture
+          src={proposal.src}
+          alt={proposal.title}
+          imgClassName={`block w-full h-auto object-contain transition-transform duration-700 ease-out group-hover/p:scale-[1.04] ${
+            featured ? 'max-h-[600px]' : ''
+          }`}
+          sizes={featured ? '(max-width: 768px) 90vw, 38vw' : '(max-width: 640px) 90vw, 30vw'}
+        />
+      </button>
+      <figcaption className="mt-3">
+        {proposal.step && (
+          <span
+            className={`block font-mono text-[10px] uppercase tracking-[0.24em] mb-1 ${
+              proposal.selected ? 'text-accent-blue' : 'text-text-muted'
+            }`}
+            style={{ fontWeight: 700 }}
+          >
+            {proposal.step}
+          </span>
+        )}
+        <span className="block text-night leading-snug" style={{ fontFamily: 'var(--font-serif)', fontWeight: 700 }}>
+          {proposal.title}
+        </span>
+        {proposal.note && <span className="block mt-1.5 text-sm text-text-muted leading-relaxed">{proposal.note}</span>}
+      </figcaption>
+    </figure>
+  )
+}
+
+/* Carte d'aperçu d'une police de la charte finale. */
+function FontPreviewCard({ font }: { font: FontChoice }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+      className="rounded-2xl border border-night/10 bg-white overflow-hidden shadow-[0_8px_30px_-18px_rgba(0,0,0,0.3)]"
+    >
+      {/* Aperçu typographique */}
+      <div className="px-6 py-8 md:py-10 bg-gradient-to-br from-ivory-warm/70 to-ivory flex items-center justify-center min-h-[120px]">
+        <span
+          className="text-night text-center leading-tight"
+          style={{
+            fontFamily: `'${font.fontFamily}', serif`,
+            fontWeight: 600,
+            fontSize: 'clamp(1.9rem, 4vw, 2.8rem)',
+            textTransform: font.uppercase ? 'uppercase' : 'none',
+            letterSpacing: font.uppercase ? '0.04em' : '0',
+          }}
+        >
+          {font.sample}
+        </span>
+      </div>
+      {/* Méta */}
+      <div className="px-6 py-5 border-t border-night/8">
+        <div className="flex items-center justify-between gap-3 mb-2.5 flex-wrap">
+          <span className="text-[10px] uppercase tracking-[0.26em] text-text-muted" style={{ fontWeight: 700 }}>
+            {font.usage}
+          </span>
+          <span className="text-[11px] px-2.5 py-1 rounded-full bg-accent/10 text-accent-blue border border-accent/20" style={{ fontWeight: 600 }}>
+            {font.font}
+          </span>
+        </div>
+        <p className="text-sm text-text-muted leading-relaxed">{font.description}</p>
+      </div>
+    </motion.div>
+  )
+}
+
+/* Construction de l'identité visuelle — étude de cas : pistes, typographies, DA. */
+function IdentitySection({ data, onZoom }: { data: VisualIdentity; onZoom: (src: string) => void }) {
+  const explorations = data.proposals.filter((p) => !p.selected)
+  const retained = data.proposals.find((p) => p.selected)
+
+  return (
+    <motion.section
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.08 }}
+      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+      className="relative overflow-hidden rounded-3xl border border-night/10 bg-white shadow-[0_4px_40px_-16px_rgba(176,116,16,0.18)]"
+      aria-label={data.title}
+    >
+      <div className="p-6 md:p-12">
+        {/* En-tête */}
+        <div className="mb-10 md:mb-12">
+          {data.label && (
+            <span className="block text-[10px] uppercase tracking-[0.3em] text-accent-blue mb-4" style={{ fontWeight: 700 }}>
+              {data.label}
+            </span>
+          )}
+          <h3
+            className="text-3xl md:text-4xl text-night leading-[1.1] mb-4"
+            style={{ fontFamily: 'var(--font-serif)', fontWeight: 700, letterSpacing: '-0.015em' }}
+          >
+            {data.title}
+          </h3>
+          <p className="text-text-muted leading-[1.8] max-w-3xl">{data.intro}</p>
+        </div>
+
+        {/* Sous-section 1 — Recherches et explorations */}
+        <div className="mb-12 md:mb-16">
+          <div className="flex items-center gap-3 mb-6">
+            <span className="font-mono text-sm tabular-nums text-accent" style={{ fontWeight: 700 }}>01</span>
+            <span className="w-10 h-px bg-accent/40" aria-hidden="true" />
+            <h4 className="text-xl md:text-2xl text-night" style={{ fontFamily: 'var(--font-serif)', fontWeight: 700 }}>
+              {data.proposalsTitle}
+            </h4>
+          </div>
+
+          {/* Pistes explorées */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 md:gap-6">
+            {explorations.map((p, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.55, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <PosterCard proposal={p} badge={data.selectedBadge} onZoom={onZoom} />
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Proposition retenue — mise en avant */}
+          {retained && (
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.15 }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              className="mt-6 md:mt-8 rounded-2xl p-5 md:p-8 border border-accent/25"
+              style={{ background: 'linear-gradient(135deg, #FBF4DD 0%, #F5E5C0 100%)' }}
+            >
+              <div className="grid md:grid-cols-2 gap-6 md:gap-10 items-center">
+                <PosterCard proposal={retained} badge={data.selectedBadge} onZoom={onZoom} featured />
+                <div>
+                  <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent text-night mb-4">
+                    <CheckCircle2 className="w-3.5 h-3.5" />
+                    <span className="text-[10px] uppercase tracking-[0.2em]" style={{ fontWeight: 800 }}>
+                      {data.selectedBadge}
+                    </span>
+                  </span>
+                  <h5
+                    className="text-2xl md:text-3xl text-night mb-3 leading-tight"
+                    style={{ fontFamily: 'var(--font-serif)', fontWeight: 700 }}
+                  >
+                    {retained.title}
+                  </h5>
+                  {retained.note && <p className="text-text-muted leading-[1.8]">{retained.note}</p>}
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Analyse de la galerie */}
+          <div className="mt-7 md:mt-8 flex gap-4 max-w-3xl">
+            <Quote className="w-7 h-7 text-accent/50 shrink-0" />
+            <p className="text-text-muted leading-[1.85] italic" style={{ fontFamily: 'var(--font-serif)' }}>
+              {data.galleryAnalysis}
+            </p>
+          </div>
+        </div>
+
+        {/* Sous-section 2 — Choix typographiques */}
+        <div className="mb-12 md:mb-16 pt-10 md:pt-12 border-t border-night/8">
+          <div className="flex items-center gap-3 mb-6">
+            <span className="font-mono text-sm tabular-nums text-accent" style={{ fontWeight: 700 }}>02</span>
+            <span className="w-10 h-px bg-accent/40" aria-hidden="true" />
+            <h4 className="text-xl md:text-2xl text-night" style={{ fontFamily: 'var(--font-serif)', fontWeight: 700 }}>
+              {data.typographyTitle}
+            </h4>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
+            {data.fonts.map((f, i) => (
+              <FontPreviewCard key={i} font={f} />
+            ))}
+          </div>
+        </div>
+
+        {/* Sous-section 3 — Direction artistique retenue */}
+        <div className="pt-10 md:pt-12 border-t border-night/8">
+          <div className="flex items-center gap-3 mb-6">
+            <span className="font-mono text-sm tabular-nums text-accent" style={{ fontWeight: 700 }}>03</span>
+            <span className="w-10 h-px bg-accent/40" aria-hidden="true" />
+            <h4 className="text-xl md:text-2xl text-night" style={{ fontFamily: 'var(--font-serif)', fontWeight: 700 }}>
+              {data.daTitle}
+            </h4>
+          </div>
+          <div
+            className="relative overflow-hidden rounded-2xl p-7 md:p-9 border border-accent/20"
+            style={{ background: 'linear-gradient(135deg, #FFFCF4 0%, #FBF4DD 100%)' }}
+          >
+            <Sparkles className="w-7 h-7 text-accent mb-4" />
+            <p className="text-lg md:text-xl text-night/85 leading-[1.85]" style={{ fontFamily: 'var(--font-serif)' }}>
+              {data.daText}
+            </p>
+            {data.daTags && data.daTags.length > 0 && (
+              <div className="flex flex-wrap gap-2.5 mt-6">
+                {data.daTags.map((t, i) => (
+                  <span
+                    key={i}
+                    className="text-[11px] uppercase tracking-[0.18em] px-3.5 py-1.5 rounded-full bg-white/70 text-accent-blue border border-accent/20"
+                    style={{ fontWeight: 600 }}
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </motion.section>
+  )
+}
+
 export function ProjectView({ project, onBack }: ProjectViewProps) {
   const [lightboxImage, setLightboxImage] = useState<string | null>(null)
   const [convLightboxOpen, setConvLightboxOpen] = useState(false)
@@ -1603,6 +1858,11 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
             {/* Mood board — veille créative */}
             {project.moodboard && (
               <MoodboardSection data={project.moodboard} onZoom={setLightboxImage} />
+            )}
+
+            {/* Construction de l'identité visuelle — étude de cas créative */}
+            {project.visualIdentity && (
+              <IdentitySection data={project.visualIdentity} onZoom={setLightboxImage} />
             )}
 
             {((typeof project.target === 'string' && project.target) ||

@@ -28,6 +28,9 @@ import veillePlaineSables from '@/assets/reunion-ecran/veille/plaine-des-sables.
 import veilleChaise from '@/assets/reunion-ecran/veille/chaise-realisateur.jpg'
 import veilleClap from '@/assets/reunion-ecran/veille/clap-cinema.jpg'
 import veilleProjecteur from '@/assets/reunion-ecran/veille/projecteur-cinema.avif'
+import afficheProp1 from '@/assets/reunion-ecran/affiches/proposition-1.png'
+import afficheProp2 from '@/assets/reunion-ecran/affiches/proposition-2.png'
+import afficheProp3 from '@/assets/reunion-ecran/affiches/proposition-3.png'
 
 // --- Images Pantoufle ---
 import pantoufleImage from '@/assets/pantoufle/affiche.jpg'
@@ -245,6 +248,84 @@ export const featuredProjects: Project[] = [
         { name: 'Sable de la plaine', color: '#C8A36A' },
         { name: 'Brume ivoire', color: '#F4ECDA' },
       ],
+    },
+    visualIdentity: {
+      label: 'Activité 2 · Création de contenus et de solutions de communication',
+      title: 'Construction de l\'identité visuelle',
+      intro:
+        'Avant la réalisation des supports définitifs, plusieurs pistes créatives ont été développées afin d\'explorer différentes directions graphiques. Ces propositions ont été présentées à la direction dans le cadre du processus de validation de l\'identité visuelle de l\'événement. Cette démarche a permis d\'affiner progressivement les choix graphiques et de retenir la proposition la plus pertinente au regard des objectifs de communication.',
+      proposalsTitle: 'Recherches et explorations graphiques',
+      proposals: [
+        {
+          src: afficheProp1,
+          step: 'Piste 01',
+          title: 'Littoral & viseur caméra',
+          note: 'La côte réunionnaise cadrée comme un plan de tournage : viseur, mention « REC » et timecode.',
+        },
+        {
+          src: afficheProp2,
+          step: 'Piste 02',
+          title: 'Plaine des Cafres — « Auvergne »',
+          note: 'La Réunion en doublure de l\'Auvergne : un décor verdoyant et vallonné.',
+        },
+        {
+          src: afficheProp3,
+          step: 'Piste 03',
+          title: 'Savane de Saint-Paul — « Afrique du Sud »',
+          note: 'La Réunion en doublure de l\'Afrique du Sud : une savane dorée et sauvage.',
+        },
+        {
+          src: veilleAfficheFinale,
+          step: 'Version finale',
+          title: 'Plaine des Sables — « Mars »',
+          note: 'Le ciel austral et le décor lunaire : la piste la plus spectaculaire et cinématographique, retenue par la direction.',
+          selected: true,
+        },
+      ],
+      selectedBadge: 'Version retenue',
+      galleryAnalysis:
+        'Plusieurs concepts graphiques ont été proposés afin d\'explorer différentes manières de représenter l\'univers du cinéma, la valorisation du territoire réunionnais et les ambitions de l\'événement. Ces explorations ont permis d\'identifier les éléments les plus pertinents avant d\'aboutir à l\'identité visuelle finale.',
+      typographyTitle: 'Choix typographiques',
+      fonts: [
+        {
+          usage: 'La Réunion',
+          font: 'League Spartan',
+          fontFamily: 'League Spartan',
+          sample: 'La Réunion',
+          uppercase: true,
+          description:
+            'Typographie moderne, impactante et institutionnelle permettant de renforcer la visibilité et la lisibilité du nom de l\'événement.',
+        },
+        {
+          usage: 'À l\'Écran',
+          font: 'Cinzel',
+          fontFamily: 'Cinzel',
+          sample: 'À l\'Écran',
+          description:
+            'Typographie élégante inspirée des univers culturels et cinématographiques, apportant du caractère et une dimension premium à l\'identité visuelle.',
+        },
+        {
+          usage: 'Slogan',
+          font: 'Oswald',
+          fontFamily: 'Oswald',
+          sample: 'Une île de talents',
+          uppercase: true,
+          description:
+            'Typographie issue de la charte graphique de La Réunion Développement, garantissant la cohérence avec l\'identité institutionnelle de l\'organisme.',
+        },
+        {
+          usage: 'Dates & informations pratiques',
+          font: 'Roboto Condensed',
+          fontFamily: 'Roboto Condensed',
+          sample: '29 sept. — 4 oct. 2025',
+          description:
+            'Typographie fonctionnelle favorisant la lisibilité et la hiérarchisation des informations pratiques.',
+        },
+      ],
+      daTitle: 'Direction artistique retenue',
+      daText:
+        'L\'identité visuelle retenue repose sur la rencontre entre l\'univers du cinéma et les paysages emblématiques de La Réunion. Le fauteuil réalisateur, le clap de tournage et le faisceau lumineux évoquent directement l\'industrie audiovisuelle tandis que la Plaine des Sables affirme l\'ancrage territorial de l\'événement. L\'ensemble vise à valoriser les talents, les tournages et le potentiel créatif du territoire réunionnais tout en renforçant l\'attractivité du territoire auprès des professionnels du secteur.',
+      daTags: ['Fauteuil réalisateur', 'Clap de tournage', 'Faisceau lumineux', 'Plaine des Sables'],
     },
     title: 'La Réunion à l\'Écran',
     description: 'Communication événementielle pour valoriser La Réunion comme territoire de tournage et de création cinématographique',

@@ -103,6 +103,39 @@ export interface Moodboard {
   palette: MoodboardSwatch[]
 }
 
+/* Construction de l'identité visuelle — pistes graphiques, typographies, DA. */
+export interface PosterProposal {
+  src: string
+  step?: string
+  title: string
+  note?: string
+  selected?: boolean
+}
+
+export interface FontChoice {
+  usage: string
+  font: string
+  fontFamily: string
+  sample: string
+  description: string
+  uppercase?: boolean
+}
+
+export interface VisualIdentity {
+  label?: string
+  title: string
+  intro: string
+  proposalsTitle: string
+  proposals: PosterProposal[]
+  selectedBadge: string
+  galleryAnalysis: string
+  typographyTitle: string
+  fonts: FontChoice[]
+  daTitle: string
+  daText: string
+  daTags?: string[]
+}
+
 export interface Project {
   id: string
   title: string
@@ -150,6 +183,7 @@ export interface Project {
   results?: BtsResult[]
   performances?: PerformanceSection[]
   moodboard?: Moodboard
+  visualIdentity?: VisualIdentity
 }
 
 export type MilestoneType = 'formation' | 'experience' | 'diplome' | 'objectif'

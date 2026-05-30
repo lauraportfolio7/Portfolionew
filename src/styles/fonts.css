@@ -81,3 +81,41 @@
   font-style: normal;
   font-display: swap;
 }
+
+/* ============================================================ */
+/* Polices d'aperçu — section « Construction de l'identité       */
+/* visuelle » de La Réunion à l'Écran (typographies de la charte */
+/* finale de l'événement, utilisées pour les cartes d'aperçu).   */
+/* ============================================================ */
+
+@font-face {
+  font-family: 'League Spartan';
+  src: url('/fonts/league-spartan-latin-700.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Cinzel';
+  src: url('/fonts/cinzel-latin-600.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Oswald';
+  src: url('/fonts/oswald-latin-500.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Roboto Condensed';
+  src: url('/fonts/roboto-condensed-latin-500.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}

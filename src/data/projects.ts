@@ -20,6 +20,7 @@ import convScreen2 from '@/assets/reunion-ecran/conv-suivi-2.jpg'
 import convScreen3 from '@/assets/reunion-ecran/conv-suivi-3.jpg'
 import convScreen4 from '@/assets/reunion-ecran/conv-suivi-4.jpg'
 import guideInvestCover from '@/assets/reunion-ecran/guide-livre/guide-p1.png'
+import performanceLinkedin from '@/assets/reunion-ecran/performance-linkedin.png'
 
 // --- Images Pantoufle ---
 import pantoufleImage from '@/assets/pantoufle/affiche.jpg'
@@ -134,6 +135,27 @@ export const featuredProjects: Project[] = [
       { label: 'Taux d\'engagement', value: 'jusqu\'à 30 %' },
       { label: 'Inscrits / présents', value: '112 / 77 %' },
     ],
+    performance: {
+      label: 'Étude de performance',
+      title: 'Performance du post de lancement LinkedIn',
+      intro:
+        'Afin d\'évaluer l\'efficacité de la communication digitale mise en place pour l\'événement La Réunion à l\'Écran, les performances du post de lancement ont été analysées à partir des statistiques LinkedIn. Cette publication annonçait officiellement le démarrage de la 12ᵉ édition de l\'événement et constituait l\'un des principaux points de contact avec la cible professionnelle.',
+      image: performanceLinkedin,
+      imageCaption: 'Statistiques LinkedIn du post de lancement',
+      highlight: {
+        label: 'Taux d\'engagement',
+        value: '33,9 %',
+        note: 'L\'indicateur le plus fort de la campagne',
+      },
+      metrics: [
+        { label: 'Impressions', value: '2 192' },
+        { label: 'Clics', value: '674' },
+        { label: 'Réactions', value: '60' },
+        { label: 'Republications', value: '8' },
+      ],
+      analysis:
+        'Les résultats obtenus démontrent une forte visibilité auprès de la cible professionnelle. Le nombre élevé de clics montre un réel intérêt pour le contenu diffusé, tandis que le taux d\'engagement de 33,9 % témoigne d\'une bonne adéquation entre le message, le format de publication et les attentes du public visé.',
+    },
     title: 'La Réunion à l\'Écran',
     description: 'Communication événementielle pour valoriser La Réunion comme territoire de tournage et de création cinématographique',
     image: reunionImage,

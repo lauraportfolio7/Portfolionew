@@ -20,6 +20,10 @@ import {
   Wrench,
   CheckCircle2,
   BarChart3,
+  MousePointerClick,
+  Repeat2,
+  ThumbsUp,
+  Eye,
 } from 'lucide-react'
 import { useEffect, useState, useRef, useCallback } from 'react'
 import * as pdfjsLib from 'pdfjs-dist'
@@ -387,6 +391,25 @@ function GuideNetworkSVG({ stroke = '#7CC4D6', dot = '#7CC4D6' }: { stroke?: str
       ))}
     </svg>
   )
+}
+
+/* Glyphe LinkedIn (le set lucide installé ne l'exporte pas). */
+function LinkedinGlyph({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} fill="currentColor" aria-hidden="true">
+      <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.38-1.85 3.61 0 4.27 2.38 4.27 5.47v6.27zM5.34 7.43a2.07 2.07 0 1 1 0-4.14 2.07 2.07 0 0 1 0 4.14zM7.12 20.45H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.22.79 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z" />
+    </svg>
+  )
+}
+
+/* Icône d'un KPI selon son intitulé (étude de performance). */
+function getPerfIcon(label: string) {
+  const l = label.toLowerCase()
+  if (l.includes('impression')) return Eye
+  if (l.includes('clic')) return MousePointerClick
+  if (l.includes('réaction') || l.includes('reaction')) return ThumbsUp
+  if (l.includes('republi') || l.includes('partage')) return Repeat2
+  return BarChart3
 }
 
 export function ProjectView({ project, onBack }: ProjectViewProps) {
@@ -1262,6 +1285,156 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
                 </h3>
                 <p className="text-lg text-text-muted leading-relaxed">{project.impact}</p>
               </div>
+            )}
+
+            {/* Étude de performance — visuel + KPI + analyse */}
+            {project.performance && (
+              <motion.section
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.12 }}
+                transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                className="relative overflow-hidden rounded-3xl border border-night/10 bg-white shadow-[0_4px_40px_-16px_rgba(176,116,16,0.18)]"
+                aria-label={project.performance.title}
+              >
+                {/* Bandeau LinkedIn */}
+                <div className="flex items-center gap-3 px-6 md:px-8 py-4 border-b border-night/5 bg-ivory-warm/40">
+                  <span className="w-9 h-9 rounded-full bg-[#0A66C2] flex items-center justify-center shrink-0">
+                    <LinkedinGlyph className="w-[18px] h-[18px] text-white" />
+                  </span>
+                  {project.performance.label && (
+                    <span
+                      className="text-[10px] uppercase tracking-[0.32em] text-text-muted"
+                      style={{ fontWeight: 700 }}
+                    >
+                      {project.performance.label}
+                    </span>
+                  )}
+                  <span
+                    className="ml-auto text-[10px] uppercase tracking-[0.28em] text-[#0A66C2]"
+                    style={{ fontWeight: 700 }}
+                  >
+                    LinkedIn Analytics
+                  </span>
+                </div>
+
+                <div className="p-6 md:p-10">
+                  <h3
+                    className="text-2xl md:text-3xl mb-4 text-night leading-[1.15]"
+                    style={{ fontFamily: 'var(--font-serif)', fontWeight: 700, letterSpacing: '-0.015em' }}
+                  >
+                    {project.performance.title}
+                  </h3>
+                  <p className="text-text-muted leading-[1.8] max-w-3xl">{project.performance.intro}</p>
+
+                  <div className="grid lg:grid-cols-2 gap-8 mt-8 items-start">
+                    {/* Capture LinkedIn dans un cadre élégant */}
+                    <figure className="m-0">
+                      <button
+                        type="button"
+                        onClick={() => setLightboxImage(project.performance!.image)}
+                        className="group/img block w-full rounded-2xl overflow-hidden border border-night/10 bg-ivory-warm/40 shadow-[0_10px_36px_-14px_rgba(0,0,0,0.25)] cursor-pointer"
+                        aria-label="Agrandir la capture LinkedIn"
+                        data-cursor="hover"
+                      >
+                        <div className="relative flex items-center justify-center p-4 md:p-6">
+                          <Picture
+                            src={project.performance.image}
+                            alt={project.performance.imageCaption || project.performance.title}
+                            imgClassName="w-full h-auto max-h-[520px] object-contain rounded-lg"
+                            sizes="(max-width: 1024px) 90vw, 45vw"
+                          />
+                          <div className="absolute inset-0 bg-night/0 group-hover/img:bg-night/5 transition-colors duration-300 flex items-center justify-center">
+                            <span className="opacity-0 group-hover/img:opacity-100 transition-all duration-300 w-11 h-11 rounded-full bg-white/95 shadow-lg flex items-center justify-center">
+                              <Maximize2 className="w-5 h-5 text-night" />
+                            </span>
+                          </div>
+                        </div>
+                      </button>
+                      {project.performance.imageCaption && (
+                        <figcaption className="mt-3 text-center text-[11px] uppercase tracking-[0.22em] text-text-muted" style={{ fontWeight: 600 }}>
+                          {project.performance.imageCaption}
+                        </figcaption>
+                      )}
+                    </figure>
+
+                    {/* KPI : highlight + grille */}
+                    <div className="space-y-4">
+                      {project.performance.highlight && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 14 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          viewport={{ once: true, amount: 0.4 }}
+                          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                          className="relative overflow-hidden rounded-2xl p-6 md:p-7 border border-accent/30"
+                          style={{ background: 'linear-gradient(135deg, #FBF4DD 0%, #F5E5C0 100%)' }}
+                        >
+                          <div
+                            className="absolute -top-8 -right-8 w-32 h-32 rounded-full pointer-events-none"
+                            style={{ background: 'radial-gradient(circle, rgba(229,168,35,0.22) 0%, transparent 70%)' }}
+                            aria-hidden="true"
+                          />
+                          <div className="flex items-center gap-2 mb-3 relative z-[1]">
+                            <TrendingUp className="w-4 h-4 text-accent-blue" />
+                            <span className="text-[10px] uppercase tracking-[0.25em] text-accent-blue" style={{ fontWeight: 700 }}>
+                              {project.performance.highlight.label}
+                            </span>
+                          </div>
+                          <p
+                            className="text-5xl md:text-6xl text-night leading-none relative z-[1]"
+                            style={{ fontFamily: 'var(--font-serif)', fontWeight: 700, letterSpacing: '-0.03em' }}
+                          >
+                            {project.performance.highlight.value}
+                          </p>
+                          {project.performance.highlight.note && (
+                            <p className="mt-3 text-sm text-text-muted relative z-[1]">
+                              {project.performance.highlight.note}
+                            </p>
+                          )}
+                        </motion.div>
+                      )}
+
+                      <div className="grid grid-cols-2 gap-3">
+                        {project.performance.metrics.map((m, i) => {
+                          const Icon = getPerfIcon(m.label)
+                          return (
+                            <motion.div
+                              key={i}
+                              initial={{ opacity: 0, y: 12 }}
+                              whileInView={{ opacity: 1, y: 0 }}
+                              viewport={{ once: true, amount: 0.4 }}
+                              transition={{ duration: 0.45, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                              className="rounded-xl p-4 md:p-5 bg-ivory border border-night/8"
+                            >
+                              <div className="flex items-center gap-2 mb-2.5">
+                                <Icon className="w-4 h-4 text-accent" />
+                                <span className="text-[9px] md:text-[10px] uppercase tracking-[0.2em] text-text-muted" style={{ fontWeight: 700 }}>
+                                  {m.label}
+                                </span>
+                              </div>
+                              <p
+                                className="text-2xl md:text-3xl text-night leading-none"
+                                style={{ fontFamily: 'var(--font-serif)', fontWeight: 700, letterSpacing: '-0.02em' }}
+                              >
+                                {m.value}
+                              </p>
+                            </motion.div>
+                          )
+                        })}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Analyse */}
+                  <div className="mt-8 pt-7 border-t border-night/8">
+                    <h4 className="flex items-center gap-2 mb-3 text-night" style={{ fontWeight: 600 }}>
+                      <span className="w-1.5 h-5 bg-accent rounded-full" aria-hidden="true" />
+                      Analyse
+                    </h4>
+                    <p className="text-text-muted leading-[1.8] max-w-3xl">{project.performance.analysis}</p>
+                  </div>
+                </div>
+              </motion.section>
             )}
 
             {/* Gallery */}

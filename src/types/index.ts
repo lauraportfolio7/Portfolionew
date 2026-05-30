@@ -47,6 +47,29 @@ export interface BtsResult {
   change?: string
 }
 
+/* Étude de performance — visuel + KPI + analyse (ex. perf d'un post). */
+export interface PerformanceMetric {
+  label: string
+  value: string
+}
+
+export interface PerformanceHighlight {
+  label: string
+  value: string
+  note?: string
+}
+
+export interface PerformanceSection {
+  label?: string
+  title: string
+  intro: string
+  image: string
+  imageCaption?: string
+  highlight?: PerformanceHighlight
+  metrics: PerformanceMetric[]
+  analysis: string
+}
+
 export interface Project {
   id: string
   title: string
@@ -92,6 +115,7 @@ export interface Project {
   btsActivities?: number[]
   tools?: BtsTool[]
   results?: BtsResult[]
+  performance?: PerformanceSection
 }
 
 export type MilestoneType = 'formation' | 'experience' | 'diplome' | 'objectif'

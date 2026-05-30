@@ -63,9 +63,11 @@ export interface PerformanceSection {
   label?: string
   title: string
   intro: string
-  image: string
+  image?: string
   imageCaption?: string
-  highlight?: PerformanceHighlight
+  video?: string
+  videoCaption?: string
+  highlights: PerformanceHighlight[]
   metrics: PerformanceMetric[]
   analysis: string
 }
@@ -115,7 +117,7 @@ export interface Project {
   btsActivities?: number[]
   tools?: BtsTool[]
   results?: BtsResult[]
-  performance?: PerformanceSection
+  performances?: PerformanceSection[]
 }
 
 export type MilestoneType = 'formation' | 'experience' | 'diplome' | 'objectif'

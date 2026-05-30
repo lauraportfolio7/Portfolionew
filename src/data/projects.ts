@@ -21,6 +21,7 @@ import convScreen3 from '@/assets/reunion-ecran/conv-suivi-3.jpg'
 import convScreen4 from '@/assets/reunion-ecran/conv-suivi-4.jpg'
 import guideInvestCover from '@/assets/reunion-ecran/guide-livre/guide-p1.png'
 import performanceLinkedin from '@/assets/reunion-ecran/performance-linkedin.png'
+import performanceLinkedin2 from '@/assets/reunion-ecran/performance-linkedin-2.png'
 
 // --- Images Pantoufle ---
 import pantoufleImage from '@/assets/pantoufle/affiche.jpg'
@@ -135,27 +136,54 @@ export const featuredProjects: Project[] = [
       { label: 'Taux d\'engagement', value: 'jusqu\'à 30 %' },
       { label: 'Inscrits / présents', value: '112 / 77 %' },
     ],
-    performance: {
-      label: 'Étude de performance',
-      title: 'Performance du post de lancement LinkedIn',
-      intro:
-        'Afin d\'évaluer l\'efficacité de la communication digitale mise en place pour l\'événement La Réunion à l\'Écran, les performances du post de lancement ont été analysées à partir des statistiques LinkedIn. Cette publication annonçait officiellement le démarrage de la 12ᵉ édition de l\'événement et constituait l\'un des principaux points de contact avec la cible professionnelle.',
-      image: performanceLinkedin,
-      imageCaption: 'Statistiques LinkedIn du post de lancement',
-      highlight: {
-        label: 'Taux d\'engagement',
-        value: '33,9 %',
-        note: 'L\'indicateur le plus fort de la campagne',
+    performances: [
+      {
+        label: 'Étude de performance',
+        title: 'Performance du post de lancement LinkedIn',
+        intro:
+          'Afin d\'évaluer l\'efficacité de la communication digitale mise en place pour l\'événement La Réunion à l\'Écran, les performances du post de lancement ont été analysées à partir des statistiques LinkedIn. Cette publication annonçait officiellement le démarrage de la 12ᵉ édition de l\'événement et constituait l\'un des principaux points de contact avec la cible professionnelle.',
+        image: performanceLinkedin,
+        imageCaption: 'Statistiques LinkedIn du post de lancement',
+        highlights: [
+          {
+            label: 'Taux d\'engagement',
+            value: '33,9 %',
+            note: 'L\'indicateur le plus fort de la campagne',
+          },
+        ],
+        metrics: [
+          { label: 'Impressions', value: '2 192' },
+          { label: 'Clics', value: '674' },
+          { label: 'Réactions', value: '60' },
+          { label: 'Republications', value: '8' },
+        ],
+        analysis:
+          'Les résultats obtenus démontrent une forte visibilité auprès de la cible professionnelle. Le nombre élevé de clics montre un réel intérêt pour le contenu diffusé, tandis que le taux d\'engagement de 33,9 % témoigne d\'une bonne adéquation entre le message, le format de publication et les attentes du public visé.',
       },
-      metrics: [
-        { label: 'Impressions', value: '2 192' },
-        { label: 'Clics', value: '674' },
-        { label: 'Réactions', value: '60' },
-        { label: 'Republications', value: '8' },
-      ],
-      analysis:
-        'Les résultats obtenus démontrent une forte visibilité auprès de la cible professionnelle. Le nombre élevé de clics montre un réel intérêt pour le contenu diffusé, tandis que le taux d\'engagement de 33,9 % témoigne d\'une bonne adéquation entre le message, le format de publication et les attentes du public visé.',
-    },
+      {
+        label: 'Étude de performance · Contenu vidéo',
+        title: 'Performance d\'un contenu vidéo post-événement',
+        intro:
+          'À la suite de l\'événement, plusieurs contenus ont été diffusés afin de prolonger sa visibilité et de valoriser les professionnels présents. Cette vidéo, publiée sur LinkedIn, met en lumière les acteurs de la filière audiovisuelle à travers une série de portraits réalisés lors de la 12ᵉ édition de La Réunion à l\'Écran.',
+        video: '/videos/reunion-ecran-portraits-ep1.mp4',
+        videoCaption: 'Portraits — La Réunion à l\'Écran, édition 2025 (Épisode 1)',
+        image: performanceLinkedin2,
+        imageCaption: 'Statistiques LinkedIn de la publication vidéo',
+        highlights: [
+          { label: 'Vues vidéo', value: '355' },
+          { label: 'Impressions', value: '960' },
+          { label: 'Taux d\'engagement', value: '7 %' },
+        ],
+        metrics: [
+          { label: 'Clics', value: '49' },
+          { label: 'Réactions', value: '15' },
+          { label: 'Commentaire', value: '1' },
+          { label: 'Republications', value: '2' },
+        ],
+        analysis:
+          'Cette publication démontre l\'intérêt du public pour les contenus valorisant les participants et les professionnels présents lors de l\'événement. Malgré une portée plus limitée que le post de lancement, la vidéo a permis de maintenir la visibilité de l\'événement après sa clôture et de prolonger les interactions avec la communauté. Les vues vidéo et le taux d\'engagement observés confirment la pertinence d\'une stratégie de contenus post-événement visant à faire vivre l\'événement au-delà de sa période de diffusion.',
+      },
+    ],
     title: 'La Réunion à l\'Écran',
     description: 'Communication événementielle pour valoriser La Réunion comme territoire de tournage et de création cinématographique',
     image: reunionImage,

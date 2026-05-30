@@ -22,6 +22,12 @@ import convScreen4 from '@/assets/reunion-ecran/conv-suivi-4.jpg'
 import guideInvestCover from '@/assets/reunion-ecran/guide-livre/guide-p1.png'
 import performanceLinkedin from '@/assets/reunion-ecran/performance-linkedin.png'
 import performanceLinkedin2 from '@/assets/reunion-ecran/performance-linkedin-2.png'
+import veilleStudio2024 from '@/assets/reunion-ecran/veille/studio-reunion-2024.jpg'
+import veilleAfficheFinale from '@/assets/reunion-ecran/veille/affiche-finale-2025.jpg'
+import veillePlaineSables from '@/assets/reunion-ecran/veille/plaine-des-sables.jpg'
+import veilleChaise from '@/assets/reunion-ecran/veille/chaise-realisateur.jpg'
+import veilleClap from '@/assets/reunion-ecran/veille/clap-cinema.jpg'
+import veilleProjecteur from '@/assets/reunion-ecran/veille/projecteur-cinema.avif'
 
 // --- Images Pantoufle ---
 import pantoufleImage from '@/assets/pantoufle/affiche.jpg'
@@ -184,6 +190,62 @@ export const featuredProjects: Project[] = [
           'Cette publication démontre l\'intérêt du public pour les contenus valorisant les participants et les professionnels présents lors de l\'événement. Malgré une portée plus limitée que le post de lancement, la vidéo a permis de maintenir la visibilité de l\'événement après sa clôture et de prolonger les interactions avec la communauté. Les vues vidéo et le taux d\'engagement observés confirment la pertinence d\'une stratégie de contenus post-événement visant à faire vivre l\'événement au-delà de sa période de diffusion.',
       },
     ],
+    moodboard: {
+      label: 'Veille créative · Direction artistique',
+      title: 'Mood board — La Réunion à l\'Écran 2025',
+      intro:
+        'Avant la conception des supports, une veille créative a permis de cerner l\'univers de l\'événement : analyser l\'identité précédente, rassembler des références cinématographiques et ancrer la création dans le territoire réunionnais.',
+      keywords: ['Territoire', 'Cinéma', 'Audiovisuel', 'Tournage', 'Création', 'Talents', 'Paysages', 'Professionnels'],
+      axes: [
+        {
+          index: '01',
+          title: 'Analyse de l\'existant',
+          description:
+            'Point de départ de la veille : l\'identité de l\'édition précédente, Studio Réunion 2024. Une base cinématographique forte dont certains codes ont été conservés, d\'autres modernisés pour 2025.',
+          images: [{ src: veilleStudio2024, caption: 'Studio Réunion — édition 2024' }],
+          bullets: [
+            'Univers cinématographique affirmé : pellicule, lettrage doré',
+            'Valorisation du territoire placée au cœur du visuel',
+            'Codes historiques conservés : noir profond, or, paysage',
+            'Accroche « Une île de talents et de kréations » reprise en 2025',
+          ],
+        },
+        {
+          index: '02',
+          title: 'Références & inspirations',
+          description:
+            'Un corpus d\'images autour du cinéma, du tournage et de la réalisation audiovisuelle, pour nourrir un langage visuel professionnel et incarner les métiers de l\'image.',
+          images: [
+            { src: veilleClap, caption: 'Clap de tournage' },
+            { src: veilleChaise, caption: 'Chaise de réalisateur' },
+            { src: veilleProjecteur, caption: 'Projecteur de cinéma' },
+          ],
+        },
+        {
+          index: '03',
+          title: 'Ancrage territorial',
+          description:
+            'Pour ancrer l\'événement dans La Réunion, la veille s\'est tournée vers la Plaine des Sables : un décor volcanique, minéral et spectaculaire, à la dimension naturellement cinématographique.',
+          images: [{ src: veillePlaineSables, caption: 'Plaine des Sables — paysage volcanique' }],
+          bullets: [
+            'La Plaine des Sables, décor lunaire et brut',
+            'Paysages volcaniques, textures minérales',
+            'Lumière nette et horizon de cinéma',
+          ],
+        },
+      ],
+      finalImage: veilleAfficheFinale,
+      finalCaption: 'La Réunion à l\'Écran — identité finale 2025',
+      finalNote:
+        'Aboutissement de la veille : le ciel austral de la Plaine des Sables, la chaise de réalisateur et l\'accroche héritée fusionnent en une identité à la fois cinématographique et profondément ancrée dans le territoire.',
+      palette: [
+        { name: 'Nuit australe', color: '#16204F' },
+        { name: 'Or projecteur', color: '#E5A823' },
+        { name: 'Roche volcanique', color: '#6E3B27' },
+        { name: 'Sable de la plaine', color: '#C8A36A' },
+        { name: 'Brume ivoire', color: '#F4ECDA' },
+      ],
+    },
     title: 'La Réunion à l\'Écran',
     description: 'Communication événementielle pour valoriser La Réunion comme territoire de tournage et de création cinématographique',
     image: reunionImage,

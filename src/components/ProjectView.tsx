@@ -29,7 +29,15 @@ import {
 import { useEffect, useState, useRef, useCallback } from 'react'
 import * as pdfjsLib from 'pdfjs-dist'
 import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.min.mjs?url'
-import type { Project, CarouselItem, PerformanceSection, PerformanceHighlight, PerformanceMetric } from '@/types'
+import type {
+  Project,
+  CarouselItem,
+  PerformanceSection,
+  PerformanceHighlight,
+  PerformanceMetric,
+  Moodboard,
+  MoodboardAxis,
+} from '@/types'
 import { SlideViewer } from '@/components/SlideViewer'
 import { FlipbookViewer } from '@/components/FlipbookViewer'
 import { Picture } from '@/components/Picture'
@@ -650,6 +658,269 @@ function PerformanceBlock({
             Analyse
           </h4>
           <p className="text-text-muted leading-[1.8] max-w-3xl">{data.analysis}</p>
+        </div>
+      </div>
+    </motion.section>
+  )
+}
+
+/* Une ligne d'axe du mood board : numéro + titre + description (+ puces),
+   et le(s) visuel(s). Plusieurs visuels = cartes "références" sur fond clair,
+   un seul = cadre photo pleine image. media alterne gauche/droite. */
+function MoodboardAxisRow({
+  axis,
+  reversed,
+  onZoom,
+}: {
+  axis: MoodboardAxis
+  reversed: boolean
+  onZoom: (src: string) => void
+}) {
+  const isCardSet = axis.images.length > 1
+
+  const media = isCardSet ? (
+    <div className="grid grid-cols-3 gap-3">
+      {axis.images.map((img, i) => (
+        <motion.figure
+          key={i}
+          initial={{ opacity: 0, y: 14 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.5, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+          className="m-0"
+        >
+          <button
+            type="button"
+            onClick={() => onZoom(img.src)}
+            data-cursor="hover"
+            className="group/m block w-full rounded-xl overflow-hidden bg-[#F4ECDA] border border-white/10 shadow-[0_10px_30px_-14px_rgba(0,0,0,0.6)] cursor-pointer"
+            aria-label={img.caption || 'Agrandir'}
+          >
+            <div className="aspect-square flex items-center justify-center p-4 md:p-5">
+              <Picture
+                src={img.src}
+                alt={img.caption || axis.title}
+                imgClassName="max-w-full max-h-full object-contain transition-transform duration-500 group-hover/m:scale-[1.05]"
+                sizes="(max-width: 768px) 30vw, 16vw"
+              />
+            </div>
+          </button>
+          {img.caption && (
+            <figcaption className="mt-2 text-center text-[9px] md:text-[10px] uppercase tracking-[0.18em] text-ivory/45" style={{ fontWeight: 600 }}>
+              {img.caption}
+            </figcaption>
+          )}
+        </motion.figure>
+      ))}
+    </div>
+  ) : (
+    <figure className="m-0">
+      <button
+        type="button"
+        onClick={() => onZoom(axis.images[0].src)}
+        data-cursor="hover"
+        className="group/m block w-full rounded-2xl overflow-hidden bg-black/25 border border-white/10 shadow-[0_18px_44px_-18px_rgba(0,0,0,0.7)] cursor-pointer"
+        aria-label={axis.images[0].caption || 'Agrandir'}
+      >
+        <div className="flex items-center justify-center p-3 md:p-4">
+          <Picture
+            src={axis.images[0].src}
+            alt={axis.images[0].caption || axis.title}
+            imgClassName="w-full h-auto max-h-[440px] object-contain rounded-lg transition-transform duration-700 group-hover/m:scale-[1.02]"
+            sizes="(max-width: 1024px) 90vw, 42vw"
+          />
+        </div>
+      </button>
+      {axis.images[0].caption && (
+        <figcaption className="mt-3 text-center text-[10px] uppercase tracking-[0.2em] text-ivory/45" style={{ fontWeight: 600 }}>
+          {axis.images[0].caption}
+        </figcaption>
+      )}
+    </figure>
+  )
+
+  const text = (
+    <div>
+      <div className="flex items-center gap-3 mb-4">
+        <span className="font-mono text-sm tabular-nums text-accent" style={{ fontWeight: 700 }}>
+          {axis.index}
+        </span>
+        <span className="block w-10 h-px bg-accent/40" aria-hidden="true" />
+      </div>
+      <h4
+        className="text-xl md:text-2xl text-ivory mb-3 leading-snug"
+        style={{ fontFamily: 'var(--font-serif)', fontWeight: 700 }}
+      >
+        {axis.title}
+      </h4>
+      <p className="text-ivory/65 leading-[1.75] text-sm md:text-[15px]">{axis.description}</p>
+      {axis.bullets && axis.bullets.length > 0 && (
+        <ul className="mt-5 space-y-2.5">
+          {axis.bullets.map((b, i) => (
+            <li key={i} className="flex items-start gap-3 text-ivory/75 text-sm">
+              <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0 mt-[0.5rem]" aria-hidden="true" />
+              <span className="leading-relaxed">{b}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.15 }}
+      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+      className="grid md:grid-cols-12 gap-7 md:gap-10 items-center"
+    >
+      <div className={`md:col-span-7 ${reversed ? 'md:order-2' : ''}`}>{media}</div>
+      <div className={`md:col-span-5 ${reversed ? 'md:order-1' : ''}`}>{text}</div>
+    </motion.div>
+  )
+}
+
+/* Mood board complet : veille créative en 4 axes + palette + mots-clés,
+   sur un panneau sombre cinématographique. */
+function MoodboardSection({ data, onZoom }: { data: Moodboard; onZoom: (src: string) => void }) {
+  return (
+    <motion.section
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.08 }}
+      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+      className="relative overflow-hidden rounded-3xl"
+      style={{ background: 'linear-gradient(160deg, #14110C 0%, #1B160B 55%, #241A12 100%)' }}
+      aria-label={data.title}
+    >
+      {/* Lueur dorée diffuse en haut. */}
+      <div
+        className="absolute -top-24 right-0 w-[480px] h-[480px] pointer-events-none opacity-40"
+        style={{ background: 'radial-gradient(circle, rgba(229,168,35,0.18) 0%, transparent 70%)' }}
+        aria-hidden="true"
+      />
+
+      <div className="relative p-6 md:p-12">
+        {/* En-tête */}
+        <div className="mb-10 md:mb-14">
+          {data.label && (
+            <span className="block text-[10px] uppercase tracking-[0.34em] text-accent mb-4" style={{ fontWeight: 700 }}>
+              {data.label}
+            </span>
+          )}
+          <h3
+            className="text-3xl md:text-4xl text-ivory leading-[1.1] mb-4"
+            style={{ fontFamily: 'var(--font-serif)', fontWeight: 700, letterSpacing: '-0.015em' }}
+          >
+            {data.title}
+          </h3>
+          <p className="text-ivory/65 leading-[1.8] max-w-3xl">{data.intro}</p>
+
+          {/* Mots-clés */}
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-2 mt-7">
+            {data.keywords.map((k, i) => (
+              <span key={i} className="flex items-center gap-3">
+                {i > 0 && <span className="w-1 h-1 rounded-full bg-accent/50" aria-hidden="true" />}
+                <span className="text-[11px] uppercase tracking-[0.22em] text-ivory/55" style={{ fontWeight: 600 }}>
+                  {k}
+                </span>
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Axes de veille */}
+        <div className="space-y-12 md:space-y-16">
+          {data.axes.map((axis, i) => (
+            <MoodboardAxisRow key={axis.index} axis={axis} reversed={i % 2 === 1} onZoom={onZoom} />
+          ))}
+        </div>
+
+        {/* Résultat final — climax */}
+        <div className="mt-14 md:mt-20 pt-10 md:pt-14 border-t border-white/10">
+          <div className="text-center mb-8">
+            <span className="inline-flex items-center gap-3 text-[10px] uppercase tracking-[0.34em] text-accent" style={{ fontWeight: 700 }}>
+              <span className="font-mono">04</span>
+              <span className="w-8 h-px bg-accent/40" aria-hidden="true" />
+              Résultat final
+            </span>
+          </div>
+
+          <div className="relative flex justify-center">
+            {/* Projecteur : halo derrière l'affiche. */}
+            <div
+              className="absolute inset-0 flex items-center justify-center pointer-events-none"
+              aria-hidden="true"
+            >
+              <div
+                className="w-[70%] h-[80%] rounded-full"
+                style={{ background: 'radial-gradient(circle, rgba(229,168,35,0.22) 0%, rgba(199,122,72,0.12) 40%, transparent 72%)' }}
+              />
+            </div>
+            <motion.button
+              type="button"
+              initial={{ opacity: 0, scale: 0.94 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              onClick={() => onZoom(data.finalImage)}
+              data-cursor="hover"
+              className="relative group/final rounded-2xl overflow-hidden border border-accent/25 shadow-[0_30px_70px_-24px_rgba(0,0,0,0.8)] cursor-pointer"
+              aria-label={data.finalCaption || 'Agrandir l\'affiche finale'}
+            >
+              <Picture
+                src={data.finalImage}
+                alt={data.finalCaption || 'Affiche finale'}
+                imgClassName="block w-auto h-auto max-h-[68vh] md:max-h-[640px] object-contain transition-transform duration-700 group-hover/final:scale-[1.02]"
+                sizes="(max-width: 768px) 86vw, 40vw"
+              />
+            </motion.button>
+          </div>
+
+          {data.finalCaption && (
+            <p className="mt-5 text-center text-[11px] uppercase tracking-[0.26em] text-accent/90" style={{ fontWeight: 700 }}>
+              {data.finalCaption}
+            </p>
+          )}
+          {data.finalNote && (
+            <p
+              className="mt-4 text-center text-ivory/70 italic leading-[1.8] max-w-2xl mx-auto"
+              style={{ fontFamily: 'var(--font-serif)' }}
+            >
+              {data.finalNote}
+            </p>
+          )}
+
+          {/* Palette */}
+          {data.palette.length > 0 && (
+            <div className="mt-10 md:mt-12 max-w-2xl mx-auto">
+              <p className="text-center text-[10px] uppercase tracking-[0.3em] text-ivory/45 mb-4" style={{ fontWeight: 700 }}>
+                Palette tirée des visuels
+              </p>
+              <div className="grid grid-cols-5 gap-2 md:gap-3">
+                {data.palette.map((sw, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 12 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.4 }}
+                    transition={{ duration: 0.45, delay: i * 0.07, ease: [0.22, 1, 0.36, 1] }}
+                    className="text-center"
+                  >
+                    <div
+                      className="w-full h-14 md:h-16 rounded-xl border border-white/10 shadow-[inset_0_1px_4px_rgba(255,255,255,0.12)]"
+                      style={{ backgroundColor: sw.color }}
+                      aria-hidden="true"
+                    />
+                    <span className="block mt-2 text-[8px] md:text-[9px] uppercase tracking-[0.14em] text-ivory/55 leading-tight" style={{ fontWeight: 600 }}>
+                      {sw.name}
+                    </span>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </motion.section>
@@ -1327,6 +1598,11 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
                 </h3>
                 <p className="text-lg text-text-muted leading-relaxed">{project.context}</p>
               </div>
+            )}
+
+            {/* Mood board — veille créative */}
+            {project.moodboard && (
+              <MoodboardSection data={project.moodboard} onZoom={setLightboxImage} />
             )}
 
             {((typeof project.target === 'string' && project.target) ||

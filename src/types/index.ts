@@ -72,6 +72,37 @@ export interface PerformanceSection {
   analysis: string
 }
 
+/* Mood board — démarche de veille créative (direction artistique). */
+export interface MoodboardImage {
+  src: string
+  caption?: string
+}
+
+export interface MoodboardAxis {
+  index: string
+  title: string
+  description: string
+  images: MoodboardImage[]
+  bullets?: string[]
+}
+
+export interface MoodboardSwatch {
+  name: string
+  color: string
+}
+
+export interface Moodboard {
+  label?: string
+  title: string
+  intro: string
+  keywords: string[]
+  axes: MoodboardAxis[]
+  finalImage: string
+  finalCaption?: string
+  finalNote?: string
+  palette: MoodboardSwatch[]
+}
+
 export interface Project {
   id: string
   title: string
@@ -118,6 +149,7 @@ export interface Project {
   tools?: BtsTool[]
   results?: BtsResult[]
   performances?: PerformanceSection[]
+  moodboard?: Moodboard
 }
 
 export type MilestoneType = 'formation' | 'experience' | 'diplome' | 'objectif'

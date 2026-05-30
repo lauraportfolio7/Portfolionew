@@ -16,6 +16,10 @@ import {
   ChevronRight,
   Images,
   ArrowLeft,
+  Calendar,
+  Wrench,
+  CheckCircle2,
+  BarChart3,
 } from 'lucide-react'
 import { useEffect, useState, useRef, useCallback } from 'react'
 import * as pdfjsLib from 'pdfjs-dist'
@@ -911,6 +915,133 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
 
           {/* Content */}
           <div className="bg-ivory p-8 md:p-12 space-y-12">
+            {/* Fiche BTS — synthèse compacte pour les 3 projets détaillés. */}
+            {(project.period || project.conditions || (project.btsActivities && project.btsActivities.length > 0) || (project.tools && project.tools.length > 0)) && (
+              <div className="bg-white border border-night/5 rounded-2xl overflow-hidden shadow-[0_2px_18px_-8px_rgba(176,116,16,0.18)]">
+                <div className="px-5 md:px-6 py-3 bg-ivory-warm/60 border-b border-night/5 flex items-center justify-between">
+                  <span className="text-[10px] uppercase tracking-[0.32em] text-text-muted" style={{ fontWeight: 700 }}>
+                    Fiche BTS · Synthèse
+                  </span>
+                  <span className="text-[10px] uppercase tracking-[0.3em] text-accent-blue" style={{ fontWeight: 700 }}>
+                    E6 — Session 2026
+                  </span>
+                </div>
+                <div className="grid md:grid-cols-2 lg:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-night/5">
+                  {project.period && (
+                    <div className="p-5 md:p-6">
+                      <div className="flex items-center gap-2 mb-3">
+                        <Calendar className="w-4 h-4 text-accent" />
+                        <span className="text-[10px] uppercase tracking-[0.25em] text-text-muted" style={{ fontWeight: 700 }}>
+                          Période
+                        </span>
+                      </div>
+                      <p className="text-night leading-snug" style={{ fontWeight: 500 }}>{project.period}</p>
+                    </div>
+                  )}
+
+                  {project.conditions && (
+                    <div className="p-5 md:p-6">
+                      <div className="flex items-center gap-2 mb-3">
+                        <Users className="w-4 h-4 text-accent" />
+                        <span className="text-[10px] uppercase tracking-[0.25em] text-text-muted" style={{ fontWeight: 700 }}>
+                          Conditions
+                        </span>
+                      </div>
+                      <p className="text-night leading-snug text-sm" style={{ fontWeight: 500 }}>
+                        {project.conditions.realization}
+                        {project.conditions.mode && (
+                          <> <span className="text-text-muted/60">·</span> {project.conditions.mode}</>
+                        )}
+                        <> <span className="text-text-muted/60">·</span> {project.conditions.team}</>
+                      </p>
+                    </div>
+                  )}
+
+                  {project.btsActivities && project.btsActivities.length > 0 && (
+                    <div className="p-5 md:p-6">
+                      <div className="flex items-center gap-2 mb-3">
+                        <CheckCircle2 className="w-4 h-4 text-accent" />
+                        <span className="text-[10px] uppercase tracking-[0.25em] text-text-muted" style={{ fontWeight: 700 }}>
+                          Activités du bloc
+                        </span>
+                      </div>
+                      <div className="flex gap-1.5">
+                        {[1, 2, 3, 4, 5].map((n) => {
+                          const active = project.btsActivities!.includes(n)
+                          return (
+                            <span
+                              key={n}
+                              title={`Activité ${n}`}
+                              className={`w-7 h-7 rounded-full flex items-center justify-center text-[11px] tabular-nums transition-colors ${
+                                active
+                                  ? 'bg-accent text-night border-2 border-accent'
+                                  : 'bg-transparent text-text-muted/45 border border-night/10'
+                              }`}
+                              style={{ fontWeight: 700 }}
+                            >
+                              {n}
+                            </span>
+                          )
+                        })}
+                      </div>
+                    </div>
+                  )}
+
+                  {project.tools && project.tools.length > 0 && (
+                    <div className="p-5 md:p-6">
+                      <div className="flex items-center gap-2 mb-3">
+                        <Wrench className="w-4 h-4 text-accent" />
+                        <span className="text-[10px] uppercase tracking-[0.25em] text-text-muted" style={{ fontWeight: 700 }}>
+                          Outils
+                        </span>
+                      </div>
+                      <div className="flex flex-wrap gap-1.5">
+                        {project.tools.map((tool, i) => (
+                          <span
+                            key={i}
+                            title={tool.usage}
+                            className="text-[11px] text-night/75 px-2 py-1 bg-ivory rounded-md border border-night/5"
+                          >
+                            {tool.name}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Résultats chiffrés — KPI de performance. */}
+            {project.results && project.results.length > 0 && (
+              <div className="bg-gradient-to-br from-accent/10 to-accent/5 p-8 rounded-2xl border border-accent/25">
+                <h3 className="text-2xl mb-6 flex items-center gap-3 text-night" style={{ fontFamily: 'var(--font-serif)' }}>
+                  <BarChart3 className="w-6 h-6 text-accent" />
+                  Résultats
+                </h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+                  {project.results.map((r, i) => (
+                    <div key={i} className="bg-white rounded-xl p-4 md:p-5 border border-accent/15">
+                      <p className="text-[9px] md:text-[10px] uppercase tracking-[0.22em] text-text-muted mb-2" style={{ fontWeight: 700 }}>
+                        {r.label}
+                      </p>
+                      <p
+                        className="text-xl md:text-3xl text-night leading-none"
+                        style={{ fontFamily: 'var(--font-serif)', fontWeight: 700, letterSpacing: '-0.02em' }}
+                      >
+                        {r.value}
+                      </p>
+                      {r.change && (
+                        <p className="text-xs text-accent-blue mt-2" style={{ fontWeight: 600 }}>
+                          {r.change}
+                        </p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {project.problematic && (
               <div className="bg-gradient-to-br from-accent/10 to-accent/5 p-8 rounded-2xl border border-accent/30">
                 <h3 className="text-2xl mb-4 flex items-center gap-3 text-night" style={{ fontFamily: 'var(--font-serif)' }}>

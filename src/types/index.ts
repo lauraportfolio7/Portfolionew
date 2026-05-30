@@ -29,6 +29,24 @@ export interface GalleryItem {
   caption?: string
 }
 
+/* Carte BTS — synthèse pour les fiches détaillées (E6). */
+export interface BtsConditions {
+  realization: 'Vécue' | 'Simulée' | 'Observée'
+  mode?: 'En autonomie' | 'Accompagnée'
+  team: 'Individuelle' | 'Collective'
+}
+
+export interface BtsTool {
+  name: string
+  usage?: string
+}
+
+export interface BtsResult {
+  label: string
+  value: string
+  change?: string
+}
+
 export interface Project {
   id: string
   title: string
@@ -68,6 +86,12 @@ export interface Project {
   // Vergelegen spécial
   isVergelegen?: boolean
   vergelegenPages?: string[]
+  // Synthèse BTS (pour les 3 fiches détaillées E6)
+  period?: string
+  conditions?: BtsConditions
+  btsActivities?: number[]
+  tools?: BtsTool[]
+  results?: BtsResult[]
 }
 
 export type MilestoneType = 'formation' | 'experience' | 'diplome' | 'objectif'

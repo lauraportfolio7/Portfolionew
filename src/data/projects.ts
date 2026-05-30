@@ -119,6 +119,21 @@ export const featuredProjects: Project[] = [
   {
     id: 'reunion-ecran',
     isFeatured: true,
+    period: 'Juillet 2025 → Novembre 2025',
+    conditions: { realization: 'Vécue', mode: 'Accompagnée', team: 'Collective' },
+    btsActivities: [1, 2, 3, 4, 5],
+    tools: [
+      { name: 'Canva', usage: 'Création des visuels et déclinaisons' },
+      { name: 'LinkedIn + Meta Business Suite', usage: 'Diffusion des posts avant, pendant et après' },
+      { name: 'Inwink', usage: 'Scan des QR codes et analyse des résultats' },
+      { name: 'Outlook', usage: 'Gestion de la relation prestataire' },
+    ],
+    results: [
+      { label: 'Impressions', value: '6 407', change: '+136,9 %' },
+      { label: 'Réactions', value: '172', change: '+156,7 %' },
+      { label: 'Taux d\'engagement', value: 'jusqu\'à 30 %' },
+      { label: 'Inscrits / présents', value: '112 / 77 %' },
+    ],
     title: 'La Réunion à l\'Écran',
     description: 'Communication événementielle pour valoriser La Réunion comme territoire de tournage et de création cinématographique',
     image: reunionImage,
@@ -172,6 +187,16 @@ export const featuredProjects: Project[] = [
   },
   {
     id: 'disney-100-ans',
+    period: 'Mai → Juin 2025 · 3 semaines',
+    conditions: { realization: 'Simulée', team: 'Individuelle' },
+    btsActivities: [1, 2, 5],
+    tools: [
+      { name: 'Google Trends', usage: 'Intérêt du public et tendances' },
+      { name: 'Données Ipsos', usage: 'Comportements et attentes des jeunes adultes' },
+      { name: 'AlloCiné / Box-office', usage: 'Performances des films' },
+      { name: 'Google Forms', usage: 'Questionnaire qualitatif sur la cible' },
+      { name: 'Canva', usage: 'Support de présentation' },
+    ],
     title: 'Disney 100 — Projection Vice Versa au Grand Rex',
     description: 'Stratégie de communication pour une projection événementielle de Vice Versa 1 & 2 au Grand Rex, dans le cadre du 100ème anniversaire de Disney, autour de la santé mentale et des émotions des 18-24 ans.',
     image: disneyCarte,
@@ -223,6 +248,14 @@ export const featuredProjects: Project[] = [
   {
     id: 'guide-investisseur',
     isFeatured: true,
+    period: 'Mi-mai → début juillet 2025',
+    conditions: { realization: 'Vécue', mode: 'Accompagnée', team: 'Collective' },
+    btsActivities: [1, 2, 3],
+    tools: [
+      { name: 'Canva', usage: 'Mise en page, blocs en anglais, application de la charte' },
+      { name: 'Outils de veille', usage: 'Repérage de tendances et analyse de plaquettes similaires' },
+      { name: 'Correcteur anglais', usage: 'Vérification linguistique et amélioration du style' },
+    ],
     title: 'Réalisation d\'un guide investisseur',
     description: 'Communication institutionnelle et édition d\'une plaquette investisseurs en anglais pour promouvoir l\'attractivité économique',
     image: guideInvestCover,

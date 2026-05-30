@@ -24,42 +24,35 @@ type PageImage = {
   ratio: number
 }
 
-/* Rend les pages d'un PDF en JPEG une par une et les remonte au fur et à mesure
-   (la première page s'affiche sans attendre tout le document). Les octets sont
-   récupérés à la demande via les requêtes HTTP Range (disableAutoFetch). */
-async function streamPdfPages(
-  pdfUrl: string,
+/* Rend UNE page du PDF (index 0-basé) en JPEG. Les pages sont rendues à la
+   demande (page courante + voisines) : le document s'ouvre immédiatement sur la
+   couverture sans rendre les 27 pages d'un coup. */
+async function renderPdfPage(
+  doc: pdfjsLib.PDFDocumentProxy,
+  index0: number,
   scale: number,
-  onTotal: (total: number) => void,
-  onPage: (page: PageImage, index: number) => void,
-  signal: { cancelled: boolean },
-): Promise<void> {
-  const doc = await pdfjsLib.getDocument({
-    url: pdfUrl,
-    disableAutoFetch: true,
-    disableStream: false,
-  }).promise
-  if (signal.cancelled) return
-  onTotal(doc.numPages)
-  for (let i = 1; i <= doc.numPages; i++) {
-    if (signal.cancelled) return
-    const page = await doc.getPage(i)
-    const viewport = page.getViewport({ scale })
-    const canvas = document.createElement('canvas')
-    canvas.width = viewport.width
-    canvas.height = viewport.height
-    const ctx = canvas.getContext('2d')!
-    ctx.fillStyle = '#ffffff'
-    ctx.fillRect(0, 0, canvas.width, canvas.height)
-    await page.render({ canvasContext: ctx, viewport } as any).promise
-    if (signal.cancelled) return
-    onPage({ src: canvas.toDataURL('image/jpeg', 0.82), ratio: viewport.height / viewport.width }, i - 1)
-  }
+): Promise<PageImage> {
+  const page = await doc.getPage(index0 + 1)
+  const viewport = page.getViewport({ scale })
+  const canvas = document.createElement('canvas')
+  canvas.width = viewport.width
+  canvas.height = viewport.height
+  const ctx = canvas.getContext('2d')!
+  ctx.fillStyle = '#ffffff'
+  ctx.fillRect(0, 0, canvas.width, canvas.height)
+  await page.render({ canvasContext: ctx, viewport } as any).promise
+  return { src: canvas.toDataURL('image/jpeg', 0.82), ratio: viewport.height / viewport.width }
+}
+
+/* Indices de pages (0-basés) couverts par un spread donné. */
+function spreadPageIndices(spreadIdx: number): number[] {
+  if (spreadIdx <= 0) return [0]
+  return [spreadIdx * 2 - 1, spreadIdx * 2]
 }
 
 type Spread = [PageImage | null, PageImage | null]
 
-function getSpread(pages: PageImage[], spreadIdx: number): Spread {
+function getSpread(pages: (PageImage | null)[], spreadIdx: number): Spread {
   if (pages.length === 0) return [null, null]
   if (spreadIdx === 0) return [null, pages[0]] // couverture seule à droite
   const leftIdx = spreadIdx * 2 - 1
@@ -70,13 +63,13 @@ function getSpread(pages: PageImage[], spreadIdx: number): Spread {
   ]
 }
 
-function getTotalSpreads(pages: PageImage[]): number {
+function getTotalSpreads(pages: (PageImage | null)[]): number {
   if (pages.length === 0) return 0
   return Math.ceil((pages.length + 1) / 2)
 }
 
 interface BookProps {
-  pages: PageImage[]
+  pages: (PageImage | null)[]
   spread: number
   pageWidth: number
   pageHeight: number
@@ -451,30 +444,67 @@ function useReducedMotion() {
 }
 
 export function FlipbookViewer({ pdfUrl, title }: FlipbookViewerProps) {
-  const [pages, setPages] = useState<PageImage[]>([])
+  const [pages, setPages] = useState<(PageImage | null)[]>([])
   const [total, setTotal] = useState(0)
+  const [ratio, setRatio] = useState(1.41)
   const [spread, setSpread] = useState(0)
   const [fullscreen, setFullscreen] = useState(false)
   const [containerW, setContainerW] = useState(0)
   const containerRef = useRef<HTMLDivElement>(null)
   const fsContainerRef = useRef<HTMLDivElement>(null)
+  const docRef = useRef<pdfjsLib.PDFDocumentProxy | null>(null)
+  const renderingRef = useRef<Set<number>>(new Set())
   const reduceMotion = useReducedMotion()
 
-  // Rend les pages progressivement : la première s'affiche sans attendre le reste.
+  // Ouvre le document et rend la couverture tout de suite (le reste à la demande).
   useEffect(() => {
     setPages([]); setSpread(0); setTotal(0)
+    docRef.current = null
+    renderingRef.current = new Set()
     const signal = { cancelled: false }
-    streamPdfPages(
-      pdfUrl,
-      1.25,
-      (t) => { if (!signal.cancelled) setTotal(t) },
-      (page) => { if (!signal.cancelled) setPages((prev) => [...prev, page]) },
-      signal,
-    )
+    pdfjsLib.getDocument({ url: pdfUrl, disableAutoFetch: true, disableStream: false }).promise
+      .then(async (doc) => {
+        if (signal.cancelled) return
+        docRef.current = doc
+        setTotal(doc.numPages)
+        setPages(new Array(doc.numPages).fill(null))
+        const cover = await renderPdfPage(doc, 0, 1.25)
+        if (signal.cancelled) return
+        setRatio(cover.ratio)
+        setPages((prev) => { const n = [...prev]; n[0] = cover; return n })
+      })
     return () => { signal.cancelled = true }
   }, [pdfUrl])
 
-  const loadedAll = total > 0 && pages.length >= total
+  // Rend à la demande la page courante et ses voisines (spread ±1) pour des flips fluides.
+  useEffect(() => {
+    const doc = docRef.current
+    if (!doc || total === 0) return
+    const signal = { cancelled: false }
+    const needed = new Set<number>()
+    for (let s = Math.max(0, spread - 1); s <= spread + 1; s++) {
+      spreadPageIndices(s).forEach((i) => { if (i >= 0 && i < total) needed.add(i) })
+    }
+    ;(async () => {
+      for (const idx of needed) {
+        if (signal.cancelled) return
+        if (pages[idx] || renderingRef.current.has(idx)) continue
+        renderingRef.current.add(idx)
+        try {
+          const img = await renderPdfPage(doc, idx, 1.25)
+          if (signal.cancelled) return
+          setPages((prev) => { if (prev[idx]) return prev; const n = [...prev]; n[idx] = img; return n })
+        } catch {
+          /* ignore */
+        } finally {
+          renderingRef.current.delete(idx)
+        }
+      }
+    })()
+    return () => { signal.cancelled = true }
+  }, [spread, total, pages])
+
+  const ready = pages.length > 0 && !!pages[0]
 
   // Mesure le conteneur pour dimensionner le livre.
   useEffect(() => {
@@ -499,8 +529,7 @@ export function FlipbookViewer({ pdfUrl, title }: FlipbookViewerProps) {
     return () => window.removeEventListener('keydown', handleKey)
   }, [fullscreen, pages])
 
-  // Dimensions du livre en fonction du conteneur.
-  const ratio = pages[0]?.ratio ?? 1.41
+  // Dimensions du livre en fonction du conteneur (ratio = celui de la couverture).
   const inlineMaxHeight = 460
   const fsMaxHeight = Math.min(window.innerHeight * 0.78, 760)
 
@@ -526,7 +555,7 @@ export function FlipbookViewer({ pdfUrl, title }: FlipbookViewerProps) {
     return { pageW, pageH }
   }, [containerW, ratio, fsMaxHeight])
 
-  if (pages.length === 0) {
+  if (!ready) {
     return (
       <div className="mt-8">
         {title && (
@@ -596,11 +625,6 @@ export function FlipbookViewer({ pdfUrl, title }: FlipbookViewerProps) {
             >
               <Maximize2 className="w-4 h-4" />
             </button>
-            {!loadedAll && (
-              <span className="ml-1 inline-flex items-center gap-1.5 text-[11px] text-night-secondary/50" title="Chargement des pages suivantes">
-                <Loader2 className="w-3.5 h-3.5 animate-spin" />
-              </span>
-            )}
           </div>
         </div>
       </div>

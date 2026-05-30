@@ -167,7 +167,7 @@ export const featuredProjects: Project[] = [
           { label: 'Republications', value: '8' },
         ],
         analysis:
-          'Les résultats obtenus démontrent une forte visibilité auprès de la cible professionnelle. Le nombre élevé de clics montre un réel intérêt pour le contenu diffusé, tandis que le taux d\'engagement de 33,9 % témoigne d\'une bonne adéquation entre le message, le format de publication et les attentes du public visé.',
+          'Avec un taux d\'engagement de 33,9 %, ce post de lancement se situe très au-dessus des moyennes observées sur LinkedIn, généralement comprises entre 2 et 5 %. Le volume de clics (674) traduit un intérêt concret et non une simple exposition : la cible ne s\'est pas contentée de voir la publication, elle a cherché à en savoir plus. Ce résultat confirme que l\'annonce officielle constituait un point de contact stratégique et que le couple message / visuel était parfaitement calibré pour une audience professionnelle. Il a posé une dynamique forte dès l\'ouverture de la campagne.',
       },
       {
         label: 'Étude de performance · Contenu vidéo',
@@ -190,7 +190,7 @@ export const featuredProjects: Project[] = [
           { label: 'Republications', value: '2' },
         ],
         analysis:
-          'Cette publication démontre l\'intérêt du public pour les contenus valorisant les participants et les professionnels présents lors de l\'événement. Malgré une portée plus limitée que le post de lancement, la vidéo a permis de maintenir la visibilité de l\'événement après sa clôture et de prolonger les interactions avec la communauté. Les vues vidéo et le taux d\'engagement observés confirment la pertinence d\'une stratégie de contenus post-événement visant à faire vivre l\'événement au-delà de sa période de diffusion.',
+          'Avec 355 vues et un taux d\'engagement de 7 %, ce contenu vidéo post-événement confirme l\'intérêt durable de la communauté pour des formats incarnés, centrés sur les talents et les professionnels présents. La portée plus mesurée que le post de lancement est logique — l\'effet d\'annonce est passé — mais l\'engagement reste solide pour une publication diffusée après la clôture. Surtout, ce contenu prolonge la durée de vie de l\'événement et entretient la relation avec la cible au-delà de sa tenue : c\'est précisément le rôle d\'une stratégie de contenus post-événement, qui transforme un temps fort ponctuel en présence continue.',
       },
     ],
     moodboard: {
@@ -366,7 +366,25 @@ export const featuredProjects: Project[] = [
       'Vidéos récapitulatives',
       'Goodies personnalisés',
     ],
-    impact: 'Une communication cohérente et professionnelle sur l\'ensemble des supports, une meilleure visibilité de l\'événement auprès des professionnels du secteur, une participation significative aux sessions organisées, et une valorisation prolongée grâce aux contenus publiés avant, pendant et après l\'événement. Le projet a permis de renforcer le positionnement de La Réunion comme territoire créatif et attractif pour l\'industrie audiovisuelle.',
+    impact: 'Au-delà des livrables, les résultats traduisent une réelle efficacité communicationnelle. La forte progression des impressions (+136,9 %) et des réactions (+156,7 %) par rapport aux publications habituelles montre que la ligne éditoriale et les formats retenus correspondaient aux attentes d\'une cible professionnelle exigeante. Un taux d\'engagement atteignant 30 %, nettement supérieur aux standards observés sur LinkedIn, confirme la qualité du ciblage et la pertinence des contenus. Enfin, un taux de présence de 77 % sur 112 inscrits démontre que la communication a su transformer l\'intérêt en participation réelle — l\'objectif ultime d\'une communication événementielle. Ces résultats valident la stratégie multi-temps (avant / pendant / après) et la cohérence print-digital mise en place, et renforcent le positionnement de La Réunion comme territoire créatif et attractif pour l\'industrie audiovisuelle.',
+    role: {
+      intro:
+        'Sur ce projet mené en autonomie accompagnée, j\'ai occupé un rôle transversal, de la conception graphique jusqu\'à la coordination des prestataires et à l\'analyse des performances.',
+      missions: [
+        { title: 'Conception graphique', description: 'Création de l\'identité visuelle et déclinaison sur l\'ensemble des supports (affiches, kakémonos, badges, visuels digitaux).' },
+        { title: 'Création de contenus', description: 'Production de contenus éditoriaux et visuels adaptés à chaque format et à la cible professionnelle.' },
+        { title: 'Community management', description: 'Diffusion et animation sur LinkedIn et Facebook avant, pendant et après l\'événement.' },
+        { title: 'Coordination des supports', description: 'Pilotage de la cohérence de la chaîne de communication, du print au digital, dans le respect de la charte.' },
+        { title: 'Analyse des performances', description: 'Suivi des indicateurs (impressions, engagement, fréquentation) et lecture des résultats pour orienter les contenus.' },
+        { title: 'Suivi de prestataires', description: 'Coordination, suivi et validation des contenus produits avec les prestataires externes (impression, habillage, audiovisuel).' },
+      ],
+      collaboration: {
+        label: 'Coordination de prestataires',
+        text: 'La vidéo de clôture de l\'événement a été réalisée en collaboration avec l\'agence audiovisuelle NAWAR. Mon rôle a consisté à cadrer le besoin, coordonner la production, suivre l\'avancement et valider les contenus livrés, en garantissant leur cohérence avec l\'identité de l\'événement.',
+      },
+    },
+    bilan:
+      'Ce projet illustre une démarche de communication complète : de la veille créative à l\'analyse des retombées, en passant par la conception, la diffusion et la coordination d\'acteurs externes. Au-delà de la production de visuels, il m\'a permis de piloter une chaîne de communication cohérente sur plusieurs supports et d\'inscrire mon travail dans une logique de résultats. Les performances obtenues — forte progression de la visibilité et de l\'engagement, taux de présence élevé — confirment la pertinence des choix opérés et ma capacité à mobiliser une cible professionnelle exigeante.',
     gallery: [
       reunionGallery1, reunionGallery2, reunionGallery3, reunionGallery4,
       reunionGallery5, reunionGallery6, reunionGallery7, reunionChiffres,

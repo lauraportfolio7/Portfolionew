@@ -103,6 +103,23 @@ export interface Moodboard {
   palette: MoodboardSwatch[]
 }
 
+/* Mon rôle — missions et coordination de prestataires. */
+export interface RoleMission {
+  title: string
+  description?: string
+}
+
+export interface RoleCollaboration {
+  label: string
+  text: string
+}
+
+export interface ProjectRole {
+  intro?: string
+  missions: RoleMission[]
+  collaboration?: RoleCollaboration
+}
+
 /* Construction de l'identité visuelle — pistes graphiques, typographies, DA. */
 export interface PosterProposal {
   src: string
@@ -184,6 +201,8 @@ export interface Project {
   performances?: PerformanceSection[]
   moodboard?: Moodboard
   visualIdentity?: VisualIdentity
+  role?: ProjectRole
+  bilan?: string
 }
 
 export type MilestoneType = 'formation' | 'experience' | 'diplome' | 'objectif'

@@ -25,6 +25,8 @@ import {
   ThumbsUp,
   Eye,
   Play,
+  ChevronDown,
+  Flag,
 } from 'lucide-react'
 import { useEffect, useState, useRef, useCallback } from 'react'
 import * as pdfjsLib from 'pdfjs-dist'
@@ -40,6 +42,7 @@ import type {
   VisualIdentity,
   PosterProposal,
   FontChoice,
+  ProjectRole,
 } from '@/types'
 import { SlideViewer } from '@/components/SlideViewer'
 import { FlipbookViewer } from '@/components/FlipbookViewer'
@@ -1182,6 +1185,115 @@ function IdentitySection({ data, onZoom }: { data: VisualIdentity; onZoom: (src:
   )
 }
 
+/* Conteneur déroulant « Voir plus » — clampe la hauteur avec un fondu,
+   puis déploie tout le contenu. Allège la lecture sans rien retirer. */
+function Expandable({
+  children,
+  label = 'Voir plus',
+  collapsedHeight = 560,
+}: {
+  children: React.ReactNode
+  label?: string
+  collapsedHeight?: number
+}) {
+  const [open, setOpen] = useState(false)
+  return (
+    <div>
+      <div
+        className="relative overflow-hidden transition-[max-height] duration-700 ease-out"
+        style={{ maxHeight: open ? 24000 : collapsedHeight }}
+      >
+        {children}
+        {!open && (
+          <div
+            className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-ivory via-ivory/85 to-transparent pointer-events-none"
+            aria-hidden="true"
+          />
+        )}
+      </div>
+      <div className="flex justify-center mt-5">
+        <button
+          type="button"
+          onClick={() => setOpen((o) => !o)}
+          data-cursor="hover"
+          className="inline-flex items-center gap-2.5 px-6 py-3 rounded-full border border-accent/40 text-accent-blue hover:bg-accent hover:text-night transition-colors duration-300"
+        >
+          <span className="text-[11px] uppercase tracking-[0.25em]" style={{ fontWeight: 700 }}>
+            {open ? 'Voir moins' : label}
+          </span>
+          <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${open ? 'rotate-180' : ''}`} />
+        </button>
+      </div>
+    </div>
+  )
+}
+
+/* Bloc « Mon rôle » — missions + coordination de prestataires (activité BTS valorisée). */
+function RoleBlock({ role }: { role: ProjectRole }) {
+  const icons = [Sparkles, FileText, MessageCircle, Images, BarChart3, Users]
+  return (
+    <div className="bg-white p-6 md:p-8 rounded-2xl border border-night/5">
+      <h3 className="text-2xl mb-2 flex items-center gap-3 text-night" style={{ fontFamily: 'var(--font-serif)' }}>
+        <div className="w-2 h-8 bg-accent rounded-full" />
+        Mon rôle
+      </h3>
+      {role.intro && <p className="text-text-muted leading-relaxed mb-6 max-w-4xl">{role.intro}</p>}
+
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {role.missions.map((m, i) => {
+          const Icon = icons[i % icons.length]
+          return (
+            <div key={i} className="flex gap-3 p-4 rounded-xl bg-ivory border border-night/5">
+              <span className="w-9 h-9 rounded-full bg-accent/12 flex items-center justify-center shrink-0">
+                <Icon className="w-4.5 h-4.5 text-accent-blue" />
+              </span>
+              <div>
+                <p className="text-night leading-tight mb-1" style={{ fontWeight: 600 }}>{m.title}</p>
+                {m.description && <p className="text-sm text-text-muted leading-relaxed">{m.description}</p>}
+              </div>
+            </div>
+          )
+        })}
+      </div>
+
+      {role.collaboration && (
+        <div className="mt-5 p-5 md:p-6 rounded-xl border border-accent/25 bg-gradient-to-br from-accent/[0.08] to-accent/[0.02]">
+          <div className="flex items-center gap-2 mb-2">
+            <Users className="w-4 h-4 text-accent" />
+            <span className="text-[10px] uppercase tracking-[0.25em] text-accent-blue" style={{ fontWeight: 700 }}>
+              {role.collaboration.label}
+            </span>
+          </div>
+          <p className="text-text-muted leading-relaxed max-w-4xl">{role.collaboration.text}</p>
+        </div>
+      )}
+    </div>
+  )
+}
+
+/* Bloc « Bilan » — recul professionnel et conclusion. */
+function BilanBlock({ text }: { text: string }) {
+  return (
+    <div
+      className="relative overflow-hidden rounded-2xl p-7 md:p-9 border border-accent/20"
+      style={{ background: 'linear-gradient(135deg, #FFFCF4 0%, #FBF4DD 100%)' }}
+    >
+      <div
+        className="absolute -top-10 -right-10 w-40 h-40 rounded-full pointer-events-none"
+        style={{ background: 'radial-gradient(circle, rgba(229,168,35,0.16) 0%, transparent 70%)' }}
+        aria-hidden="true"
+      />
+      <h3 className="text-2xl mb-4 flex items-center gap-3 text-night relative z-[1]" style={{ fontFamily: 'var(--font-serif)' }}>
+        <Flag className="w-6 h-6 text-accent" />
+        Bilan
+      </h3>
+      <p className="text-lg text-night/85 leading-[1.85] relative z-[1] max-w-4xl" style={{ fontFamily: 'var(--font-serif)' }}>
+        {text}
+      </p>
+    </div>
+  )
+}
+
 export function ProjectView({ project, onBack }: ProjectViewProps) {
   const [lightboxImage, setLightboxImage] = useState<string | null>(null)
   const [convLightboxOpen, setConvLightboxOpen] = useState(false)
@@ -1372,7 +1484,7 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
       >
         {/* Bandeau supérieur avec bouton retour */}
         <div className="sticky top-0 z-30 backdrop-blur-md bg-ivory/85 border-b border-accent/15">
-          <div className="max-w-6xl mx-auto px-6 md:px-8 py-4 flex items-center justify-between">
+          <div className="max-w-7xl mx-auto px-6 md:px-8 py-4 flex items-center justify-between">
             <button
               onClick={onBack}
               className="group inline-flex items-center gap-2.5 text-night hover:text-accent-blue transition-colors"
@@ -1394,7 +1506,7 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
           </div>
         </div>
 
-        <div className="max-w-6xl mx-auto bg-ivory shadow-[0_4px_40px_-12px_rgba(176,116,16,0.10)] md:rounded-3xl md:my-10 overflow-hidden">
+        <div className="max-w-7xl mx-auto bg-ivory shadow-[0_4px_40px_-12px_rgba(176,116,16,0.10)] md:rounded-3xl md:my-10 overflow-hidden">
 
           {/* Hero Section — cream + gold (ou navy + cyan pour le guide investisseur) */}
           <div
@@ -1707,7 +1819,7 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
           </div>
 
           {/* Content */}
-          <div className="bg-ivory p-8 md:p-12 space-y-12">
+          <div className="bg-ivory p-6 md:p-10 space-y-9">
             {/* Fiche BTS — synthèse compacte pour les 3 projets détaillés. */}
             {(project.period || project.conditions || (project.btsActivities && project.btsActivities.length > 0) || (project.tools && project.tools.length > 0)) && (
               <div className="bg-white border border-night/5 rounded-2xl overflow-hidden shadow-[0_2px_18px_-8px_rgba(176,116,16,0.18)]">
@@ -1805,64 +1917,25 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
               </div>
             )}
 
-            {/* Résultats chiffrés — KPI de performance. */}
-            {project.results && project.results.length > 0 && (
-              <div className="bg-gradient-to-br from-accent/10 to-accent/5 p-8 rounded-2xl border border-accent/25">
-                <h3 className="text-2xl mb-6 flex items-center gap-3 text-night" style={{ fontFamily: 'var(--font-serif)' }}>
-                  <BarChart3 className="w-6 h-6 text-accent" />
-                  Résultats
-                </h3>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-                  {project.results.map((r, i) => (
-                    <div key={i} className="bg-white rounded-xl p-4 md:p-5 border border-accent/15">
-                      <p className="text-[9px] md:text-[10px] uppercase tracking-[0.22em] text-text-muted mb-2" style={{ fontWeight: 700 }}>
-                        {r.label}
-                      </p>
-                      <p
-                        className="text-xl md:text-3xl text-night leading-none"
-                        style={{ fontFamily: 'var(--font-serif)', fontWeight: 700, letterSpacing: '-0.02em' }}
-                      >
-                        {r.value}
-                      </p>
-                      {r.change && (
-                        <p className="text-xs text-accent-blue mt-2" style={{ fontWeight: 600 }}>
-                          {r.change}
-                        </p>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {project.problematic && (
-              <div className="bg-gradient-to-br from-accent/10 to-accent/5 p-8 rounded-2xl border border-accent/30">
-                <h3 className="text-2xl mb-4 flex items-center gap-3 text-night" style={{ fontFamily: 'var(--font-serif)' }}>
-                  <div className="w-2 h-8 bg-accent rounded-full" />
-                  Problématique
-                </h3>
-                <p className="text-lg text-text-muted leading-relaxed italic">{project.problematic}</p>
-              </div>
-            )}
-
+            {/* Contexte */}
             {project.context && (
-              <div className="bg-ivory-warm/50 p-8 rounded-2xl border border-night/5">
+              <div className="bg-ivory-warm/50 p-6 md:p-8 rounded-2xl border border-night/5">
                 <h3 className="text-2xl mb-4 flex items-center gap-3 text-night" style={{ fontFamily: 'var(--font-serif)' }}>
                   <div className="w-2 h-8 bg-accent rounded-full" />
                   Contexte
                 </h3>
-                <p className="text-lg text-text-muted leading-relaxed">{project.context}</p>
+                <p className="text-lg text-text-muted leading-relaxed max-w-4xl">{project.context}</p>
               </div>
             )}
 
-            {/* Mood board — veille créative */}
-            {project.moodboard && (
-              <MoodboardSection data={project.moodboard} onZoom={setLightboxImage} />
-            )}
-
-            {/* Construction de l'identité visuelle — étude de cas créative */}
-            {project.visualIdentity && (
-              <IdentitySection data={project.visualIdentity} onZoom={setLightboxImage} />
+            {project.problematic && (
+              <div className="bg-gradient-to-br from-accent/10 to-accent/5 p-6 md:p-8 rounded-2xl border border-accent/30">
+                <h3 className="text-2xl mb-4 flex items-center gap-3 text-night" style={{ fontFamily: 'var(--font-serif)' }}>
+                  <div className="w-2 h-8 bg-accent rounded-full" />
+                  Problématique
+                </h3>
+                <p className="text-lg text-text-muted leading-relaxed italic max-w-4xl">{project.problematic}</p>
+              </div>
             )}
 
             {((typeof project.target === 'string' && project.target) ||
@@ -2038,41 +2111,38 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
             </div>
             )}
 
-            {/* Supports */}
+            {/* Mon rôle — missions + coordination de prestataires */}
+            {project.role && <RoleBlock role={project.role} />}
+
+            {/* Veille créative (mood board) — déroulable pour alléger la lecture */}
+            {project.moodboard && (
+              <Expandable key="exp-veille" label="Voir la veille créative" collapsedHeight={560}>
+                <MoodboardSection data={project.moodboard} onZoom={setLightboxImage} />
+              </Expandable>
+            )}
+
+            {/* Construction de l'identité visuelle — déroulable */}
+            {project.visualIdentity && (
+              <Expandable key="exp-identite" label="Voir la construction de l'identité" collapsedHeight={560}>
+                <IdentitySection data={project.visualIdentity} onZoom={setLightboxImage} />
+              </Expandable>
+            )}
+
+            {/* Réalisations (supports) */}
             {project.supports.length > 0 && (
-              <div className="bg-white p-8 rounded-2xl border border-night/5">
+              <div className="bg-white p-6 md:p-8 rounded-2xl border border-night/5">
                 <h3 className="text-2xl mb-6 flex items-center gap-3 text-night" style={{ fontFamily: 'var(--font-serif)' }}>
                   <div className="w-2 h-8 bg-accent rounded-full" />
                   Réalisations
                 </h3>
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
                   {project.supports.map((support, i) => (
                     <div key={i} className="flex items-center gap-3 p-4 bg-ivory rounded-lg">
-                      <div className="w-2 h-2 rounded-full bg-accent" />
-                      <span className="text-lg text-text-muted">{support}</span>
+                      <div className="w-2 h-2 rounded-full bg-accent shrink-0" />
+                      <span className="text-text-muted">{support}</span>
                     </div>
                   ))}
                 </div>
-              </div>
-            )}
-
-            {/* Impact */}
-            {project.impact && (
-              <div className="bg-gradient-to-br from-accent/5 to-accent-blue/5 p-8 rounded-2xl border border-accent/20">
-                <h3 className="text-2xl mb-4 flex items-center gap-3 text-night" style={{ fontFamily: 'var(--font-serif)' }}>
-                  <TrendingUp className="w-7 h-7 text-accent" />
-                  Impact &amp; Résultats Attendus
-                </h3>
-                <p className="text-lg text-text-muted leading-relaxed">{project.impact}</p>
-              </div>
-            )}
-
-            {/* Études de performance — une ou plusieurs (post, vidéo…) */}
-            {project.performances && project.performances.length > 0 && (
-              <div className="space-y-8">
-                {project.performances.map((perf, i) => (
-                  <PerformanceBlock key={i} data={perf} onZoom={setLightboxImage} />
-                ))}
               </div>
             )}
 
@@ -2228,6 +2298,59 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
                 </div>
               </div>
             )}
+
+            {/* Résultats clés — KPI globaux de l'événement */}
+            {project.results && project.results.length > 0 && (
+              <div className="bg-gradient-to-br from-accent/10 to-accent/5 p-6 md:p-8 rounded-2xl border border-accent/25">
+                <h3 className="text-2xl mb-6 flex items-center gap-3 text-night" style={{ fontFamily: 'var(--font-serif)' }}>
+                  <BarChart3 className="w-6 h-6 text-accent" />
+                  Résultats clés
+                </h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+                  {project.results.map((r, i) => (
+                    <div key={i} className="bg-white rounded-xl p-4 md:p-5 border border-accent/15">
+                      <p className="text-[9px] md:text-[10px] uppercase tracking-[0.22em] text-text-muted mb-2" style={{ fontWeight: 700 }}>
+                        {r.label}
+                      </p>
+                      <p
+                        className="text-xl md:text-3xl text-night leading-none"
+                        style={{ fontFamily: 'var(--font-serif)', fontWeight: 700, letterSpacing: '-0.02em' }}
+                      >
+                        {r.value}
+                      </p>
+                      {r.change && (
+                        <p className="text-xs text-accent-blue mt-2" style={{ fontWeight: 600 }}>
+                          {r.change}
+                        </p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Études de performance — une ou plusieurs (post, vidéo…) */}
+            {project.performances && project.performances.length > 0 && (
+              <div className="space-y-8">
+                {project.performances.map((perf, i) => (
+                  <PerformanceBlock key={i} data={perf} onZoom={setLightboxImage} />
+                ))}
+              </div>
+            )}
+
+            {/* Analyse & impact — interprétation des résultats */}
+            {project.impact && (
+              <div className="bg-gradient-to-br from-accent/5 to-accent-blue/5 p-6 md:p-8 rounded-2xl border border-accent/20">
+                <h3 className="text-2xl mb-4 flex items-center gap-3 text-night" style={{ fontFamily: 'var(--font-serif)' }}>
+                  <TrendingUp className="w-7 h-7 text-accent" />
+                  Analyse &amp; impact
+                </h3>
+                <p className="text-lg text-text-muted leading-relaxed max-w-4xl">{project.impact}</p>
+              </div>
+            )}
+
+            {/* Bilan */}
+            {project.bilan && <BilanBlock text={project.bilan} />}
 
             {/* Embedded slide viewer */}
             {project.documentUrl?.endsWith('.pdf') && (

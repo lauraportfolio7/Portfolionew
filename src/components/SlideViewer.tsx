@@ -23,7 +23,13 @@ export function SlideViewer({ pdfUrl, title }: SlideViewerProps) {
     setCurrentPage(1)
     setPdfDoc(null)
     setTotalPages(0)
-    pdfjsLib.getDocument(pdfUrl).promise.then((doc) => {
+    pdfjsLib.getDocument({
+      url: pdfUrl,
+      // Ne télécharge que les octets des pages affichées (requêtes HTTP Range)
+      // au lieu du PDF entier — essentiel pour les documents volumineux.
+      disableAutoFetch: true,
+      disableStream: false,
+    }).promise.then((doc) => {
       setPdfDoc(doc)
       setTotalPages(doc.numPages)
     })

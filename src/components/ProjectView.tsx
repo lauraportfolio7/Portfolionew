@@ -59,7 +59,11 @@ function CarouselLightbox({ item, onClose }: { item: CarouselItem; onClose: () =
 
   useEffect(() => {
     setPage(1); setPdfDoc(null); setTotal(0)
-    pdfjsLib.getDocument(item.pdfUrl).promise.then((doc) => {
+    pdfjsLib.getDocument({
+      url: item.pdfUrl,
+      disableAutoFetch: true,
+      disableStream: false,
+    }).promise.then((doc) => {
       setPdfDoc(doc); setTotal(doc.numPages)
     })
   }, [item.pdfUrl])

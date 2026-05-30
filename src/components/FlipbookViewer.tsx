@@ -24,17 +24,25 @@ type PageImage = {
   ratio: number
 }
 
-/* Précharge toutes les pages d'un PDF en JPEG dataURL pour un feuilletage instantané. */
-async function preloadPdfPages(
+/* Rend les pages d'un PDF en JPEG une par une et les remonte au fur et à mesure
+   (la première page s'affiche sans attendre tout le document). Les octets sont
+   récupérés à la demande via les requêtes HTTP Range (disableAutoFetch). */
+async function streamPdfPages(
   pdfUrl: string,
   scale: number,
-  onProgress: (ratio: number) => void,
+  onTotal: (total: number) => void,
+  onPage: (page: PageImage, index: number) => void,
   signal: { cancelled: boolean },
-): Promise<PageImage[]> {
-  const doc = await pdfjsLib.getDocument(pdfUrl).promise
-  const pages: PageImage[] = []
+): Promise<void> {
+  const doc = await pdfjsLib.getDocument({
+    url: pdfUrl,
+    disableAutoFetch: true,
+    disableStream: false,
+  }).promise
+  if (signal.cancelled) return
+  onTotal(doc.numPages)
   for (let i = 1; i <= doc.numPages; i++) {
-    if (signal.cancelled) return pages
+    if (signal.cancelled) return
     const page = await doc.getPage(i)
     const viewport = page.getViewport({ scale })
     const canvas = document.createElement('canvas')
@@ -44,13 +52,9 @@ async function preloadPdfPages(
     ctx.fillStyle = '#ffffff'
     ctx.fillRect(0, 0, canvas.width, canvas.height)
     await page.render({ canvasContext: ctx, viewport } as any).promise
-    pages.push({
-      src: canvas.toDataURL('image/jpeg', 0.85),
-      ratio: viewport.height / viewport.width,
-    })
-    onProgress(i / doc.numPages)
+    if (signal.cancelled) return
+    onPage({ src: canvas.toDataURL('image/jpeg', 0.82), ratio: viewport.height / viewport.width }, i - 1)
   }
-  return pages
 }
 
 type Spread = [PageImage | null, PageImage | null]
@@ -448,7 +452,7 @@ function useReducedMotion() {
 
 export function FlipbookViewer({ pdfUrl, title }: FlipbookViewerProps) {
   const [pages, setPages] = useState<PageImage[]>([])
-  const [progress, setProgress] = useState(0)
+  const [total, setTotal] = useState(0)
   const [spread, setSpread] = useState(0)
   const [fullscreen, setFullscreen] = useState(false)
   const [containerW, setContainerW] = useState(0)
@@ -456,15 +460,21 @@ export function FlipbookViewer({ pdfUrl, title }: FlipbookViewerProps) {
   const fsContainerRef = useRef<HTMLDivElement>(null)
   const reduceMotion = useReducedMotion()
 
-  // Précharge l'intégralité du PDF en images JPEG.
+  // Rend les pages progressivement : la première s'affiche sans attendre le reste.
   useEffect(() => {
-    setPages([]); setSpread(0); setProgress(0)
+    setPages([]); setSpread(0); setTotal(0)
     const signal = { cancelled: false }
-    preloadPdfPages(pdfUrl, 1.5, setProgress, signal).then((loaded) => {
-      if (!signal.cancelled) setPages(loaded)
-    })
+    streamPdfPages(
+      pdfUrl,
+      1.25,
+      (t) => { if (!signal.cancelled) setTotal(t) },
+      (page) => { if (!signal.cancelled) setPages((prev) => [...prev, page]) },
+      signal,
+    )
     return () => { signal.cancelled = true }
   }, [pdfUrl])
+
+  const loadedAll = total > 0 && pages.length >= total
 
   // Mesure le conteneur pour dimensionner le livre.
   useEffect(() => {
@@ -526,14 +536,8 @@ export function FlipbookViewer({ pdfUrl, title }: FlipbookViewerProps) {
         )}
         <div className="rounded-2xl bg-[#e8e4e0] border border-night-secondary/10 shadow-[0_4px_24px_rgba(0,0,0,0.08)] py-16 flex flex-col items-center gap-4">
           <Loader2 className="w-7 h-7 text-night-secondary/70 animate-spin" />
-          <div className="w-64 h-2 bg-white/60 rounded-full overflow-hidden">
-            <div
-              className="h-full bg-night-secondary transition-[width] duration-300"
-              style={{ width: `${Math.round(progress * 100)}%` }}
-            />
-          </div>
           <p className="text-xs uppercase tracking-[0.25em] text-night-secondary/60" style={{ fontWeight: 600 }}>
-            Préchargement · {Math.round(progress * 100)}%
+            Chargement du document…
           </p>
         </div>
       </div>
@@ -576,7 +580,7 @@ export function FlipbookViewer({ pdfUrl, title }: FlipbookViewerProps) {
               <ChevronLeft className="w-4 h-4" />
             </button>
             <span className="text-sm text-night-secondary/60 tabular-nums">
-              {leftIdx && rightIdx ? `${leftIdx}–${rightIdx}` : leftIdx || rightIdx} / {pages.length}
+              {leftIdx && rightIdx ? `${leftIdx}–${rightIdx}` : leftIdx || rightIdx} / {total || pages.length}
             </span>
             <button
               onClick={() => setSpread((s) => Math.min(s + 1, totalSpreads - 1))}
@@ -592,6 +596,11 @@ export function FlipbookViewer({ pdfUrl, title }: FlipbookViewerProps) {
             >
               <Maximize2 className="w-4 h-4" />
             </button>
+            {!loadedAll && (
+              <span className="ml-1 inline-flex items-center gap-1.5 text-[11px] text-night-secondary/50" title="Chargement des pages suivantes">
+                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+              </span>
+            )}
           </div>
         </div>
       </div>
@@ -639,7 +648,7 @@ export function FlipbookViewer({ pdfUrl, title }: FlipbookViewerProps) {
                   <ChevronLeft className="w-5 h-5" />
                 </button>
                 <span className="text-white/70 text-sm tabular-nums">
-                  {leftIdx && rightIdx ? `${leftIdx}–${rightIdx}` : leftIdx || rightIdx} / {pages.length}
+                  {leftIdx && rightIdx ? `${leftIdx}–${rightIdx}` : leftIdx || rightIdx} / {total || pages.length}
                 </span>
                 <button
                   onClick={() => setSpread((s) => Math.min(s + 1, totalSpreads - 1))}

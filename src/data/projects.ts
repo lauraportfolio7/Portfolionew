@@ -242,11 +242,11 @@ export const featuredProjects: Project[] = [
       finalNote:
         'Aboutissement de la veille : le ciel austral de la Plaine des Sables, la chaise de réalisateur et l\'accroche héritée fusionnent en une identité à la fois cinématographique et profondément ancrée dans le territoire.',
       palette: [
-        { name: 'Nuit australe', color: '#16204F' },
-        { name: 'Or projecteur', color: '#E5A823' },
-        { name: 'Roche volcanique', color: '#6E3B27' },
-        { name: 'Sable de la plaine', color: '#C8A36A' },
-        { name: 'Brume ivoire', color: '#F4ECDA' },
+        { name: 'Roche volcanique', color: '#3A2E29' },
+        { name: 'Relief de la Plaine', color: '#8C7363' },
+        { name: 'Cuivre rosé du ciel', color: '#C68A66' },
+        { name: 'Lumière du projecteur', color: '#D4BEB0' },
+        { name: 'Blanc typographique', color: '#F4EFEC' },
       ],
     },
     visualIdentity: {

@@ -899,7 +899,7 @@ function MoodboardSection({ data, onZoom }: { data: Moodboard; onZoom: (src: str
           {data.palette.length > 0 && (
             <div className="mt-10 md:mt-12 max-w-2xl mx-auto">
               <p className="text-center text-[10px] uppercase tracking-[0.3em] text-ivory/45 mb-4" style={{ fontWeight: 700 }}>
-                Palette tirée des visuels
+                Palette extraite de l'affiche finale
               </p>
               <div className="grid grid-cols-5 gap-2 md:gap-3">
                 {data.palette.map((sw, i) => (

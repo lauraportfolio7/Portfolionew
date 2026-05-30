@@ -177,6 +177,7 @@ export interface Project {
   creativeChoices?: string[]
   documentUrl?: string
   brochureUrl?: string
+  brochurePages?: string[]
   brochureLabel?: string
   documentLabel?: string
   videoUrl?: string

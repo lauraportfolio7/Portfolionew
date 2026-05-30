@@ -15,7 +15,9 @@ import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.min.mjs?url'
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker
 
 interface FlipbookViewerProps {
-  pdfUrl: string
+  pdfUrl?: string
+  /** Pages déjà rendues en images (évite de charger/parser le PDF côté client). */
+  imagePages?: string[]
   title?: string
 }
 
@@ -443,7 +445,7 @@ function useReducedMotion() {
   return reduced
 }
 
-export function FlipbookViewer({ pdfUrl, title }: FlipbookViewerProps) {
+export function FlipbookViewer({ pdfUrl, imagePages, title }: FlipbookViewerProps) {
   const [pages, setPages] = useState<(PageImage | null)[]>([])
   const [total, setTotal] = useState(0)
   const [ratio, setRatio] = useState(1.41)
@@ -456,12 +458,26 @@ export function FlipbookViewer({ pdfUrl, title }: FlipbookViewerProps) {
   const renderingRef = useRef<Set<number>>(new Set())
   const reduceMotion = useReducedMotion()
 
-  // Ouvre le document et rend la couverture tout de suite (le reste à la demande).
+  // Ouvre le document et affiche la couverture tout de suite (le reste à la demande).
   useEffect(() => {
     setPages([]); setSpread(0); setTotal(0)
     docRef.current = null
     renderingRef.current = new Set()
     const signal = { cancelled: false }
+
+    // Mode images pré-rendues : aucun PDF à charger/parser côté client.
+    if (imagePages && imagePages.length > 0) {
+      setTotal(imagePages.length)
+      setPages(imagePages.map((src) => ({ src, ratio: 1 })))
+      const probe = new Image()
+      probe.onload = () => {
+        if (!signal.cancelled && probe.naturalWidth > 0) setRatio(probe.naturalHeight / probe.naturalWidth)
+      }
+      probe.src = imagePages[0]
+      return () => { signal.cancelled = true }
+    }
+
+    if (!pdfUrl) return () => { signal.cancelled = true }
     pdfjsLib.getDocument({ url: pdfUrl, disableAutoFetch: true, disableStream: false }).promise
       .then(async (doc) => {
         if (signal.cancelled) return
@@ -474,7 +490,7 @@ export function FlipbookViewer({ pdfUrl, title }: FlipbookViewerProps) {
         setPages((prev) => { const n = [...prev]; n[0] = cover; return n })
       })
     return () => { signal.cancelled = true }
-  }, [pdfUrl])
+  }, [pdfUrl, imagePages])
 
   // Rend à la demande la page courante et ses voisines (spread ±1) pour des flips fluides.
   useEffect(() => {

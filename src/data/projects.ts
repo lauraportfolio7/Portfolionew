@@ -126,6 +126,13 @@ import cafeEcoEvent4 from '@/assets/cafe-eco/event-4.webp'
 // --- Image Infographie Publicité contextuelle ---
 import infographiePubContextuelle from '@/assets/infographie-publicite-contextuelle/cover.png'
 
+// Pages du guide investisseur pré-rendues en images (flipbook sans PDF côté
+// client). Servies depuis /public, chargées à la demande par le navigateur.
+const guideBookPages = Array.from(
+  { length: 27 },
+  (_, i) => `/guide-pages/guide-${String(i + 1).padStart(2, '0')}.jpg`,
+)
+
 export const featuredProjects: Project[] = [
   {
     id: 'reunion-ecran',
@@ -473,7 +480,7 @@ export const featuredProjects: Project[] = [
     category: 'Entreprise',
     tags: ['Édition', 'Communication institutionnelle', 'Mise en page'],
     type: 'Projet entreprise – communication institutionnelle / édition / mise en page',
-    brochureUrl: '/documents/land-for-business-and-investment.pdf',
+    brochurePages: guideBookPages,
     brochureLabel: 'Feuilleter le guide',
     context: 'Projet réalisé au sein de La Réunion Développement, organisme chargé de promouvoir l\'attractivité économique du territoire. Le service communication souhaitait moderniser sa plaquette investisseurs, devenue obsolète. L\'objectif était de créer un support plus clair, plus actuel et mieux adapté à une cible internationale, en anglais, afin de valoriser les atouts économiques de La Réunion. Le projet a été réalisé de mi-mai à début juillet 2025, incluant veille, création, mise en page et production, sans prestataire externe.',
     slogan: 'Valoriser l\'attractivité économique de La Réunion à l\'international',

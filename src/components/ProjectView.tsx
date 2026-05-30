@@ -2362,7 +2362,7 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
             )}
 
             {/* Flipbook brochure viewer */}
-            {project.brochureUrl && (
+            {(project.brochureUrl || project.brochurePages) && (
               isGuideTheme ? (
                 <div
                   className="relative -mx-8 md:-mx-12 px-8 md:px-12 py-12 md:py-16 overflow-hidden"
@@ -2395,6 +2395,7 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
                   <div className="relative [&_.text-night-secondary]:text-ivory [&_h3]:text-ivory">
                     <FlipbookViewer
                       pdfUrl={project.brochureUrl}
+                      imagePages={project.brochurePages}
                       title={project.brochureLabel || 'Feuilleter la brochure'}
                     />
                   </div>
@@ -2402,6 +2403,7 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
               ) : (
                 <FlipbookViewer
                   pdfUrl={project.brochureUrl}
+                  imagePages={project.brochurePages}
                   title={project.brochureLabel || 'Feuilleter la brochure'}
                 />
               )

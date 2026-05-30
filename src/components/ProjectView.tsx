@@ -663,7 +663,7 @@ function PerformanceBlock({
             <span className="w-1.5 h-5 bg-accent rounded-full" aria-hidden="true" />
             Analyse
           </h4>
-          <p className="text-text-muted leading-[1.8] max-w-3xl">{data.analysis}</p>
+          <p className="text-text-muted leading-[1.8] w-full">{data.analysis}</p>
         </div>
       </div>
     </motion.section>
@@ -821,7 +821,7 @@ function MoodboardSection({ data, onZoom }: { data: Moodboard; onZoom: (src: str
           >
             {data.title}
           </h3>
-          <p className="text-ivory/65 leading-[1.8] max-w-3xl">{data.intro}</p>
+          <p className="text-ivory/65 leading-[1.8] w-full">{data.intro}</p>
 
           {/* Mots-clés */}
           <div className="flex flex-wrap items-center gap-x-3 gap-y-2 mt-7">
@@ -1064,7 +1064,7 @@ function IdentitySection({ data, onZoom }: { data: VisualIdentity; onZoom: (src:
           >
             {data.title}
           </h3>
-          <p className="text-text-muted leading-[1.8] max-w-3xl">{data.intro}</p>
+          <p className="text-text-muted leading-[1.8] w-full">{data.intro}</p>
         </div>
 
         {/* Sous-section 1 — Recherches et explorations */}
@@ -1124,7 +1124,7 @@ function IdentitySection({ data, onZoom }: { data: VisualIdentity; onZoom: (src:
           )}
 
           {/* Analyse de la galerie */}
-          <div className="mt-7 md:mt-8 flex gap-4 max-w-3xl">
+          <div className="mt-7 md:mt-8 flex gap-4 w-full">
             <Quote className="w-7 h-7 text-accent/50 shrink-0" />
             <p className="text-text-muted leading-[1.85] italic" style={{ fontFamily: 'var(--font-serif)' }}>
               {data.galleryAnalysis}
@@ -1237,7 +1237,7 @@ function RoleBlock({ role }: { role: ProjectRole }) {
         <div className="w-2 h-8 bg-accent rounded-full" />
         Mon rôle
       </h3>
-      {role.intro && <p className="text-text-muted leading-relaxed mb-6 max-w-4xl">{role.intro}</p>}
+      {role.intro && <p className="text-text-muted leading-relaxed mb-6 w-full">{role.intro}</p>}
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {role.missions.map((m, i) => {
@@ -1264,7 +1264,7 @@ function RoleBlock({ role }: { role: ProjectRole }) {
               {role.collaboration.label}
             </span>
           </div>
-          <p className="text-text-muted leading-relaxed max-w-4xl">{role.collaboration.text}</p>
+          <p className="text-text-muted leading-relaxed w-full">{role.collaboration.text}</p>
         </div>
       )}
     </div>
@@ -1287,7 +1287,7 @@ function BilanBlock({ text }: { text: string }) {
         <Flag className="w-6 h-6 text-accent" />
         Bilan
       </h3>
-      <p className="text-lg text-night/85 leading-[1.85] relative z-[1] max-w-4xl" style={{ fontFamily: 'var(--font-serif)' }}>
+      <p className="text-lg text-night/85 leading-[1.85] relative z-[1] w-full" style={{ fontFamily: 'var(--font-serif)' }}>
         {text}
       </p>
     </div>
@@ -1924,7 +1924,7 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
                   <div className="w-2 h-8 bg-accent rounded-full" />
                   Contexte
                 </h3>
-                <p className="text-lg text-text-muted leading-relaxed max-w-4xl">{project.context}</p>
+                <p className="text-lg text-text-muted leading-relaxed w-full">{project.context}</p>
               </div>
             )}
 
@@ -1934,7 +1934,7 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
                   <div className="w-2 h-8 bg-accent rounded-full" />
                   Problématique
                 </h3>
-                <p className="text-lg text-text-muted leading-relaxed italic max-w-4xl">{project.problematic}</p>
+                <p className="text-lg text-text-muted leading-relaxed italic w-full">{project.problematic}</p>
               </div>
             )}
 
@@ -2345,7 +2345,7 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
                   <TrendingUp className="w-7 h-7 text-accent" />
                   Analyse &amp; impact
                 </h3>
-                <p className="text-lg text-text-muted leading-relaxed max-w-4xl">{project.impact}</p>
+                <p className="text-lg text-text-muted leading-relaxed w-full">{project.impact}</p>
               </div>
             )}
 

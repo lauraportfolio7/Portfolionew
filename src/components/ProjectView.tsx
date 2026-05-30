@@ -607,7 +607,7 @@ function PerformanceBlock({
             )}
 
             {/* Capture + métriques secondaires */}
-            <div className="mt-6 grid lg:grid-cols-2 gap-8 items-start">
+            <div className="mt-6 grid lg:grid-cols-2 gap-8 items-center">
               {Capture}
               <div className="grid grid-cols-2 gap-3">
                 {data.metrics.map((m, i) => (
@@ -626,7 +626,7 @@ function PerformanceBlock({
           </>
         ) : (
           /* Mode compact : capture à gauche, KPI à droite */
-          <div className="grid lg:grid-cols-2 gap-8 mt-8 items-start">
+          <div className="grid lg:grid-cols-2 gap-8 mt-8 items-center">
             {Capture}
             <div className="space-y-4">
               {data.highlights.map((h, i) => (

@@ -149,6 +149,21 @@ const disneyQuestionnairePages = Array.from(
   (_, i) => `/disney-questionnaire/q-${String(i + 1).padStart(2, '0')}.jpg`,
 )
 
+// Documents pré-rendus en images (chargement instantané, sans PDF.js côté
+// client). Servis depuis /public, chargés à la demande par le navigateur.
+const docPages = (slug: string, count: number) =>
+  Array.from({ length: count }, (_, i) => `/${slug}/page-${String(i + 1).padStart(2, '0')}.jpg`)
+
+const benchmarkRsPages = docPages('benchmark-rs', 25)
+const charte48hPages = docPages('charte-48h', 5)
+const spotifyDiapoPages = docPages('spotify', 12)
+const infographiePubPages = docPages('infographie-pub', 1)
+const brochureCyberPages = docPages('brochure-cyber', 22)
+const eenPostPages = docPages('een-post', 5)
+const een1Pages = docPages('een-1', 5)
+const een2Pages = docPages('een-2', 6)
+const een3Pages = docPages('een-3', 5)
+
 export const featuredProjects: Project[] = [
   {
     id: 'reunion-ecran',
@@ -922,7 +937,7 @@ export const otherProjects: Project[] = [
     category: 'École',
     tags: ['Rédaction', 'Mise en page', 'Publireportage'],
     type: 'Projet école – publireportage / rédaction / mise en page',
-    context: 'Projet réalisé dans le cadre de mon BTS Communication. L\'objectif était de concevoir un publireportage gastronomique pour le domaine viticole Vergelegen, situé à Somerset West en Afrique du Sud. Le domaine propose trois espaces culinaires distincts — le Camphors, restaurant gastronomique ; le Stables, bistrot décontracté ; et le Picnic, expérience en plein air au cœur des jardins historiques. Le travail portait sur la rédaction des textes, la mise en page et la direction artistique du publireportage, avec un rendu élégant et immersif destiné à la presse gastronomique.',
+    context: 'Projet réalisé dans le cadre de mon BTS Communication. L\'objectif était de concevoir un publireportage gastronomique pour le domaine viticole Vergelegen, situé à Somerset West en Afrique du Sud. Le domaine propose trois espaces culinaires distincts : un restaurant gastronomique, un bistrot décontracté et une expérience de pique-nique en plein air au cœur des jardins historiques. Le travail portait sur la rédaction des textes, la mise en page et la direction artistique du publireportage, avec un rendu élégant et immersif destiné à la presse gastronomique.',
     slogan: 'Vergelegen — Une expérience culinaire au cœur de la nature sud-africaine',
     target: 'Lecteurs de presse gastronomique et œnologique, amateurs de voyages et de découvertes culinaires, touristes haut de gamme',
     objectives: {
@@ -993,7 +1008,7 @@ export const otherProjects: Project[] = [
       'Mention finale « Une initiative CRIJ Réunion »',
     ],
     impact: 'Une vidéo engagée, positive, sincère et créative, qui propose une interprétation contemporaine des valeurs de la République et qui s\'adresse directement à un public jeune.',
-    gallery: [liberteImage],
+    gallery: [],
   },
   {
     id: 'nespresso',
@@ -1075,7 +1090,7 @@ export const otherProjects: Project[] = [
     },
     supports: ['Vidéo publicitaire', 'Direction artistique moderne', 'Tournage et montage', 'Diffusion digitale'],
     impact: 'Une vidéo moderne et engageante qui valorise l\'importance des mots et modernise l\'image de la marque Le Robert auprès d\'un public jeune.',
-    gallery: [leRobertImage],
+    gallery: [],
   },
   {
     id: '48h-chrono',
@@ -1083,6 +1098,7 @@ export const otherProjects: Project[] = [
     description: 'Challenge créatif de 48h en équipe : création d\'une identité visuelle complète, d\'une stratégie de lancement et de supports de communication pour le lancement des Crousty Bowls de T\'Crousty.',
     image: chrono48hKakemono,
     documentUrl: '/documents/charte-graphique-t-crousty.pdf',
+    documentPages: charte48hPages,
     documentLabel: 'Charte graphique',
     category: 'École',
     tags: ['Branding', 'Stratégie', 'Événementiel', 'Social Media'],
@@ -1107,6 +1123,7 @@ export const otherProjects: Project[] = [
     image: spotifyCarte,
     tabletMockup: true,
     documentUrl: '/documents/spotify-diapo.pdf',
+    documentPages: spotifyDiapoPages,
     documentLabel: 'Voir la présentation',
     category: 'École',
     tags: ['Marketing', 'Stratégie', 'Médias', 'Digital'],
@@ -1344,6 +1361,7 @@ export const otherProjects: Project[] = [
     image: benchmarkCarte,
     laptopMockup: true,
     documentUrl: '/documents/benchmark-reseaux-sociaux.pdf',
+    documentPages: benchmarkRsPages,
     documentLabel: 'Voir le benchmark',
     category: 'Entreprise',
     tags: ['Social Media', 'Veille', 'Stratégie digitale'],
@@ -1367,6 +1385,7 @@ export const otherProjects: Project[] = [
     image: ficBrochureCover,
     bookletMockup: true,
     brochureUrl: '/documents/brochure-fic.pdf',
+    brochurePages: brochureCyberPages,
     category: 'Entreprise',
     tags: ['Édition', 'Digital', 'Cybersécurité'],
     type: 'Projet entreprise – édition / communication institutionnelle',
@@ -1402,10 +1421,10 @@ export const otherProjects: Project[] = [
     impact: 'Une série de publications qui présente l\'offre de services du réseau EEN d\'un point de vue global, et encourage les entreprises locales à s\'engager dans des démarches d\'internationalisation.',
     gallery: [],
     carousels: [
-      { label: 'Carrousel — Faciliter l\'internationalisation', pdfUrl: '/documents/post-een.pdf', cover: postEenCoverExisting },
-      { label: 'Carrousel EEN — 1', pdfUrl: '/documents/een-1.pdf', cover: postEenCover1 },
-      { label: 'Carrousel EEN — 2', pdfUrl: '/documents/een-2.pdf', cover: postEenCover2 },
-      { label: 'Carrousel EEN — 3', pdfUrl: '/documents/een-3.pdf', cover: postEenCover3 },
+      { label: 'Carrousel — Faciliter l\'internationalisation', pdfUrl: '/documents/post-een.pdf', cover: postEenCoverExisting, pages: eenPostPages },
+      { label: 'Carrousel EEN — 1', pdfUrl: '/documents/een-1.pdf', cover: postEenCover1, pages: een1Pages },
+      { label: 'Carrousel EEN — 2', pdfUrl: '/documents/een-2.pdf', cover: postEenCover2, pages: een2Pages },
+      { label: 'Carrousel EEN — 3', pdfUrl: '/documents/een-3.pdf', cover: postEenCover3, pages: een3Pages },
     ],
   },
   {
@@ -1471,6 +1490,7 @@ export const otherProjects: Project[] = [
     impact: '',
     gallery: [],
     documentUrl: '/documents/infographie-publicite-contextuelle.pdf',
+    documentPages: infographiePubPages,
     documentLabel: 'Voir l\'infographie en PDF',
   },
 ]

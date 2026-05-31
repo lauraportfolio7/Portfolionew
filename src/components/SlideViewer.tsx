@@ -7,11 +7,149 @@ import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.min.mjs?url'
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker
 
 interface SlideViewerProps {
-  pdfUrl: string
+  pdfUrl?: string
+  /* Pages pré-rendues en images (chargement instantané, sans PDF.js). Si
+     fourni, le rendu PDF est ignoré au profit de ces images. */
+  imagePages?: string[]
   title?: string
 }
 
-export function SlideViewer({ pdfUrl, title }: SlideViewerProps) {
+/* Lecteur de diapositives à partir d'images pré-rendues — ouverture
+   instantanée, une page visible, navigation + plein écran. */
+function ImageSlides({ pages, title }: { pages: string[]; title?: string }) {
+  const [index, setIndex] = useState(0)
+  const [fullscreen, setFullscreen] = useState(false)
+  const total = pages.length
+
+  const go = useCallback(
+    (dir: number) => setIndex((i) => Math.min(total - 1, Math.max(0, i + dir))),
+    [total],
+  )
+
+  useEffect(() => {
+    if (!fullscreen) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') go(1)
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') go(-1)
+      else if (e.key === 'Escape') setFullscreen(false)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [fullscreen, go])
+
+  if (total === 0) return null
+
+  return (
+    <>
+      <div className="mt-8">
+        {title && (
+          <h3 className="text-xl mb-4 text-night-secondary text-center" style={{ fontFamily: 'var(--font-serif)' }}>
+            {title}
+          </h3>
+        )}
+        <div className="rounded-2xl overflow-hidden shadow-[0_4px_24px_rgba(0,0,0,0.08)] border border-night-secondary/10 bg-[#f0f0f0] relative">
+          <div className="flex items-center justify-center p-4">
+            <img
+              src={pages[index]}
+              alt={`Page ${index + 1} sur ${total}`}
+              loading="lazy"
+              draggable={false}
+              className="rounded-lg shadow-sm max-w-full max-h-[70vh] object-contain"
+            />
+          </div>
+          <div className="flex items-center justify-center gap-4 pb-4">
+            <button
+              onClick={() => go(-1)}
+              disabled={index === 0}
+              aria-label="Page précédente"
+              data-cursor="hover"
+              className="w-9 h-9 rounded-full bg-white shadow-md flex items-center justify-center disabled:opacity-30 hover:bg-night-secondary hover:text-white transition-colors"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+            <span className="text-sm text-night-secondary/60 tabular-nums">{index + 1} / {total}</span>
+            <button
+              onClick={() => go(1)}
+              disabled={index === total - 1}
+              aria-label="Page suivante"
+              data-cursor="hover"
+              className="w-9 h-9 rounded-full bg-white shadow-md flex items-center justify-center disabled:opacity-30 hover:bg-night-secondary hover:text-white transition-colors"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => setFullscreen(true)}
+              aria-label="Plein écran"
+              title="Plein écran"
+              data-cursor="hover"
+              className="w-9 h-9 rounded-full bg-white shadow-md flex items-center justify-center hover:bg-night-secondary hover:text-white transition-colors ml-2"
+            >
+              <Maximize2 className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <AnimatePresence>
+        {fullscreen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[70] bg-black/80 backdrop-blur-md flex flex-col items-center justify-center"
+            onClick={() => setFullscreen(false)}
+          >
+            <button
+              onClick={() => setFullscreen(false)}
+              aria-label="Fermer"
+              className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+            <div onClick={(e) => e.stopPropagation()} className="flex flex-col items-center gap-6 max-w-[95vw]">
+              <img
+                src={pages[index]}
+                alt={`Page ${index + 1} sur ${total}`}
+                draggable={false}
+                className="rounded-lg max-w-[92vw] max-h-[80vh] object-contain"
+              />
+              <div className="flex items-center gap-6">
+                <button
+                  onClick={() => go(-1)}
+                  disabled={index === 0}
+                  aria-label="Page précédente"
+                  className="w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white disabled:opacity-30 transition-colors"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+                <span className="text-white/70 text-sm tabular-nums">{index + 1} / {total}</span>
+                <button
+                  onClick={() => go(1)}
+                  disabled={index === total - 1}
+                  aria-label="Page suivante"
+                  className="w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white disabled:opacity-30 transition-colors"
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  )
+}
+
+export function SlideViewer({ pdfUrl, imagePages, title }: SlideViewerProps) {
+  // Mode images pré-rendues : aucun téléchargement de PDF, affichage immédiat.
+  if (imagePages && imagePages.length > 0) {
+    return <ImageSlides pages={imagePages} title={title} />
+  }
+  if (!pdfUrl) return null
+  return <PdfSlideViewer pdfUrl={pdfUrl} title={title} />
+}
+
+function PdfSlideViewer({ pdfUrl, title }: { pdfUrl: string; title?: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const fullscreenCanvasRef = useRef<HTMLCanvasElement>(null)
   const [pdfDoc, setPdfDoc] = useState<pdfjsLib.PDFDocumentProxy | null>(null)

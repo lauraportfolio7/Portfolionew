@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
+import { Logo } from '@/components/Logo'
 
 const navItems = [
   { href: '#accueil', id: 'accueil', label: 'Accueil' },
@@ -66,10 +67,16 @@ export function Navigation() {
           <a
             href="#accueil"
             onClick={(e) => scrollTo(e, '#accueil')}
-            className={`text-[1.25rem] tracking-tight transition-colors duration-500 shrink-0 relative z-10 ${textBase} ${textHover}`}
-            style={{ fontFamily: 'var(--font-serif)', fontWeight: 700 }}
+            aria-label="Laura Cerveaux — Accueil"
+            className={`flex items-center gap-2.5 transition-colors duration-500 shrink-0 relative z-10 ${textBase} ${textHover}`}
           >
-            Laura C.
+            <Logo className="h-8 w-auto" />
+            <span
+              className="text-[1.25rem] tracking-tight hidden sm:inline"
+              style={{ fontFamily: 'var(--font-serif)', fontWeight: 700 }}
+            >
+              Laura&nbsp;C.
+            </span>
           </a>
 
           <div className="hidden lg:flex items-center gap-10 xl:gap-12">

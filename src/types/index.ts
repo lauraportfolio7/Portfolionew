@@ -22,6 +22,8 @@ export interface CarouselItem {
   label: string
   pdfUrl: string
   cover: string
+  /* Pages pré-rendues en images (affichage instantané dans la lightbox). */
+  pages?: string[]
 }
 
 export interface GalleryItem {
@@ -338,6 +340,10 @@ export interface Project {
   tone?: string[]
   creativeChoices?: string[]
   documentUrl?: string
+  /* Pages du document pré-rendues en images (chargement instantané, sans
+     PDF.js). Si présent, le SlideViewer les utilise ; documentUrl ne sert
+     plus qu'au bouton « voir le document complet ». */
+  documentPages?: string[]
   brochureUrl?: string
   brochurePages?: string[]
   brochureLabel?: string

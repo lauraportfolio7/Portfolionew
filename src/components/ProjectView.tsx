@@ -58,8 +58,78 @@ import { Picture } from '@/components/Picture'
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker
 
-/* Lightbox plein écran pour parcourir un carrousel PDF page par page. */
+/* Lightbox plein écran pour parcourir un carrousel page par page (images
+   pré-rendues si disponibles, sinon rendu PDF). */
 function CarouselLightbox({ item, onClose }: { item: CarouselItem; onClose: () => void }) {
+  if (item.pages && item.pages.length > 0) {
+    return <CarouselImageLightbox item={item} pages={item.pages} onClose={onClose} />
+  }
+  return <CarouselPdfLightbox item={item} onClose={onClose} />
+}
+
+/* Carrousel à partir d'images pré-rendues — ouverture instantanée. */
+function CarouselImageLightbox({ item, pages, onClose }: { item: CarouselItem; pages: string[]; onClose: () => void }) {
+  const [page, setPage] = useState(1)
+  const total = pages.length
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') setPage((p) => Math.min(p + 1, total))
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') setPage((p) => Math.max(p - 1, 1))
+      else if (e.key === 'Escape') onClose()
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [total, onClose])
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[70] flex flex-col items-center justify-center bg-black/70 backdrop-blur-md"
+      onClick={onClose}
+    >
+      <button
+        onClick={onClose}
+        className="absolute top-5 right-5 z-10 w-11 h-11 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center text-white transition-colors"
+        aria-label="Fermer"
+      >
+        <X className="w-5 h-5" />
+      </button>
+      <div onClick={(e) => e.stopPropagation()} className="flex flex-col items-center gap-5 max-w-[95vw]">
+        <img
+          src={pages[page - 1]}
+          alt={`${item.label} — page ${page}`}
+          draggable={false}
+          className="rounded-lg shadow-2xl max-w-[92vw] max-h-[80vh] object-contain"
+        />
+        <div className="flex items-center gap-5 text-white">
+          <button
+            onClick={() => setPage((p) => Math.max(p - 1, 1))}
+            disabled={page === 1}
+            className="w-11 h-11 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center disabled:opacity-30 transition-colors"
+            aria-label="Précédent"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+          <span className="text-sm tabular-nums">{page} / {total} — {item.label}</span>
+          <button
+            onClick={() => setPage((p) => Math.min(p + 1, total))}
+            disabled={page === total}
+            className="w-11 h-11 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center disabled:opacity-30 transition-colors"
+            aria-label="Suivant"
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
+        </div>
+      </div>
+    </motion.div>
+  )
+}
+
+/* Carrousel PDF rendu page par page côté client (fallback). */
+function CarouselPdfLightbox({ item, onClose }: { item: CarouselItem; onClose: () => void }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [pdfDoc, setPdfDoc] = useState<pdfjsLib.PDFDocumentProxy | null>(null)
   const [page, setPage] = useState(1)
@@ -2630,9 +2700,14 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
               </div>
             )}
 
-            {/* Embedded slide viewer */}
-            {project.documentUrl?.endsWith('.pdf') && (
-              <SlideViewer pdfUrl={project.documentUrl} title={project.documentLabel || 'Document'} />
+            {/* Embedded slide viewer — images pré-rendues si dispo (instantané),
+                sinon rendu PDF côté client. */}
+            {project.documentPages && project.documentPages.length > 0 ? (
+              <SlideViewer imagePages={project.documentPages} title={project.documentLabel || 'Document'} />
+            ) : (
+              project.documentUrl?.endsWith('.pdf') && (
+                <SlideViewer pdfUrl={project.documentUrl} title={project.documentLabel || 'Document'} />
+              )
             )}
 
             {/* Flipbook brochure viewer */}

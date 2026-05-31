@@ -14,7 +14,6 @@ export const milestones: Milestone[] = [
     title: 'L1 Psychologie – Rennes 2',
     detail: 'Première année de licence de psychologie à l\'université Rennes 2.',
     type: 'formation',
-    note: 'Année non validée',
   },
   {
     id: 'musico',
@@ -22,7 +21,6 @@ export const milestones: Milestone[] = [
     title: 'L1 Musicologie – Rennes 2',
     detail: 'Première année de licence de musicologie à l\'université Rennes 2.',
     type: 'formation',
-    note: 'Année non validée',
   },
   {
     id: 'leclerc',
@@ -54,9 +52,9 @@ export const milestones: Milestone[] = [
   },
   {
     id: 'licence-pro',
-    year: 'Sept. 2026',
-    title: 'Licence pro Image et Son – Saint-Brieuc',
-    detail: 'Objectif : intégrer la licence professionnelle Image et Son à Saint-Brieuc pour approfondir mes compétences en audiovisuel.',
+    year: '2026',
+    title: 'Une licence pro Image & Son pour me rapprocher du métier qui m\'anime vraiment.',
+    detail: '',
     type: 'objectif',
     isFuture: true,
   },

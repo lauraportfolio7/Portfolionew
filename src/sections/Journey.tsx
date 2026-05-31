@@ -122,15 +122,18 @@ function MilestoneRow({ milestone: m, index }: { milestone: Milestone; index: nu
       {/* Type, titre, détail, note */}
       <div className="md:col-span-9 lg:col-span-9 space-y-3">
         <div className="flex items-center gap-3 flex-wrap">
-          <span
-            className="font-mono text-[10px] uppercase tracking-[0.3em] px-3 py-1.5 border"
-            style={{
-              borderColor: m.isFuture ? 'var(--color-gold)' : 'var(--color-bone)',
-              color: m.isFuture ? 'var(--color-gold)' : 'var(--color-bone)',
-            }}
-          >
-            {TYPE_LABELS[m.type]}
-          </span>
+          {/* Pour le « prochain chapitre », on ne garde que ce badge. */}
+          {!m.isFuture && (
+            <span
+              className="font-mono text-[10px] uppercase tracking-[0.3em] px-3 py-1.5 border"
+              style={{
+                borderColor: 'var(--color-bone)',
+                color: 'var(--color-bone)',
+              }}
+            >
+              {TYPE_LABELS[m.type]}
+            </span>
+          )}
           {m.isFuture && (
             <span
               className="font-mono text-[10px] uppercase tracking-[0.3em] px-3 py-1.5"
@@ -148,9 +151,11 @@ function MilestoneRow({ milestone: m, index }: { milestone: Milestone; index: nu
           {m.title}
         </h3>
 
-        <p className="font-body text-base md:text-lg leading-[1.65] max-w-3xl text-bone/80">
-          {m.detail}
-        </p>
+        {m.detail && (
+          <p className="font-body text-base md:text-lg leading-[1.65] max-w-3xl text-bone/80">
+            {m.detail}
+          </p>
+        )}
 
         {m.note && (
           <p

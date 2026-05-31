@@ -2484,6 +2484,7 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
                             title={`Vidéo ${i + 1}`}
                             className="w-full h-full object-contain"
                             controls
+                            playsInline
                             preload="metadata"
                           />
                         ) : (

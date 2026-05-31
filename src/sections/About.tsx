@@ -48,7 +48,7 @@ export function About() {
             className="text-5xl md:text-6xl lg:text-7xl text-night leading-[1.05] max-w-4xl"
             style={{ fontFamily: 'var(--font-serif)', fontWeight: 700, letterSpacing: '-0.02em' }}
           >
-            Je ne fais pas que communiquer,
+            La communication est pour moi un moyen de
             <br />
             <span
               className="italic inline-block"
@@ -60,7 +60,7 @@ export function About() {
                 backgroundClip: 'text',
               }}
             >
-              je construis des récits.
+              faire ressentir autant que de faire comprendre.
             </span>
           </h2>
         </motion.div>
@@ -77,13 +77,13 @@ export function About() {
           >
             {[
               <>
-                Je suis en <span className="text-night" style={{ fontWeight: 600 }}>BTS Communication en alternance</span>, un parcours qui me sert de passerelle vers ce qui m'anime vraiment : <span className="text-accent-blue" style={{ fontWeight: 600 }}>le son et l'image</span>.
+                Je suis en <span className="text-night" style={{ fontWeight: 600 }}>BTS Communication en alternance</span>, une formation qui me permet de développer des compétences en stratégie, création de contenus et gestion de projets à travers des expériences concrètes menées à l'école et en entreprise.
               </>,
               <>
-                J'y développe à la fois des compétences en communication et une sensibilité créative, à travers des projets réels menés en entreprise — événementiel, édition, branding, contenus digitaux.
+                Depuis toujours, la <span className="text-accent-blue" style={{ fontWeight: 600 }}>musique</span> occupe une place importante dans ma vie. C'est ce qui m'a naturellement conduit à m'intéresser à l'univers du son et à la manière dont une émotion peut être transmise, partagée et ressentie.
               </>,
               <>
-                Mon objectif est d'intégrer une <span className="text-night" style={{ fontWeight: 600 }}>licence professionnelle dans le domaine du son et de l'image</span>, un univers plus proche de la musique et de la création visuelle.
+                Aujourd'hui, je me dirige vers une <span className="text-night" style={{ fontWeight: 600 }}>licence professionnelle dans le domaine du son</span>, avec l'envie de mettre ma créativité au service de projets capables de toucher les gens et de créer une véritable expérience.
               </>,
             ].map((node, i) => (
               <motion.p
@@ -119,7 +119,7 @@ export function About() {
                 className="text-xl md:text-2xl text-night leading-[1.45] italic mb-6 relative z-10"
                 style={{ fontFamily: 'var(--font-serif)', fontWeight: 500 }}
               >
-                Mon vrai métier : faire en sorte qu'on ait envie d'écouter.
+                Mon vrai métier : créer ce qui touche les gens.
               </p>
               <div className="w-12 h-[2px] bg-accent mb-3" aria-hidden="true" />
               <p className="text-[11px] uppercase tracking-[0.3em] text-text-muted" style={{ fontWeight: 600 }}>
@@ -129,6 +129,55 @@ export function About() {
 
           </motion.div>
         </div>
+
+        {/* Mon univers musical — vidéo cover */}
+        <motion.div
+          initial={{ opacity: 0, y: 28 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-16 md:mt-20"
+        >
+          <div
+            className="grid md:grid-cols-2 gap-8 md:gap-10 items-center p-6 md:p-8 rounded-3xl border border-accent/20"
+            style={{
+              background:
+                'linear-gradient(135deg, rgba(255,252,244,0.95) 0%, rgba(251,244,221,0.92) 100%)',
+              boxShadow: '0 18px 50px -16px rgba(176,116,16,0.18)',
+            }}
+          >
+            <div className="order-2 md:order-1 text-center md:text-left">
+              <div className="flex items-center gap-3 justify-center md:justify-start mb-4">
+                <div className="w-8 h-[1px] bg-accent" aria-hidden="true" />
+                <span className="text-[10px] uppercase tracking-[0.4em] text-accent" style={{ fontWeight: 600 }}>
+                  Cover
+                </span>
+              </div>
+              <h3
+                className="text-3xl md:text-4xl text-night leading-[1.1] mb-4"
+                style={{ fontFamily: 'var(--font-serif)', fontWeight: 700, letterSpacing: '-0.01em' }}
+              >
+                Mon univers musical
+              </h3>
+              <p className="text-[16px] md:text-[17px] leading-[1.8] text-text-secondary max-w-xl mx-auto md:mx-0">
+                La musique occupe une place centrale dans mon parcours. Cette reprise reflète ce qui m'anime :
+                transmettre une émotion à travers le son.
+              </p>
+            </div>
+
+            <div className="order-1 md:order-2">
+              <div className="relative rounded-2xl overflow-hidden bg-night/90 aspect-video shadow-[0_14px_40px_-12px_rgba(176,116,16,0.35)]">
+                <video
+                  src="/videos/cover-musique.mp4"
+                  className="absolute inset-0 w-full h-full object-cover"
+                  controls
+                  playsInline
+                  preload="metadata"
+                  aria-label="Reprise musicale de Laura"
+                />
+              </div>
+            </div>
+          </div>
+        </motion.div>
       </div>
     </section>
   )

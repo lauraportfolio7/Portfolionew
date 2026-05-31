@@ -1,8 +1,7 @@
 import { motion } from 'motion/react'
 import { useInView } from '@/hooks/useInView'
 import { Music2, Piano, Mic, Laptop } from 'lucide-react'
-import { tracks, practices } from '@/data/music'
-import { TrackList } from '@/components/TrackList'
+import { practices } from '@/data/music'
 
 const practiceIcons = { Piano, 'Ukulélé': Music2, Chant: Mic, MAO: Laptop } as const
 
@@ -51,7 +50,7 @@ export function Music() {
             </span>
           </h2>
           <p className="text-ivory-warm/70 max-w-2xl mx-auto leading-relaxed text-base mt-4">
-            Piano, ukulélé, voix, MAO. J'écris mes propres morceaux depuis quelques années — en voici deux.
+            Piano, ukulélé, voix, MAO. J'écris mes propres morceaux depuis quelques années : une manière de transmettre une émotion à travers le son.
           </p>
         </motion.div>
 
@@ -77,15 +76,6 @@ export function Music() {
               </motion.div>
             )
           })}
-        </motion.div>
-
-        {/* Spotify-minimal player */}
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-        >
-          <TrackList tracks={tracks} />
         </motion.div>
       </div>
     </section>

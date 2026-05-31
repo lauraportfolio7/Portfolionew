@@ -117,7 +117,7 @@ export function Hero() {
                   className="text-base md:text-lg text-ivory-warm/85 leading-relaxed"
                   style={{ fontFamily: 'var(--font-sans)', fontWeight: 300 }}
                 >
-                  Communication, création, son <span className="text-accent">&amp;</span> image.
+                  Entre communication, créativité <span className="text-accent">&amp;</span> réflexion stratégique, chaque projet raconte une histoire différente.
                 </p>
                 <p className="mt-2 text-sm md:text-base text-ivory-warm/55 leading-relaxed max-w-md">
                   Je construis des récits qui donnent envie qu'on les écoute.

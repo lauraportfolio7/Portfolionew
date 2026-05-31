@@ -1,7 +1,8 @@
 import { motion } from 'motion/react'
 import { useInView } from '@/hooks/useInView'
 import { Music2, Piano, Mic, Laptop } from 'lucide-react'
-import { practices } from '@/data/music'
+import { tracks, practices } from '@/data/music'
+import { TrackList } from '@/components/TrackList'
 
 const practiceIcons = { Piano, 'Ukulélé': Music2, Chant: Mic, MAO: Laptop } as const
 
@@ -76,6 +77,15 @@ export function Music() {
               </motion.div>
             )
           })}
+        </motion.div>
+
+        {/* Lecteur des morceaux */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <TrackList tracks={tracks} />
         </motion.div>
       </div>
     </section>

@@ -510,6 +510,24 @@ export const featuredProjects: Project[] = [
         title: 'La problématique',
         statement: 'Dans le cadre d\'une projection du film Vice-Versa au Grand Rex à Paris, comment concevoir une communication authentique et impactante qui donne aux jeunes adultes envie de participer à un événement émotionnel fort, en répondant à leur besoin de connexion sincère autour de leurs émotions ?',
       },
+      objectives: {
+        title: 'Objectifs de communication',
+        intro: 'Trois niveaux d\'objectifs pour guider le public, du faire-savoir au faire-agir.',
+        cognitive: [
+          'Faire connaître l\'événement.',
+          'Le positionner comme un espace unique pour vivre une expérience émotionnelle forte.',
+        ],
+        affective: [
+          'Créer un lien personnel avec le thème du film et l\'événement.',
+          'Donner confiance et encourager à explorer ses émotions.',
+          'Susciter l\'adhésion par une communication sincère et bienveillante.',
+        ],
+        conative: [
+          'Participer à la projection au Grand Rex.',
+          'Rester ou revenir pour les moments d\'accompagnement après la séance.',
+          'Partager l\'événement sur les différents canaux.',
+        ],
+      },
       audience: {
         title: 'Cible & Persona',
         intro: 'Une cible définie à partir des études, incarnée par un persona représentatif.',

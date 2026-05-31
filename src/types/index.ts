@@ -282,6 +282,12 @@ export interface DisneyCaseStudy {
   grandRex: DisneyBlock & { cards: DisneyIconCard[]; conclusion: string }
   // 4. Problématique
   problematic: DisneyBlock & { statement: string }
+  // 8. Objectifs de communication (cognitif / affectif / conatif)
+  objectives: DisneyBlock & {
+    cognitive: string[]
+    affective: string[]
+    conative: string[]
+  }
   // 5. Cible & Persona
   audience: DisneyBlock & { segments: DisneyIconCard[]; persona: DisneyPersona }
   // 6. Mon rôle

@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react'
 import {
   ChevronLeft,
   ChevronRight,
+  ChevronDown,
   X,
   Maximize2,
   ExternalLink,
@@ -11,6 +12,9 @@ import {
   Sparkles,
   Lightbulb,
   ArrowRight,
+  Brain,
+  Heart,
+  Zap,
 } from 'lucide-react'
 import type { DisneyCaseStudy as DisneyCaseStudyData } from '@/types'
 
@@ -148,6 +152,58 @@ function Disclaimer({ text, color = JOY }: { text: string; color?: string }) {
     >
       <Lightbulb className="w-4 h-4 shrink-0 mt-0.5" style={{ color }} />
       <span className="leading-snug" style={{ fontWeight: 500 }}>{text}</span>
+    </div>
+  )
+}
+
+/* Accordéon repliable — pour les contenus secondaires (ex. studios concurrents),
+   afin qu'ils ne prennent pas plus de place que les études consommateurs. */
+function Accordion({
+  title,
+  subtitle,
+  color = FEAR,
+  defaultOpen = false,
+  children,
+}: {
+  title: string
+  subtitle?: string
+  color?: string
+  defaultOpen?: boolean
+  children: React.ReactNode
+}) {
+  const [open, setOpen] = useState(defaultOpen)
+  return (
+    <div className="rounded-2xl border border-night/5 overflow-hidden bg-white">
+      <button
+        onClick={() => setOpen((o) => !o)}
+        data-cursor="hover"
+        aria-expanded={open}
+        className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left transition-colors hover:bg-ivory-warm/40"
+      >
+        <span>
+          <span className="block text-night" style={{ fontWeight: 700 }}>{title}</span>
+          {subtitle && <span className="block text-xs text-text-muted mt-0.5">{subtitle}</span>}
+        </span>
+        <span
+          className="shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-transform"
+          style={{ background: `${color}1A`, color, transform: open ? 'rotate(180deg)' : 'none' }}
+        >
+          <ChevronDown className="w-4 h-4" />
+        </span>
+      </button>
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            className="overflow-hidden"
+          >
+            <div className="px-5 pb-5 pt-1 border-t border-night/5">{children}</div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }
@@ -385,6 +441,7 @@ export function DisneyCaseStudy({ data }: { data: DisneyCaseStudyData }) {
     brief,
     grandRex,
     problematic,
+    objectives,
     audience,
     role,
     research,
@@ -397,20 +454,27 @@ export function DisneyCaseStudy({ data }: { data: DisneyCaseStudyData }) {
     bilan,
   } = data
 
+  // Couleurs des trois niveaux d'objectifs.
+  const objectiveGroups = [
+    { key: 'cognitive', label: 'Cognitifs', sub: 'Faire connaître', icon: Brain, color: SAD, items: objectives.cognitive },
+    { key: 'affective', label: 'Affectifs', sub: 'Faire ressentir', icon: Heart, color: ANGER, items: objectives.affective },
+    { key: 'conative', label: 'Conatifs', sub: 'Faire agir', icon: Zap, color: DISGUST, items: objectives.conative },
+  ] as const
+
   return (
     <div className="space-y-12 md:space-y-16">
-      {/* 1. Contexte */}
+      {/* 1. Contexte du projet — contexte, brief, attentes + mon rôle */}
       <motion.section {...reveal}>
         <SectionHeader n={1} title={context.title} intro={context.intro} color={JOY} />
-        <div className="bg-ivory-warm/50 p-6 md:p-8 rounded-2xl border border-night/5">
+        <div className="bg-ivory-warm/50 p-6 md:p-8 rounded-2xl border border-night/5 mb-6">
           <p className="text-lg text-text-muted leading-relaxed w-full">{context.text}</p>
         </div>
-      </motion.section>
 
-      {/* 2. Brief */}
-      <motion.section {...reveal}>
-        <SectionHeader n={2} title={brief.title} intro={brief.intro} color={SAD} />
-        <div className="grid sm:grid-cols-2 gap-3">
+        {/* Le brief */}
+        <h4 className="text-night mb-3 flex items-center gap-2" style={{ fontWeight: 700 }}>
+          <span className="text-xl" aria-hidden="true">📋</span> {brief.title}
+        </h4>
+        <div className="grid sm:grid-cols-2 gap-3 mb-6">
           {brief.points.map((p, i) => (
             <div
               key={i}
@@ -426,39 +490,139 @@ export function DisneyCaseStudy({ data }: { data: DisneyCaseStudyData }) {
             </div>
           ))}
         </div>
+
+        {/* Mon rôle */}
+        <h4 className="text-night mb-3 flex items-center gap-2" style={{ fontWeight: 700 }}>
+          <span className="text-xl" aria-hidden="true">🙋‍♀️</span> {role.title}
+        </h4>
+        {role.intro && <p className="text-text-muted leading-relaxed mb-4 w-full">{role.intro}</p>}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+          {role.cards.map((c, i) => (
+            <div
+              key={i}
+              className="bg-white rounded-2xl p-4 border border-night/5 shadow-[0_2px_14px_-10px_rgba(22,32,77,0.3)] flex flex-col items-center text-center gap-2"
+            >
+              <span className="text-2xl leading-none" aria-hidden="true">{c.icon}</span>
+              <span className="text-night text-sm leading-snug" style={{ fontWeight: 600 }}>{c.title}</span>
+            </div>
+          ))}
+        </div>
       </motion.section>
 
-      {/* 3. Pourquoi le Grand Rex */}
+      {/* 2. Présentation du projet — diaporama (synthèse globale, placé très haut) */}
       <motion.section {...reveal}>
-        <SectionHeader n={3} title={grandRex.title} intro={grandRex.intro} color={ANGER} />
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {grandRex.cards.map((c, i) => (
-            <IconCard key={i} icon={c.icon} title={c.title} text={c.text} color={ANGER} />
+        <SectionHeader n={2} title={slideshow.title} intro={slideshow.intro} color={ANGER} />
+        <SlideShow pages={slideshow.pages} />
+        <div className="flex justify-center mt-5">
+          <a
+            href={slideshow.pdfUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-cursor="hover"
+            className="inline-flex items-center gap-3 px-7 py-3.5 rounded-2xl text-white transition-transform hover:-translate-y-0.5 shadow-[0_8px_28px_-12px_rgba(22,32,77,0.7)]"
+            style={{ background: NAVY }}
+          >
+            <Images className="w-5 h-5" />
+            <span style={{ fontFamily: 'var(--font-serif)' }}>{slideshow.pdfLabel}</span>
+            <ExternalLink className="w-4 h-4" />
+          </a>
+        </div>
+      </motion.section>
+
+      {/* 3. Pourquoi Vice-Versa */}
+      <motion.section {...reveal}>
+        <SectionHeader n={3} title={whyViceVersa.title} intro={whyViceVersa.intro} color={JOY} />
+        <div className="grid sm:grid-cols-2 gap-4">
+          {whyViceVersa.reasons.map((r, i) => (
+            <IconCard key={i} icon={r.icon} title={r.title} text={r.text} color={JOY} />
           ))}
         </div>
         <p
           className="mt-5 rounded-2xl px-5 py-4 text-night leading-relaxed"
-          style={{ background: `${ANGER}14`, borderLeft: `4px solid ${ANGER}` }}
+          style={{ background: `${JOY}24`, borderLeft: `4px solid ${JOY}` }}
         >
-          {grandRex.conclusion}
+          {whyViceVersa.conclusion}
         </p>
       </motion.section>
 
-      {/* 4. Problématique */}
+      {/* 4. Études et recherches (élément central) */}
       <motion.section {...reveal}>
-        <SectionHeader n={4} title={problematic.title} color={FEAR} />
-        <div
-          className="relative rounded-2xl p-6 md:p-8 overflow-hidden"
-          style={{ background: `linear-gradient(135deg, ${NAVY} 0%, #2A2160 100%)` }}
-        >
-          <Quote className="absolute top-4 right-5 w-16 h-16 opacity-10 text-white" />
-          <p className="text-lg md:text-xl text-white leading-relaxed italic relative z-10" style={{ fontFamily: 'var(--font-serif)' }}>
-            {problematic.statement}
-          </p>
+        <SectionHeader
+          n={4}
+          label="Activité 1 · Veille et études"
+          title={research.title}
+          intro={research.intro}
+          color={SAD}
+        />
+
+        {/* Études quantitatives — Ipsos, Google Trends, box-office (mises en avant) */}
+        <h4 className="text-night mb-3 mt-2" style={{ fontWeight: 700 }}>Les études consommateurs</h4>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-7">
+          {research.quantitative.map((c, i) => (
+            <StudyCard key={i} {...c} color={SAD} />
+          ))}
         </div>
+
+        {/* Questionnaire exploratoire — valorisé */}
+        <div
+          className="rounded-2xl p-6 md:p-7 border mb-7"
+          style={{ background: `${ANGER}0D`, borderColor: `${ANGER}33` }}
+        >
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-2xl" aria-hidden="true">🎤</span>
+            <h4 className="text-night text-lg" style={{ fontWeight: 700 }}>{research.questionnaire.title}</h4>
+          </div>
+          <p className="text-text-muted leading-relaxed mb-4 w-full">{research.questionnaire.intro}</p>
+          <span className="block text-[10px] uppercase tracking-[0.2em] text-text-muted/70 mb-2" style={{ fontWeight: 700 }}>
+            Principaux enseignements
+          </span>
+          <ul className="space-y-2 mb-4">
+            {research.questionnaire.learnings.map((l, i) => (
+              <li key={i} className="text-night/85 leading-relaxed flex gap-2.5">
+                <span className="mt-2 w-1.5 h-1.5 rounded-full shrink-0" style={{ background: ANGER }} />
+                <span>{l}</span>
+              </li>
+            ))}
+          </ul>
+          <div
+            className="flex items-start gap-2.5 rounded-xl px-4 py-3 mb-5 text-sm"
+            style={{ background: `${SAD}14`, color: NAVY }}
+          >
+            <Sparkles className="w-4 h-4 shrink-0 mt-0.5" style={{ color: SAD }} />
+            <span className="leading-snug" style={{ fontWeight: 500 }}>
+              Ce questionnaire exploratoire a permis de confirmer plusieurs tendances déjà observées dans la veille documentaire.
+            </span>
+          </div>
+          <button
+            onClick={() => setLightbox(0)}
+            data-cursor="hover"
+            className="inline-flex items-center gap-2.5 px-5 py-3 rounded-xl text-white transition-transform hover:-translate-y-0.5"
+            style={{ background: ANGER }}
+          >
+            <Images className="w-4 h-4" />
+            <span style={{ fontWeight: 600 }}>Voir les réponses du questionnaire</span>
+            <span className="text-xs opacity-80 tabular-nums">({research.questionnaire.images.length})</span>
+          </button>
+        </div>
+
+        {/* Veille concurrentielle — secondaire, repliée dans un accordéon */}
+        <Accordion
+          title="Veille concurrentielle — la marque Disney & ses concurrents"
+          subtitle="Studio Ghibli, DreamWorks, Laika — cliquer pour déplier"
+          color={FEAR}
+        >
+          <div className="mb-4 mt-2">
+            <StudyCard {...research.disney} color={JOY} />
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {research.competitors.map((c, i) => (
+              <StudyCard key={i} {...c} color={FEAR} />
+            ))}
+          </div>
+        </Accordion>
       </motion.section>
 
-      {/* 5. Cible & Persona */}
+      {/* 5. Persona (+ pourquoi ce persona) */}
       <motion.section {...reveal}>
         <SectionHeader n={5} title={audience.title} intro={audience.intro} color={DISGUST} />
         <div className="grid sm:grid-cols-2 gap-4 mb-6">
@@ -534,105 +698,76 @@ export function DisneyCaseStudy({ data }: { data: DisneyCaseStudyData }) {
         </div>
       </motion.section>
 
-      {/* 6. Mon rôle */}
+      {/* 6. Pourquoi le Grand Rex (avant la problématique) */}
       <motion.section {...reveal}>
-        <SectionHeader n={6} title={role.title} intro={role.intro} color={JOY} />
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-          {role.cards.map((c, i) => (
-            <div
-              key={i}
-              className="bg-white rounded-2xl p-4 border border-night/5 shadow-[0_2px_14px_-10px_rgba(22,32,77,0.3)] flex flex-col items-center text-center gap-2"
-            >
-              <span className="text-2xl leading-none" aria-hidden="true">{c.icon}</span>
-              <span className="text-night text-sm leading-snug" style={{ fontWeight: 600 }}>{c.title}</span>
-            </div>
-          ))}
-        </div>
-      </motion.section>
-
-      {/* 7. Activité 1 — Veille et études */}
-      <motion.section {...reveal}>
-        <SectionHeader
-          n={7}
-          label="Activité 1 · Veille et études"
-          title={research.title}
-          intro={research.intro}
-          color={SAD}
-        />
-
-        {/* Disney */}
-        <h4 className="text-night mb-3 mt-2" style={{ fontWeight: 700 }}>La marque Disney</h4>
-        <div className="mb-6">
-          <StudyCard {...research.disney} color={JOY} />
-        </div>
-
-        {/* Concurrents */}
-        <h4 className="text-night mb-3" style={{ fontWeight: 700 }}>Les studios concurrents</h4>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-          {research.competitors.map((c, i) => (
-            <StudyCard key={i} {...c} color={FEAR} />
-          ))}
-        </div>
-
-        {/* Études quantitatives */}
-        <h4 className="text-night mb-3" style={{ fontWeight: 700 }}>Les études quantitatives</h4>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-          {research.quantitative.map((c, i) => (
-            <StudyCard key={i} {...c} color={SAD} />
-          ))}
-        </div>
-
-        {/* Questionnaire exploratoire */}
-        <div
-          className="rounded-2xl p-6 md:p-7 border"
-          style={{ background: `${ANGER}0D`, borderColor: `${ANGER}33` }}
-        >
-          <div className="flex items-center gap-2 mb-2">
-            <span className="text-2xl" aria-hidden="true">🎤</span>
-            <h4 className="text-night text-lg" style={{ fontWeight: 700 }}>{research.questionnaire.title}</h4>
-          </div>
-          <p className="text-text-muted leading-relaxed mb-4 w-full">{research.questionnaire.intro}</p>
-          <span className="block text-[10px] uppercase tracking-[0.2em] text-text-muted/70 mb-2" style={{ fontWeight: 700 }}>
-            Principaux enseignements
-          </span>
-          <ul className="space-y-2 mb-5">
-            {research.questionnaire.learnings.map((l, i) => (
-              <li key={i} className="text-night/85 leading-relaxed flex gap-2.5">
-                <span className="mt-2 w-1.5 h-1.5 rounded-full shrink-0" style={{ background: ANGER }} />
-                <span>{l}</span>
-              </li>
-            ))}
-          </ul>
-          <button
-            onClick={() => setLightbox(0)}
-            data-cursor="hover"
-            className="inline-flex items-center gap-2.5 px-5 py-3 rounded-xl text-white transition-transform hover:-translate-y-0.5"
-            style={{ background: ANGER }}
-          >
-            <Images className="w-4 h-4" />
-            <span style={{ fontWeight: 600 }}>{research.questionnaire.galleryLabel}</span>
-            <span className="text-xs opacity-80 tabular-nums">({research.questionnaire.images.length})</span>
-          </button>
-        </div>
-      </motion.section>
-
-      {/* 8. Pourquoi Vice-Versa */}
-      <motion.section {...reveal}>
-        <SectionHeader n={8} title={whyViceVersa.title} intro={whyViceVersa.intro} color={JOY} />
-        <div className="grid sm:grid-cols-2 gap-4">
-          {whyViceVersa.reasons.map((r, i) => (
-            <IconCard key={i} icon={r.icon} title={r.title} text={r.text} color={JOY} />
+        <SectionHeader n={6} title={grandRex.title} intro={grandRex.intro} color={ANGER} />
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {grandRex.cards.map((c, i) => (
+            <IconCard key={i} icon={c.icon} title={c.title} text={c.text} color={ANGER} />
           ))}
         </div>
         <p
           className="mt-5 rounded-2xl px-5 py-4 text-night leading-relaxed"
-          style={{ background: `${JOY}24`, borderLeft: `4px solid ${JOY}` }}
+          style={{ background: `${ANGER}14`, borderLeft: `4px solid ${ANGER}` }}
         >
-          {whyViceVersa.conclusion}
+          {grandRex.conclusion}
         </p>
       </motion.section>
 
-      {/* 9. Activité 2 — Création de la stratégie */}
+      {/* 7. Problématique */}
+      <motion.section {...reveal}>
+        <SectionHeader n={7} title={problematic.title} color={FEAR} />
+        <div
+          className="relative rounded-2xl p-6 md:p-8 overflow-hidden"
+          style={{ background: `linear-gradient(135deg, ${NAVY} 0%, #2A2160 100%)` }}
+        >
+          <Quote className="absolute top-4 right-5 w-16 h-16 opacity-10 text-white" />
+          <p className="text-lg md:text-xl text-white leading-relaxed italic relative z-10" style={{ fontFamily: 'var(--font-serif)' }}>
+            {problematic.statement}
+          </p>
+        </div>
+      </motion.section>
+
+      {/* 8. Objectifs de communication — présentation visuelle en 3 niveaux */}
+      <motion.section {...reveal}>
+        <SectionHeader n={8} title={objectives.title} intro={objectives.intro} color={SAD} />
+        <div className="grid md:grid-cols-3 gap-4">
+          {objectiveGroups.map((g) => {
+            const Icon = g.icon
+            return (
+              <div
+                key={g.key}
+                className="bg-white rounded-2xl border border-night/5 shadow-[0_2px_18px_-10px_rgba(22,32,77,0.25)] overflow-hidden h-full"
+              >
+                <div className="flex items-center gap-3 px-5 py-4" style={{ background: `${g.color}14` }}>
+                  <span
+                    className="shrink-0 w-10 h-10 rounded-xl flex items-center justify-center text-white"
+                    style={{ background: g.color }}
+                  >
+                    <Icon className="w-5 h-5" />
+                  </span>
+                  <div>
+                    <span className="block text-night leading-none" style={{ fontWeight: 700 }}>
+                      Objectifs {g.label.toLowerCase()}
+                    </span>
+                    <span className="text-xs" style={{ color: g.color, fontWeight: 600 }}>{g.sub}</span>
+                  </div>
+                </div>
+                <ul className="p-5 space-y-2.5">
+                  {g.items.map((o, i) => (
+                    <li key={i} className="text-sm text-text-muted leading-relaxed flex gap-2.5">
+                      <span className="mt-2 w-1.5 h-1.5 rounded-full shrink-0" style={{ background: g.color }} />
+                      <span>{o}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )
+          })}
+        </div>
+      </motion.section>
+
+      {/* 9. Stratégie de communication — des enseignements aux solutions */}
       <motion.section {...reveal}>
         <SectionHeader
           n={9}
@@ -641,6 +776,9 @@ export function DisneyCaseStudy({ data }: { data: DisneyCaseStudyData }) {
           intro={strategy.intro}
           color={DISGUST}
         />
+        <h4 className="text-night mb-4 flex items-center gap-2" style={{ fontWeight: 700 }}>
+          <ArrowRight className="w-4 h-4" style={{ color: DISGUST }} /> Des enseignements aux solutions
+        </h4>
         <div className="space-y-3">
           {strategy.mapping.map((m, i) => (
             <div
@@ -675,37 +813,9 @@ export function DisneyCaseStudy({ data }: { data: DisneyCaseStudyData }) {
         </div>
       </motion.section>
 
-      {/* 10. Solutions recommandées */}
+      {/* 10. Innovations proposées — premium */}
       <motion.section {...reveal}>
-        <SectionHeader n={10} title={solutions.title} intro={solutions.intro} color={ANGER} />
-        <Disclaimer text={solutions.disclaimer} color={JOY} />
-        <div className="grid sm:grid-cols-3 gap-4">
-          {solutions.cards.map((c, i) => (
-            <div
-              key={i}
-              className="bg-white rounded-2xl p-5 border border-night/5 shadow-[0_2px_18px_-10px_rgba(22,32,77,0.25)] h-full"
-            >
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-3xl leading-none" aria-hidden="true">{c.icon}</span>
-                {c.tag && (
-                  <span
-                    className="text-[10px] uppercase tracking-[0.12em] px-2.5 py-1 rounded-full"
-                    style={{ background: `${ANGER}1A`, color: ANGER, fontWeight: 700 }}
-                  >
-                    {c.tag}
-                  </span>
-                )}
-              </div>
-              <h4 className="text-night mb-1.5 leading-snug" style={{ fontWeight: 700 }}>{c.title}</h4>
-              <p className="text-sm text-text-muted leading-relaxed">{c.text}</p>
-            </div>
-          ))}
-        </div>
-      </motion.section>
-
-      {/* 11. Innovations proposées */}
-      <motion.section {...reveal}>
-        <SectionHeader n={11} title={innovations.title} intro={innovations.intro} color={FEAR} />
+        <SectionHeader n={10} title={innovations.title} intro={innovations.intro} color={FEAR} />
         <Disclaimer text={innovations.disclaimer} color={FEAR} />
         <div className="grid md:grid-cols-2 gap-5">
           {innovations.cards.map((c, i) => (
@@ -734,7 +844,35 @@ export function DisneyCaseStudy({ data }: { data: DisneyCaseStudyData }) {
         </div>
       </motion.section>
 
-      {/* 12. Activité 5 — Évaluation et KPI */}
+      {/* 11. Supports recommandés */}
+      <motion.section {...reveal}>
+        <SectionHeader n={11} title={solutions.title} intro={solutions.intro} color={ANGER} />
+        <Disclaimer text={solutions.disclaimer} color={JOY} />
+        <div className="grid sm:grid-cols-3 gap-4">
+          {solutions.cards.map((c, i) => (
+            <div
+              key={i}
+              className="bg-white rounded-2xl p-5 border border-night/5 shadow-[0_2px_18px_-10px_rgba(22,32,77,0.25)] h-full"
+            >
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-3xl leading-none" aria-hidden="true">{c.icon}</span>
+                {c.tag && (
+                  <span
+                    className="text-[10px] uppercase tracking-[0.12em] px-2.5 py-1 rounded-full"
+                    style={{ background: `${ANGER}1A`, color: ANGER, fontWeight: 700 }}
+                  >
+                    {c.tag}
+                  </span>
+                )}
+              </div>
+              <h4 className="text-night mb-1.5 leading-snug" style={{ fontWeight: 700 }}>{c.title}</h4>
+              <p className="text-sm text-text-muted leading-relaxed">{c.text}</p>
+            </div>
+          ))}
+        </div>
+      </motion.section>
+
+      {/* 12. Analyse et impact — KPI */}
       <motion.section {...reveal}>
         <SectionHeader
           n={12}
@@ -750,29 +888,9 @@ export function DisneyCaseStudy({ data }: { data: DisneyCaseStudyData }) {
         </div>
       </motion.section>
 
-      {/* 13. Présentation du diaporama */}
+      {/* Bilan — conclusion */}
       <motion.section {...reveal}>
-        <SectionHeader n={13} title={slideshow.title} intro={slideshow.intro} color={JOY} />
-        <SlideShow pages={slideshow.pages} />
-        <div className="flex justify-center mt-5">
-          <a
-            href={slideshow.pdfUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            data-cursor="hover"
-            className="inline-flex items-center gap-3 px-7 py-3.5 rounded-2xl text-white transition-transform hover:-translate-y-0.5 shadow-[0_8px_28px_-12px_rgba(22,32,77,0.7)]"
-            style={{ background: NAVY }}
-          >
-            <Images className="w-5 h-5" />
-            <span style={{ fontFamily: 'var(--font-serif)' }}>{slideshow.pdfLabel}</span>
-            <ExternalLink className="w-4 h-4" />
-          </a>
-        </div>
-      </motion.section>
-
-      {/* 14. Bilan */}
-      <motion.section {...reveal}>
-        <SectionHeader n={14} title={bilan.title} color={ANGER} />
+        <SectionHeader n={13} title={bilan.title} color={ANGER} />
         <div
           className="rounded-2xl p-6 md:p-8 text-white relative overflow-hidden"
           style={{ background: `linear-gradient(135deg, ${NAVY} 0%, #3A2A66 100%)` }}

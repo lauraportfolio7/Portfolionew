@@ -11,3 +11,4 @@ Thumbs.db
 # Sources vidéo brutes (lourdes) — seules les versions optimisées de public/videos sont versionnées
 visuels/*.mov
 visuels/*.MOV
+visuels/portrait réunion à l'écran new.mp4

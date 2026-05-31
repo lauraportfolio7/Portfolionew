@@ -103,6 +103,31 @@ export interface Moodboard {
   palette: MoodboardSwatch[]
 }
 
+/* Veille & Benchmark — références analysées + analyse de l'existant + format. */
+export interface BenchmarkItem {
+  image: string
+  country: string
+  title: string
+  lessons: string[]
+}
+
+export interface BenchmarkNote {
+  title: string
+  icon?: 'refresh' | 'square' | 'search'
+  intro?: string
+  bullets: string[]
+}
+
+export interface VeilleBenchmark {
+  label?: string
+  title: string
+  intro?: string
+  items: BenchmarkItem[]
+  lessonsTitle: string
+  existingAnalysis: BenchmarkNote
+  formatChoice: BenchmarkNote
+}
+
 /* Mon rôle — missions et coordination de prestataires. */
 export interface RoleMission {
   title: string
@@ -204,6 +229,7 @@ export interface Project {
   visualIdentity?: VisualIdentity
   role?: ProjectRole
   bilan?: string
+  veilleBenchmark?: VeilleBenchmark
 }
 
 export type MilestoneType = 'formation' | 'experience' | 'diplome' | 'objectif'

@@ -20,6 +20,10 @@ import convScreen2 from '@/assets/reunion-ecran/conv-suivi-2.jpg'
 import convScreen3 from '@/assets/reunion-ecran/conv-suivi-3.jpg'
 import convScreen4 from '@/assets/reunion-ecran/conv-suivi-4.jpg'
 import guideInvestCover from '@/assets/reunion-ecran/guide-livre/guide-p1.jpg'
+import benchmarkMaurice from '@/assets/reunion-ecran/benchmark/maurice.png'
+import benchmarkSeychelles from '@/assets/reunion-ecran/benchmark/seychelles.png'
+import benchmarkPhilippines from '@/assets/reunion-ecran/benchmark/philippines.png'
+import benchmarkItalie from '@/assets/reunion-ecran/benchmark/italie.png'
 import performanceLinkedin from '@/assets/reunion-ecran/performance-linkedin.png'
 import performanceLinkedin2 from '@/assets/reunion-ecran/performance-linkedin-2.png'
 import veilleStudio2024 from '@/assets/reunion-ecran/veille/studio-reunion-2024.jpg'
@@ -482,6 +486,80 @@ export const featuredProjects: Project[] = [
     type: 'Projet entreprise – communication institutionnelle / édition / mise en page',
     brochurePages: guideBookPages,
     brochureLabel: 'Feuilleter le guide',
+    veilleBenchmark: {
+      label: 'Veille créative · Activité 1',
+      title: 'Veille & Benchmark',
+      intro:
+        'Différentes références internationales ont été analysées lors de la conception du guide, afin d\'identifier les bonnes pratiques en matière de communication investisseurs et de nourrir les choix éditoriaux et graphiques.',
+      items: [
+        {
+          image: benchmarkMaurice,
+          country: 'Maurice',
+          title: 'Investment Guide',
+          lessons: [
+            'Valorisation du territoire à travers des visuels immersifs.',
+            'Mise en avant des atouts économiques et géographiques.',
+            'Association entre storytelling territorial et données chiffrées.',
+          ],
+        },
+        {
+          image: benchmarkSeychelles,
+          country: 'Seychelles',
+          title: 'SDG Investor Map',
+          lessons: [
+            'Utilisation d\'infographies et d\'indicateurs visuels.',
+            'Lecture rapide des informations stratégiques.',
+            'Hiérarchisation claire des données.',
+          ],
+        },
+        {
+          image: benchmarkPhilippines,
+          country: 'Philippines',
+          title: 'Doing Business in the Philippines',
+          lessons: [
+            'Structuration du contenu par secteurs d\'activité.',
+            'Présentation efficace des chiffres-clés.',
+            'Organisation pensée pour les investisseurs.',
+          ],
+        },
+        {
+          image: benchmarkItalie,
+          country: 'Italie',
+          title: 'Doing Business in Italy',
+          lessons: [
+            'Benchmark utile pour identifier les limites à éviter.',
+            'Densité textuelle importante, lecture moins immédiate.',
+            'Confirme l\'importance d\'un traitement plus visuel et synthétique.',
+          ],
+        },
+      ],
+      lessonsTitle: 'Enseignements retenus',
+      existingAnalysis: {
+        title: 'Analyse du guide existant',
+        icon: 'refresh',
+        intro:
+          'Le projet n\'est pas une création nouvelle, mais la refonte et l\'actualisation d\'un support existant.',
+        bullets: [
+          'Analyse de l\'ancienne version du guide investisseur de La Réunion Développement.',
+          'Conservation de la structure générale jugée pertinente.',
+          'Mise à jour des données économiques et statistiques.',
+          'Modernisation de l\'identité visuelle.',
+          'Amélioration de la hiérarchisation de l\'information.',
+          'Renforcement de l\'attractivité graphique du document.',
+        ],
+      },
+      formatChoice: {
+        title: 'Choix du format carré',
+        icon: 'square',
+        bullets: [
+          'Format volontairement différent des brochures institutionnelles classiques en A4 portrait.',
+          'Permet de se démarquer des guides concurrents analysés durant la veille.',
+          'Offre une image plus moderne et premium.',
+          'Valorise davantage les photographies du territoire.',
+          'Facilite l\'intégration d\'infographies et de doubles pages visuelles.',
+        ],
+      },
+    },
     context: 'Projet réalisé au sein de La Réunion Développement, organisme chargé de promouvoir l\'attractivité économique du territoire. Le service communication souhaitait moderniser sa plaquette investisseurs, devenue obsolète. L\'objectif était de créer un support plus clair, plus actuel et mieux adapté à une cible internationale, en anglais, afin de valoriser les atouts économiques de La Réunion. Le projet a été réalisé de mi-mai à début juillet 2025, incluant veille, création, mise en page et production, sans prestataire externe.',
     slogan: 'Valoriser l\'attractivité économique de La Réunion à l\'international',
     target: {

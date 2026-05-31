@@ -27,6 +27,10 @@ import {
   Play,
   ChevronDown,
   Flag,
+  RefreshCw,
+  Square,
+  Search,
+  Telescope,
 } from 'lucide-react'
 import { useEffect, useState, useRef, useCallback } from 'react'
 import * as pdfjsLib from 'pdfjs-dist'
@@ -43,9 +47,12 @@ import type {
   PosterProposal,
   FontChoice,
   ProjectRole,
+  VeilleBenchmark,
+  BenchmarkNote,
 } from '@/types'
 import { SlideViewer } from '@/components/SlideViewer'
 import { FlipbookViewer } from '@/components/FlipbookViewer'
+import { GuideFlipBook, FlipErrorBoundary } from '@/components/GuideFlipBook'
 import { Picture } from '@/components/Picture'
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker
@@ -1298,6 +1305,134 @@ function BilanBlock({ text }: { text: string }) {
   )
 }
 
+/* Bloc d'analyse à puces (analyse du guide existant / choix du format). */
+function BenchmarkNoteBlock({ note }: { note: BenchmarkNote }) {
+  const Icon = note.icon === 'square' ? Square : note.icon === 'search' ? Search : RefreshCw
+  return (
+    <div className="bg-white rounded-2xl p-6 md:p-7 border border-night/8 h-full">
+      <div className="flex items-center gap-3 mb-4">
+        <span className="w-9 h-9 rounded-full bg-accent/12 flex items-center justify-center shrink-0">
+          <Icon className="w-4.5 h-4.5 text-accent-blue" />
+        </span>
+        <h4 className="text-xl text-night leading-tight" style={{ fontFamily: 'var(--font-serif)', fontWeight: 700 }}>
+          {note.title}
+        </h4>
+      </div>
+      {note.intro && <p className="text-sm text-text-muted leading-relaxed mb-4 italic">{note.intro}</p>}
+      <ul className="space-y-2.5">
+        {note.bullets.map((b, i) => (
+          <li key={i} className="flex items-start gap-3 text-text-muted text-sm">
+            <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0 mt-[0.5rem]" aria-hidden="true" />
+            <span className="leading-relaxed">{b}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+/* Section « Veille & Benchmark » — galerie des références + enseignements + analyses. */
+function VeilleBenchmarkSection({ data, onZoom }: { data: VeilleBenchmark; onZoom: (src: string) => void }) {
+  return (
+    <motion.section
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.08 }}
+      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+      className="relative overflow-hidden rounded-3xl border border-night/10 bg-ivory-warm/40 shadow-[0_4px_40px_-16px_rgba(176,116,16,0.18)]"
+      aria-label={data.title}
+    >
+      <div className="p-6 md:p-10">
+        {/* En-tête */}
+        <div className="mb-8">
+          {data.label && (
+            <span className="flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] text-accent-blue mb-3" style={{ fontWeight: 700 }}>
+              <Telescope className="w-4 h-4" />
+              {data.label}
+            </span>
+          )}
+          <h3
+            className="text-3xl md:text-4xl text-night leading-[1.1] mb-4"
+            style={{ fontFamily: 'var(--font-serif)', fontWeight: 700, letterSpacing: '-0.015em' }}
+          >
+            {data.title}
+          </h3>
+          {data.intro && <p className="text-text-muted leading-[1.8] w-full">{data.intro}</p>}
+        </div>
+
+        {/* Galerie des benchmarks */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
+          {data.items.map((it, i) => (
+            <motion.figure
+              key={i}
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.5, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+              className="m-0"
+            >
+              <button
+                type="button"
+                onClick={() => onZoom(it.image)}
+                data-cursor="hover"
+                className="group/b block w-full rounded-2xl overflow-hidden bg-white border border-night/10 shadow-[0_8px_26px_-14px_rgba(0,0,0,0.35)] hover:shadow-[0_16px_40px_-16px_rgba(0,0,0,0.4)] transition-shadow duration-500 cursor-pointer"
+                aria-label={`${it.country} — ${it.title}`}
+              >
+                <div className="aspect-[4/3] flex items-center justify-center p-3 bg-ivory-warm/30">
+                  <Picture
+                    src={it.image}
+                    alt={`${it.country} — ${it.title}`}
+                    imgClassName="max-w-full max-h-full object-contain rounded transition-transform duration-500 group-hover/b:scale-[1.04]"
+                    sizes="(max-width: 1024px) 45vw, 22vw"
+                  />
+                </div>
+              </button>
+              <figcaption className="mt-3 px-1">
+                <span className="block text-[10px] uppercase tracking-[0.24em] text-accent-blue mb-1" style={{ fontWeight: 700 }}>
+                  {it.country}
+                </span>
+                <span className="block text-night text-sm leading-snug" style={{ fontWeight: 600 }}>
+                  {it.title}
+                </span>
+              </figcaption>
+            </motion.figure>
+          ))}
+        </div>
+
+        {/* Enseignements retenus */}
+        <div className="mt-10 pt-8 border-t border-night/8">
+          <h4 className="text-xl md:text-2xl text-night mb-6" style={{ fontFamily: 'var(--font-serif)', fontWeight: 700 }}>
+            {data.lessonsTitle}
+          </h4>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
+            {data.items.map((it, i) => (
+              <div key={i} className="bg-white rounded-xl p-5 border border-night/8">
+                <span className="block text-[11px] uppercase tracking-[0.2em] text-accent-blue mb-3" style={{ fontWeight: 700 }}>
+                  {it.country}
+                </span>
+                <ul className="space-y-2.5">
+                  {it.lessons.map((l, j) => (
+                    <li key={j} className="flex items-start gap-2.5 text-text-muted text-sm">
+                      <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0 mt-[0.5rem]" aria-hidden="true" />
+                      <span className="leading-relaxed">{l}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Analyse du guide existant + choix du format */}
+        <div className="mt-6 grid md:grid-cols-2 gap-4 md:gap-5">
+          <BenchmarkNoteBlock note={data.existingAnalysis} />
+          <BenchmarkNoteBlock note={data.formatChoice} />
+        </div>
+      </div>
+    </motion.section>
+  )
+}
+
 export function ProjectView({ project, onBack }: ProjectViewProps) {
   const [lightboxImage, setLightboxImage] = useState<string | null>(null)
   const [convLightboxOpen, setConvLightboxOpen] = useState(false)
@@ -1932,6 +2067,11 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
               </div>
             )}
 
+            {/* Veille & Benchmark — références analysées */}
+            {project.veilleBenchmark && (
+              <VeilleBenchmarkSection data={project.veilleBenchmark} onZoom={setLightboxImage} />
+            )}
+
             {project.problematic && (
               <div className="bg-gradient-to-br from-accent/10 to-accent/5 p-6 md:p-8 rounded-2xl border border-accent/30">
                 <h3 className="text-2xl mb-4 flex items-center gap-3 text-night" style={{ fontFamily: 'var(--font-serif)' }}>
@@ -2393,11 +2533,27 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
                     </p>
                   </div>
                   <div className="relative [&_.text-night-secondary]:text-ivory [&_h3]:text-ivory">
-                    <FlipbookViewer
-                      pdfUrl={project.brochureUrl}
-                      imagePages={project.brochurePages}
-                      title={project.brochureLabel || 'Feuilleter la brochure'}
-                    />
+                    {project.brochurePages ? (
+                      <FlipErrorBoundary
+                        fallback={
+                          <FlipbookViewer
+                            imagePages={project.brochurePages}
+                            title={project.brochureLabel || 'Feuilleter le guide'}
+                          />
+                        }
+                      >
+                        <GuideFlipBook
+                          pages={project.brochurePages}
+                          title={project.brochureLabel || 'Feuilleter le guide'}
+                        />
+                      </FlipErrorBoundary>
+                    ) : (
+                      <FlipbookViewer
+                        pdfUrl={project.brochureUrl}
+                        imagePages={project.brochurePages}
+                        title={project.brochureLabel || 'Feuilleter la brochure'}
+                      />
+                    )}
                   </div>
                 </div>
               ) : (

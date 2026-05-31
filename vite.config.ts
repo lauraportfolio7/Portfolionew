@@ -60,6 +60,12 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, './src'),
     },
+    // Force une seule instance de React (react-pageflip est en CJS/UMD et
+    // déclencherait sinon « Invalid hook call »).
+    dedupe: ['react', 'react-dom'],
+  },
+  optimizeDeps: {
+    include: ['react-pageflip'],
   },
   build: {
     target: 'es2020',

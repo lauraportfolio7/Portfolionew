@@ -75,22 +75,6 @@ export function Journey() {
             <MilestoneRow key={m.id} milestone={m} index={i} />
           ))}
         </div>
-
-        {/* Pied de section : objectif futur en grand */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-16 md:mt-24 grid md:grid-cols-12 gap-6 items-end"
-        >
-          <div className="md:col-span-2 font-mono text-[11px] uppercase tracking-[0.3em]" style={{ color: 'var(--color-gold)' }}>
-            Suite
-          </div>
-          <p className="md:col-span-10 font-display italic text-2xl md:text-4xl leading-tight max-w-3xl">
-            « Une licence pro <span style={{ color: 'var(--color-gold)' }}>Image &amp; Son</span> pour rapprocher la com du métier que je vise vraiment. »
-          </p>
-        </motion.div>
       </div>
     </section>
   )

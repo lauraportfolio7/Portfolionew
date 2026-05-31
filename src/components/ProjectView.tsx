@@ -29,7 +29,6 @@ import {
   Flag,
   RefreshCw,
   Square,
-  Search,
   Telescope,
 } from 'lucide-react'
 import { useEffect, useState, useRef, useCallback } from 'react'
@@ -48,7 +47,8 @@ import type {
   FontChoice,
   ProjectRole,
   VeilleBenchmark,
-  BenchmarkNote,
+  ConceptionSection,
+  ProductionSection,
 } from '@/types'
 import { SlideViewer } from '@/components/SlideViewer'
 import { FlipbookViewer } from '@/components/FlipbookViewer'
@@ -1305,33 +1305,28 @@ function BilanBlock({ text }: { text: string }) {
   )
 }
 
-/* Bloc d'analyse à puces (analyse du guide existant / choix du format). */
-function BenchmarkNoteBlock({ note }: { note: BenchmarkNote }) {
-  const Icon = note.icon === 'square' ? Square : note.icon === 'search' ? Search : RefreshCw
+/* En-tête commun aux sections « Activité » (étude de cas guide). */
+function ActivityHeader({ label, title, intro }: { label?: string; title: string; intro?: string }) {
   return (
-    <div className="bg-white rounded-2xl p-6 md:p-7 border border-night/8 h-full">
-      <div className="flex items-center gap-3 mb-4">
-        <span className="w-9 h-9 rounded-full bg-accent/12 flex items-center justify-center shrink-0">
-          <Icon className="w-4.5 h-4.5 text-accent-blue" />
+    <div className="mb-8">
+      {label && (
+        <span className="flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] text-accent-blue mb-3" style={{ fontWeight: 700 }}>
+          <Telescope className="w-4 h-4" />
+          {label}
         </span>
-        <h4 className="text-xl text-night leading-tight" style={{ fontFamily: 'var(--font-serif)', fontWeight: 700 }}>
-          {note.title}
-        </h4>
-      </div>
-      {note.intro && <p className="text-sm text-text-muted leading-relaxed mb-4 italic">{note.intro}</p>}
-      <ul className="space-y-2.5">
-        {note.bullets.map((b, i) => (
-          <li key={i} className="flex items-start gap-3 text-text-muted text-sm">
-            <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0 mt-[0.5rem]" aria-hidden="true" />
-            <span className="leading-relaxed">{b}</span>
-          </li>
-        ))}
-      </ul>
+      )}
+      <h3
+        className="text-3xl md:text-4xl text-night leading-[1.1] mb-4"
+        style={{ fontFamily: 'var(--font-serif)', fontWeight: 700, letterSpacing: '-0.015em' }}
+      >
+        {title}
+      </h3>
+      {intro && <p className="text-text-muted leading-[1.8] w-full">{intro}</p>}
     </div>
   )
 }
 
-/* Section « Veille & Benchmark » — galerie des références + enseignements + analyses. */
+/* Section « Veille & Benchmark » (Activité 1) — cartes de références + analyse de l'existant. */
 function VeilleBenchmarkSection({ data, onZoom }: { data: VeilleBenchmark; onZoom: (src: string) => void }) {
   return (
     <motion.section
@@ -1343,91 +1338,218 @@ function VeilleBenchmarkSection({ data, onZoom }: { data: VeilleBenchmark; onZoo
       aria-label={data.title}
     >
       <div className="p-6 md:p-10">
-        {/* En-tête */}
-        <div className="mb-8">
-          {data.label && (
-            <span className="flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] text-accent-blue mb-3" style={{ fontWeight: 700 }}>
-              <Telescope className="w-4 h-4" />
-              {data.label}
-            </span>
-          )}
-          <h3
-            className="text-3xl md:text-4xl text-night leading-[1.1] mb-4"
-            style={{ fontFamily: 'var(--font-serif)', fontWeight: 700, letterSpacing: '-0.015em' }}
-          >
-            {data.title}
-          </h3>
-          {data.intro && <p className="text-text-muted leading-[1.8] w-full">{data.intro}</p>}
-        </div>
+        <ActivityHeader label={data.label} title={data.title} intro={data.intro} />
 
-        {/* Galerie des benchmarks */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
+        {/* Cartes de références : visuel + pays + retenu + inspiration */}
+        <div className="grid sm:grid-cols-2 gap-5 md:gap-6">
           {data.items.map((it, i) => (
-            <motion.figure
+            <motion.div
               key={i}
               initial={{ opacity: 0, y: 18 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
+              viewport={{ once: true, amount: 0.15 }}
               transition={{ duration: 0.5, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
-              className="m-0"
+              className={`rounded-2xl overflow-hidden border bg-white flex flex-col ${
+                it.counter ? 'border-cinnabar/30' : 'border-night/8'
+              } shadow-[0_8px_30px_-18px_rgba(0,0,0,0.3)]`}
             >
               <button
                 type="button"
                 onClick={() => onZoom(it.image)}
                 data-cursor="hover"
-                className="group/b block w-full rounded-2xl overflow-hidden bg-white border border-night/10 shadow-[0_8px_26px_-14px_rgba(0,0,0,0.35)] hover:shadow-[0_16px_40px_-16px_rgba(0,0,0,0.4)] transition-shadow duration-500 cursor-pointer"
+                className="group/b relative block w-full cursor-pointer bg-ivory-warm/30"
                 aria-label={`${it.country} — ${it.title}`}
               >
-                <div className="aspect-[4/3] flex items-center justify-center p-3 bg-ivory-warm/30">
+                <div className="aspect-[16/10] flex items-center justify-center p-3">
                   <Picture
                     src={it.image}
                     alt={`${it.country} — ${it.title}`}
-                    imgClassName="max-w-full max-h-full object-contain rounded transition-transform duration-500 group-hover/b:scale-[1.04]"
-                    sizes="(max-width: 1024px) 45vw, 22vw"
+                    imgClassName="max-w-full max-h-full object-contain rounded transition-transform duration-500 group-hover/b:scale-[1.03]"
+                    sizes="(max-width: 640px) 90vw, 45vw"
                   />
                 </div>
+                {it.counter && (
+                  <span className="absolute top-3 left-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-cinnabar text-white shadow-md">
+                    <span className="text-[10px] uppercase tracking-[0.18em]" style={{ fontWeight: 800 }}>
+                      Contre-référence
+                    </span>
+                  </span>
+                )}
               </button>
-              <figcaption className="mt-3 px-1">
-                <span className="block text-[10px] uppercase tracking-[0.24em] text-accent-blue mb-1" style={{ fontWeight: 700 }}>
-                  {it.country}
-                </span>
-                <span className="block text-night text-sm leading-snug" style={{ fontWeight: 600 }}>
-                  {it.title}
-                </span>
-              </figcaption>
-            </motion.figure>
-          ))}
-        </div>
 
-        {/* Enseignements retenus */}
-        <div className="mt-10 pt-8 border-t border-night/8">
-          <h4 className="text-xl md:text-2xl text-night mb-6" style={{ fontFamily: 'var(--font-serif)', fontWeight: 700 }}>
-            {data.lessonsTitle}
-          </h4>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
-            {data.items.map((it, i) => (
-              <div key={i} className="bg-white rounded-xl p-5 border border-night/8">
-                <span className="block text-[11px] uppercase tracking-[0.2em] text-accent-blue mb-3" style={{ fontWeight: 700 }}>
-                  {it.country}
+              <div className="p-5 md:p-6 flex-1 flex flex-col">
+                <div className="flex items-baseline justify-between gap-3 mb-4">
+                  <span className="text-night" style={{ fontFamily: 'var(--font-serif)', fontWeight: 700, fontSize: '1.15rem' }}>
+                    {it.country}
+                  </span>
+                  <span className="text-[11px] uppercase tracking-[0.16em] text-text-muted text-right" style={{ fontWeight: 600 }}>
+                    {it.title}
+                  </span>
+                </div>
+                <span className={`text-[10px] uppercase tracking-[0.22em] mb-2.5 ${it.counter ? 'text-cinnabar' : 'text-accent-blue'}`} style={{ fontWeight: 700 }}>
+                  {it.counter ? 'Limites identifiées' : 'Ce qui a été retenu'}
                 </span>
-                <ul className="space-y-2.5">
-                  {it.lessons.map((l, j) => (
+                <ul className="space-y-2 mb-4">
+                  {it.retained.map((r, j) => (
                     <li key={j} className="flex items-start gap-2.5 text-text-muted text-sm">
-                      <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0 mt-[0.5rem]" aria-hidden="true" />
-                      <span className="leading-relaxed">{l}</span>
+                      <span
+                        className={`w-1.5 h-1.5 rounded-full shrink-0 mt-[0.5rem] ${it.counter ? 'bg-cinnabar' : 'bg-accent'}`}
+                        aria-hidden="true"
+                      />
+                      <span className="leading-relaxed">{r}</span>
                     </li>
                   ))}
                 </ul>
+                {it.inspiration && (
+                  <p className="mt-auto pt-3 border-t border-night/8 text-sm text-night/75 italic leading-relaxed" style={{ fontFamily: 'var(--font-serif)' }}>
+                    {it.inspiration}
+                  </p>
+                )}
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Analyse du guide existant — frise de cartes "validées" */}
+        <div className="mt-10 pt-8 border-t border-night/8">
+          <div className="flex items-center gap-3 mb-2">
+            <span className="w-9 h-9 rounded-full bg-accent/12 flex items-center justify-center shrink-0">
+              <RefreshCw className="w-4.5 h-4.5 text-accent-blue" />
+            </span>
+            <h4 className="text-xl md:text-2xl text-night" style={{ fontFamily: 'var(--font-serif)', fontWeight: 700 }}>
+              {data.existingAnalysis.title}
+            </h4>
+          </div>
+          {data.existingAnalysis.intro && (
+            <p className="text-sm text-text-muted leading-relaxed italic mb-5 ml-12">{data.existingAnalysis.intro}</p>
+          )}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+            {data.existingAnalysis.bullets.map((b, i) => (
+              <div key={i} className="flex items-start gap-2.5 p-4 rounded-xl bg-white border border-night/8">
+                <CheckCircle2 className="w-4 h-4 text-accent shrink-0 mt-0.5" />
+                <span className="text-sm text-night/80 leading-snug">{b}</span>
               </div>
             ))}
           </div>
         </div>
+      </div>
+    </motion.section>
+  )
+}
 
-        {/* Analyse du guide existant + choix du format */}
-        <div className="mt-6 grid md:grid-cols-2 gap-4 md:gap-5">
-          <BenchmarkNoteBlock note={data.existingAnalysis} />
-          <BenchmarkNoteBlock note={data.formatChoice} />
+/* Section « Conception du guide » (Activité 2) — étapes + focus format. */
+function ConceptionBlock({ data }: { data: ConceptionSection }) {
+  return (
+    <motion.section
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.08 }}
+      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+      className="relative overflow-hidden rounded-3xl border border-night/10 bg-white shadow-[0_4px_40px_-16px_rgba(176,116,16,0.18)]"
+      aria-label={data.title}
+    >
+      <div className="p-6 md:p-10">
+        <ActivityHeader label={data.label} title={data.title} intro={data.intro} />
+
+        {/* Étapes de réflexion — cartes numérotées */}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+          {data.steps.map((s, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.45, delay: i * 0.07, ease: [0.22, 1, 0.36, 1] }}
+              className="rounded-2xl p-5 md:p-6 bg-ivory-warm/40 border border-night/8"
+            >
+              <span className="font-mono text-sm tabular-nums text-accent" style={{ fontWeight: 700 }}>
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <h4 className="text-night mt-2 mb-2 leading-snug" style={{ fontFamily: 'var(--font-serif)', fontWeight: 700, fontSize: '1.05rem' }}>
+                {s.title}
+              </h4>
+              {s.text && <p className="text-sm text-text-muted leading-relaxed">{s.text}</p>}
+            </motion.div>
+          ))}
         </div>
+
+        {/* Focus format carré — carte premium */}
+        <div
+          className="mt-6 relative overflow-hidden rounded-2xl p-6 md:p-8 border border-accent/25"
+          style={{ background: 'linear-gradient(135deg, #FBF4DD 0%, #F5E5C0 100%)' }}
+        >
+          <div
+            className="absolute -top-10 -right-10 w-40 h-40 rounded-full pointer-events-none"
+            style={{ background: 'radial-gradient(circle, rgba(229,168,35,0.18) 0%, transparent 70%)' }}
+            aria-hidden="true"
+          />
+          <div className="grid md:grid-cols-[auto_1fr] gap-6 md:gap-8 items-center relative z-[1]">
+            <div className="flex flex-col items-center gap-3">
+              <span className="w-20 h-20 rounded-2xl border-2 border-accent-blue/40 bg-white/60 flex items-center justify-center">
+                <Square className="w-9 h-9 text-accent-blue" />
+              </span>
+              <span className="text-[10px] uppercase tracking-[0.2em] text-accent-blue" style={{ fontWeight: 700 }}>
+                Format 1:1
+              </span>
+            </div>
+            <div>
+              <h4 className="text-2xl text-night mb-4" style={{ fontFamily: 'var(--font-serif)', fontWeight: 700 }}>
+                {data.format.title}
+              </h4>
+              <ul className="grid sm:grid-cols-2 gap-x-6 gap-y-2.5">
+                {data.format.points.map((p, i) => (
+                  <li key={i} className="flex items-start gap-2.5 text-text-muted text-sm">
+                    <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0 mt-[0.5rem]" aria-hidden="true" />
+                    <span className="leading-relaxed">{p}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </motion.section>
+  )
+}
+
+/* Section « Production du support » (Activité 3) — timeline de réalisation. */
+function ProductionBlock({ data }: { data: ProductionSection }) {
+  return (
+    <motion.section
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.08 }}
+      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+      className="relative overflow-hidden rounded-3xl border border-night/10 bg-ivory-warm/40 shadow-[0_4px_40px_-16px_rgba(176,116,16,0.18)]"
+      aria-label={data.title}
+    >
+      <div className="p-6 md:p-10">
+        <ActivityHeader label={data.label} title={data.title} intro={data.intro} />
+
+        {/* Timeline */}
+        <ol className="relative">
+          <span className="absolute left-[15px] top-2 bottom-2 w-px bg-accent/25" aria-hidden="true" />
+          {data.steps.map((s, i) => (
+            <motion.li
+              key={i}
+              initial={{ opacity: 0, x: -12 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 0.4 }}
+              transition={{ duration: 0.45, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+              className="relative flex gap-5 pb-6 last:pb-0"
+            >
+              <span className="relative z-[1] w-8 h-8 rounded-full bg-accent text-night flex items-center justify-center shrink-0 font-mono text-xs tabular-nums" style={{ fontWeight: 700 }}>
+                {i + 1}
+              </span>
+              <div className="pt-0.5">
+                <h4 className="text-night leading-snug" style={{ fontFamily: 'var(--font-serif)', fontWeight: 700, fontSize: '1.05rem' }}>
+                  {s.title}
+                </h4>
+                {s.text && <p className="text-sm text-text-muted leading-relaxed mt-1">{s.text}</p>}
+              </div>
+            </motion.li>
+          ))}
+        </ol>
       </div>
     </motion.section>
   )
@@ -2067,10 +2189,6 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
               </div>
             )}
 
-            {/* Veille & Benchmark — références analysées */}
-            {project.veilleBenchmark && (
-              <VeilleBenchmarkSection data={project.veilleBenchmark} onZoom={setLightboxImage} />
-            )}
 
             {project.problematic && (
               <div className="bg-gradient-to-br from-accent/10 to-accent/5 p-6 md:p-8 rounded-2xl border border-accent/30">
@@ -2257,6 +2375,17 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
 
             {/* Mon rôle — missions + coordination de prestataires */}
             {project.role && <RoleBlock role={project.role} />}
+
+            {/* Activité 1 — Veille & Benchmark */}
+            {project.veilleBenchmark && (
+              <VeilleBenchmarkSection data={project.veilleBenchmark} onZoom={setLightboxImage} />
+            )}
+
+            {/* Activité 2 — Conception du guide */}
+            {project.conception && <ConceptionBlock data={project.conception} />}
+
+            {/* Activité 3 — Production du support */}
+            {project.production && <ProductionBlock data={project.production} />}
 
             {/* Veille créative (mood board) — déroulable pour alléger la lecture */}
             {project.moodboard && (
@@ -2493,9 +2622,6 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
               </div>
             )}
 
-            {/* Bilan */}
-            {project.bilan && <BilanBlock text={project.bilan} />}
-
             {/* Embedded slide viewer */}
             {project.documentUrl?.endsWith('.pdf') && (
               <SlideViewer pdfUrl={project.documentUrl} title={project.documentLabel || 'Document'} />
@@ -2571,6 +2697,7 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
             )}
 
             {/* Document / Brandbook Links */}
+            {((project.documentUrl && !project.documentUrl.endsWith('.pdf')) || project.brandbookUrl) && (
             <div className="flex flex-wrap justify-center gap-4">
               {project.documentUrl && !project.documentUrl.endsWith('.pdf') && (
                 <a
@@ -2597,6 +2724,10 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
                 </a>
               )}
             </div>
+            )}
+
+            {/* Bilan — conclusion (dernier bloc) */}
+            {project.bilan && <BilanBlock text={project.bilan} />}
           </div>
         </div>
       </motion.article>

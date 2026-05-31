@@ -487,76 +487,68 @@ export const featuredProjects: Project[] = [
     brochurePages: guideBookPages,
     brochureLabel: 'Feuilleter le guide',
     veilleBenchmark: {
-      label: 'Veille créative · Activité 1',
+      label: 'Activité 1 · Veille créative et stratégique',
       title: 'Veille & Benchmark',
       intro:
-        'Différentes références internationales ont été analysées lors de la conception du guide, afin d\'identifier les bonnes pratiques en matière de communication investisseurs et de nourrir les choix éditoriaux et graphiques.',
+        'Avant la conception, plusieurs guides investisseurs internationaux ont été analysés afin d\'identifier les bonnes pratiques de communication économique et de nourrir les choix éditoriaux et graphiques du projet.',
       items: [
         {
           image: benchmarkMaurice,
           country: 'Maurice',
           title: 'Investment Guide',
-          lessons: [
-            'Valorisation du territoire à travers des visuels immersifs.',
-            'Mise en avant des atouts économiques et géographiques.',
-            'Association entre storytelling territorial et données chiffrées.',
+          retained: [
+            'Visuels immersifs valorisant le territoire',
+            'Atouts économiques et géographiques mis en avant',
+            'Storytelling territorial associé aux données chiffrées',
           ],
+          inspiration: 'Raconter le territoire par l\'image, pas seulement par les chiffres.',
         },
         {
           image: benchmarkSeychelles,
           country: 'Seychelles',
           title: 'SDG Investor Map',
-          lessons: [
-            'Utilisation d\'infographies et d\'indicateurs visuels.',
-            'Lecture rapide des informations stratégiques.',
-            'Hiérarchisation claire des données.',
+          retained: [
+            'Infographies et indicateurs visuels',
+            'Lecture rapide des informations stratégiques',
+            'Hiérarchisation claire des données',
           ],
+          inspiration: 'La force des infographies pour rendre des données complexes immédiatement lisibles.',
         },
         {
           image: benchmarkPhilippines,
           country: 'Philippines',
           title: 'Doing Business in the Philippines',
-          lessons: [
-            'Structuration du contenu par secteurs d\'activité.',
-            'Présentation efficace des chiffres-clés.',
-            'Organisation pensée pour les investisseurs.',
+          retained: [
+            'Contenu structuré par secteurs d\'activité',
+            'Présentation efficace des chiffres-clés',
+            'Organisation pensée pour les investisseurs',
           ],
+          inspiration: 'Le découpage par secteurs, repris pour guider l\'investisseur dans le guide.',
         },
         {
           image: benchmarkItalie,
           country: 'Italie',
           title: 'Doing Business in Italy',
-          lessons: [
-            'Benchmark utile pour identifier les limites à éviter.',
-            'Densité textuelle importante, lecture moins immédiate.',
-            'Confirme l\'importance d\'un traitement plus visuel et synthétique.',
+          counter: true,
+          retained: [
+            'Trop textuel, hiérarchie visuelle limitée',
+            'Lecture moins immédiate',
+            'Densité d\'information décourageante',
           ],
+          inspiration: 'Contre-référence : ce qu\'il fallait éviter — confirme le besoin d\'un traitement plus visuel et synthétique.',
         },
       ],
-      lessonsTitle: 'Enseignements retenus',
       existingAnalysis: {
         title: 'Analyse du guide existant',
         icon: 'refresh',
         intro:
-          'Le projet n\'est pas une création nouvelle, mais la refonte et l\'actualisation d\'un support existant.',
+          'Le projet est une refonte et une actualisation d\'un support existant, et non une création nouvelle.',
         bullets: [
-          'Analyse de l\'ancienne version du guide investisseur de La Réunion Développement.',
-          'Conservation de la structure générale jugée pertinente.',
-          'Mise à jour des données économiques et statistiques.',
-          'Modernisation de l\'identité visuelle.',
-          'Amélioration de la hiérarchisation de l\'information.',
-          'Renforcement de l\'attractivité graphique du document.',
-        ],
-      },
-      formatChoice: {
-        title: 'Choix du format carré',
-        icon: 'square',
-        bullets: [
-          'Format volontairement différent des brochures institutionnelles classiques en A4 portrait.',
-          'Permet de se démarquer des guides concurrents analysés durant la veille.',
-          'Offre une image plus moderne et premium.',
-          'Valorise davantage les photographies du territoire.',
-          'Facilite l\'intégration d\'infographies et de doubles pages visuelles.',
+          'Structure pertinente conservée',
+          'Données mises à jour',
+          'Design modernisé',
+          'Hiérarchisation renforcée',
+          'Support adapté à une cible internationale',
         ],
       },
     },
@@ -584,16 +576,56 @@ export const featuredProjects: Project[] = [
         'Soutenir les échanges avec des partenaires économiques et encourager la prise de contact',
       ],
     },
-    supports: [
-      'Plaquette investisseurs complète en anglais (mise en page professionnelle)',
-      'Intégration de chiffres clés, textes institutionnels, visuels, cartographies et infographies',
-      'Adaptation linguistique pour une cible internationale',
-      'Version finale validée par le service communication',
-      'Support prêt à être utilisé lors de rendez-vous et présentations investisseurs',
-      'Modernisation de la plaquette existante avec hiérarchisation des informations',
-      'Respect strict de la charte graphique institutionnelle',
-    ],
-    impact: 'Production d\'une nouvelle plaquette investisseurs en anglais, moderne et claire, validée par le service communication. Amélioration significative de la lisibilité du support, renforcement de l\'image institutionnelle et de la qualité perçue du document. Le support est désormais utilisé lors de rendez-vous et présentations auprès de partenaires économiques internationaux, contribuant à valoriser l\'attractivité de La Réunion comme territoire d\'investissement.',
+    supports: [],
+    role: {
+      intro:
+        'Sur ce projet mené au sein du service communication, j\'ai pris en charge l\'ensemble de la chaîne, de la veille jusqu\'à la production finale du guide.',
+      missions: [
+        { title: 'Analyse de l\'existant', description: 'Étude de l\'ancienne plaquette pour conserver ce qui fonctionne et corriger le reste.' },
+        { title: 'Benchmark international', description: 'Analyse de guides investisseurs étrangers pour identifier les bonnes pratiques.' },
+        { title: 'Adaptation des contenus en anglais', description: 'Rédaction et adaptation des textes pour une cible internationale.' },
+        { title: 'Hiérarchisation des données économiques', description: 'Sélection et mise en ordre des chiffres clés et informations stratégiques.' },
+        { title: 'Direction artistique et mise en page', description: 'Modernisation de l\'identité visuelle et composition des pages.' },
+        { title: 'Production du guide final', description: 'Maquette, intégration, corrections et préparation du document livré.' },
+      ],
+    },
+    conception: {
+      label: 'Activité 2 · Conception du guide',
+      title: 'Conception du guide',
+      intro:
+        'Avant la production, un travail de structuration a permis de rendre l\'information claire, stratégique et adaptée à une lecture internationale.',
+      steps: [
+        { title: 'Organisation des contenus', text: 'Une structure claire et progressive pour guider l\'investisseur.' },
+        { title: 'Sélection des informations stratégiques', text: 'Choix des données les plus pertinentes pour la cible.' },
+        { title: 'Structuration par secteurs d\'activité', text: 'Un découpage par filières économiques, inspiré du benchmark.' },
+        { title: 'Adaptation des contenus en anglais', text: 'Rédaction et relecture pour une cible internationale.' },
+        { title: 'Mise en valeur des chiffres clés', text: 'Un traitement visuel des données économiques.' },
+      ],
+      format: {
+        title: 'Pourquoi un format carré ?',
+        points: [
+          'Se démarque des brochures institutionnelles classiques en A4 portrait.',
+          'Offre une image plus moderne et premium.',
+          'Valorise davantage les photographies du territoire.',
+          'Facilite l\'intégration d\'infographies et de doubles pages visuelles.',
+          'Cohérent avec les tendances observées lors du benchmark.',
+        ],
+      },
+    },
+    production: {
+      label: 'Activité 3 · Production du support',
+      title: 'Production du support',
+      intro: 'La réalisation concrète du guide, de la maquette à la version finale validée.',
+      steps: [
+        { title: 'Maquette', text: 'Construction de la structure et de la grille graphique.' },
+        { title: 'Intégration des contenus', text: 'Mise en page des textes, visuels, cartes et infographies.' },
+        { title: 'Vérification des données', text: 'Contrôle des chiffres avec le service concerné.' },
+        { title: 'Corrections', text: 'Allers-retours et ajustements éditoriaux et graphiques.' },
+        { title: 'Validation finale', text: 'Document validé par le service communication, prêt à diffuser.' },
+      ],
+    },
+    bilan:
+      'Ce projet illustre une démarche d\'édition complète : de la veille concurrentielle à la production finale, en passant par l\'analyse de l\'existant, la structuration de l\'information et la direction artistique. La refonte aboutit à un guide investisseur moderne, clair et entièrement en anglais, qui valorise l\'attractivité économique de La Réunion auprès d\'une cible internationale et renforce l\'image institutionnelle de La Réunion Développement.',
     gallery: [],
   },
 ]

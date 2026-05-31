@@ -103,12 +103,14 @@ export interface Moodboard {
   palette: MoodboardSwatch[]
 }
 
-/* Veille & Benchmark — références analysées + analyse de l'existant + format. */
+/* Veille & Benchmark — références analysées + analyse de l'existant. */
 export interface BenchmarkItem {
   image: string
   country: string
   title: string
-  lessons: string[]
+  retained: string[]      // ce qui a été retenu
+  inspiration?: string    // ce qui a inspiré le projet
+  counter?: boolean       // contre-référence (ex. Italie)
 }
 
 export interface BenchmarkNote {
@@ -123,9 +125,39 @@ export interface VeilleBenchmark {
   title: string
   intro?: string
   items: BenchmarkItem[]
-  lessonsTitle: string
   existingAnalysis: BenchmarkNote
-  formatChoice: BenchmarkNote
+}
+
+/* Activité 2 — Conception du guide : étapes de réflexion + focus format. */
+export interface ConceptionStep {
+  title: string
+  text?: string
+}
+
+export interface FormatFocus {
+  title: string
+  points: string[]
+}
+
+export interface ConceptionSection {
+  label?: string
+  title: string
+  intro?: string
+  steps: ConceptionStep[]
+  format: FormatFocus
+}
+
+/* Activité 3 — Production du support : timeline de réalisation. */
+export interface ProductionStep {
+  title: string
+  text?: string
+}
+
+export interface ProductionSection {
+  label?: string
+  title: string
+  intro?: string
+  steps: ProductionStep[]
 }
 
 /* Mon rôle — missions et coordination de prestataires. */
@@ -191,7 +223,7 @@ export interface Project {
   target: string | TargetAudience
   objectives: Objectives
   supports: string[]
-  impact: string
+  impact?: string
   gallery: (string | GalleryItem)[]
   isFeatured?: boolean
   problematic?: string
@@ -230,6 +262,8 @@ export interface Project {
   role?: ProjectRole
   bilan?: string
   veilleBenchmark?: VeilleBenchmark
+  conception?: ConceptionSection
+  production?: ProductionSection
 }
 
 export type MilestoneType = 'formation' | 'experience' | 'diplome' | 'objectif'

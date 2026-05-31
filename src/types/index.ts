@@ -210,6 +210,105 @@ export interface VisualIdentity {
   daTags?: string[]
 }
 
+/* ===========================================================================
+   Disney 100 — Vice-Versa : étude de cas sur mesure (recommandation stratégique)
+   Tout le contenu de la page projet Disney est décrit ici, section par section,
+   puis rendu par <DisneyCaseStudy>. Les supports n'ont pas été produits : la page
+   met en avant la réflexion, l'analyse et les recommandations.
+   ======================================================================== */
+
+/* Carte générique « emoji + titre + texte » (Grand Rex, rôle, KPI, etc.). */
+export interface DisneyIconCard {
+  icon: string          // emoji
+  title: string
+  text?: string
+}
+
+/* Bloc « titre + intro » réutilisable pour les sous-sections. */
+export interface DisneyBlock {
+  title: string
+  intro?: string
+}
+
+/* Activité 1 — une étude (Disney, concurrents, quanti, quali). */
+export interface DisneyStudyCard {
+  icon: string
+  title: string
+  source?: string       // ex. « Ipsos × FondaMental, 2024 »
+  points: string[]
+}
+
+/* Activité 1 — bloc questionnaire exploratoire. */
+export interface DisneyQuestionnaire {
+  title: string
+  intro: string
+  learnings: string[]   // principaux enseignements affichés sur la page
+  galleryLabel: string  // libellé du bouton « Voir les réponses complètes »
+  images: string[]      // captures dans l'ordre numérique (modal)
+}
+
+/* Activité 2 — correspondance « enseignement → solution recommandée ». */
+export interface DisneyInsightSolution {
+  insight: string
+  solution: string
+  icon?: string
+}
+
+/* Solution / innovation recommandée (carte). */
+export interface DisneyRecommendation {
+  icon: string
+  title: string
+  text: string
+  tag?: string          // ex. « Innovation », « Réseaux sociaux »
+}
+
+/* Persona — fiche synthétique. */
+export interface DisneyPersona {
+  name: string
+  age: string
+  role: string
+  quote?: string
+  traits: { label: string; value: string }[]
+  interests: string[]
+  why: string[]         // « Pourquoi ce persona ? » — construit à partir des études
+}
+
+export interface DisneyCaseStudy {
+  // 1. Contexte
+  context: DisneyBlock & { text: string }
+  // 2. Brief
+  brief: DisneyBlock & { points: string[] }
+  // 3. Pourquoi le Grand Rex
+  grandRex: DisneyBlock & { cards: DisneyIconCard[]; conclusion: string }
+  // 4. Problématique
+  problematic: DisneyBlock & { statement: string }
+  // 5. Cible & Persona
+  audience: DisneyBlock & { segments: DisneyIconCard[]; persona: DisneyPersona }
+  // 6. Mon rôle
+  role: DisneyBlock & { cards: DisneyIconCard[] }
+  // 7. Activité 1 — Veille et études
+  research: DisneyBlock & {
+    disney: DisneyStudyCard
+    competitors: DisneyStudyCard[]
+    quantitative: DisneyStudyCard[]
+    questionnaire: DisneyQuestionnaire
+  }
+  // 8. Pourquoi Vice-Versa
+  whyViceVersa: DisneyBlock & { reasons: DisneyIconCard[]; conclusion: string }
+  // 9. Activité 2 — Création de la stratégie
+  strategy: DisneyBlock & { mapping: DisneyInsightSolution[] }
+  // 10. Solutions recommandées
+  solutions: DisneyBlock & { disclaimer: string; cards: DisneyRecommendation[] }
+  // 11. Innovations proposées
+  innovations: DisneyBlock & { disclaimer: string; cards: DisneyRecommendation[] }
+  // 12. Activité 5 — Évaluation et KPI
+  kpi: DisneyBlock & { cards: DisneyIconCard[] }
+  // 13. Présentation du diaporama
+  slideshow: DisneyBlock & { pages: string[]; pdfUrl: string; pdfLabel: string }
+  // 14. Bilan
+  bilan: DisneyBlock & { text: string }
+}
+
 export interface Project {
   id: string
   title: string
@@ -264,6 +363,8 @@ export interface Project {
   veilleBenchmark?: VeilleBenchmark
   conception?: ConceptionSection
   production?: ProductionSection
+  // Disney 100 — étude de cas sur mesure (remplace le contenu générique)
+  disneyCase?: DisneyCaseStudy
 }
 
 export type MilestoneType = 'formation' | 'experience' | 'diplome' | 'objectif'

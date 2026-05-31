@@ -53,6 +53,7 @@ import type {
 import { SlideViewer } from '@/components/SlideViewer'
 import { FlipbookViewer } from '@/components/FlipbookViewer'
 import { GuideFlipBook, FlipErrorBoundary } from '@/components/GuideFlipBook'
+import { DisneyCaseStudy } from '@/components/DisneyCaseStudy'
 import { Picture } from '@/components/Picture'
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker
@@ -2178,6 +2179,12 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
               </div>
             )}
 
+            {/* Disney 100 — étude de cas sur mesure : remplace tout le contenu
+                générique ci-dessous (la Fiche BTS au-dessus est conservée). */}
+            {project.disneyCase ? (
+              <DisneyCaseStudy data={project.disneyCase} />
+            ) : (
+            <>
             {/* Contexte */}
             {project.context && (
               <div className="bg-ivory-warm/50 p-6 md:p-8 rounded-2xl border border-night/5">
@@ -2728,6 +2735,8 @@ export function ProjectView({ project, onBack }: ProjectViewProps) {
 
             {/* Bilan — conclusion (dernier bloc) */}
             {project.bilan && <BilanBlock text={project.bilan} />}
+            </>
+            )}
           </div>
         </div>
       </motion.article>

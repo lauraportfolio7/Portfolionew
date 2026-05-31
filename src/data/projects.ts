@@ -137,6 +137,18 @@ const guideBookPages = Array.from(
   (_, i) => `/guide-pages/guide-${String(i + 1).padStart(2, '0')}.jpg`,
 )
 
+// Diaporama Disney pré-rendu en images (21 slides) — affichage rapide et fiable.
+const disneyDiapoPages = Array.from(
+  { length: 21 },
+  (_, i) => `/disney-diapo/diapo-${String(i + 1).padStart(2, '0')}.jpg`,
+)
+
+// Captures du questionnaire exploratoire (11), dans l'ordre numérique.
+const disneyQuestionnairePages = Array.from(
+  { length: 11 },
+  (_, i) => `/disney-questionnaire/q-${String(i + 1).padStart(2, '0')}.jpg`,
+)
+
 export const featuredProjects: Project[] = [
   {
     id: 'reunion-ecran',
@@ -422,8 +434,6 @@ export const featuredProjects: Project[] = [
     title: 'Disney 100 — Projection Vice Versa au Grand Rex',
     description: 'Stratégie de communication pour une projection événementielle de Vice Versa 1 & 2 au Grand Rex, dans le cadre du 100ème anniversaire de Disney, autour de la santé mentale et des émotions des 18-24 ans.',
     image: disneyCarte,
-    documentUrl: '/documents/vice-versa.pdf',
-    documentLabel: 'Voir le dossier complet',
     category: 'École',
     tags: ['Stratégie de communication', 'Événementiel', 'Persona', 'Étude consommateurs'],
     type: 'Projet école — stratégie de communication / événementiel cinéma',
@@ -466,6 +476,233 @@ export const featuredProjects: Project[] = [
     ],
     impact: 'Une campagne qui ne se limite pas à promouvoir un film : elle permet aux jeunes adultes de mieux comprendre et exprimer leurs émotions, à travers une expérience immersive, bienveillante et utile. La performance sera mesurée via le taux de remplissage de la salle, les scans du QR code, les performances réseaux sociaux (Instagram Insights, TikTok Analytics) et les retours qualitatifs recueillis dans la safe place et en ligne.',
     gallery: [],
+    disneyCase: {
+      context: {
+        title: 'Le contexte du projet',
+        intro: 'Un projet d\'école pensé comme une recommandation stratégique, et non comme une campagne réellement diffusée.',
+        text: 'À l\'occasion du 100ᵉ anniversaire de Disney, j\'ai imaginé la communication d\'une projection événementielle pendant la semaine dédiée aux films et animations Disney, dans le cinéma de mon choix. La démarche est entièrement stratégique : il s\'agissait d\'analyser, de réfléchir et de recommander des solutions cohérentes, et non de produire ou de diffuser une campagne. Toute la page met donc en avant le raisonnement — comprendre, analyser, concevoir, recommander, évaluer.',
+      },
+      brief: {
+        title: 'Le brief',
+        intro: 'Les attentes posées au départ du projet.',
+        points: [
+          'Choisir un film ou une animation Disney à projeter.',
+          'Sélectionner un cinéma cohérent pour accueillir l\'événement.',
+          'Définir une cible précise et construire une fiche persona.',
+          'Réaliser une étude consommateurs quantitative et qualitative.',
+          'Élaborer une stratégie de communication intégrant au moins une innovation.',
+          'Présenter brièvement Disney ainsi que ses trois principaux concurrents.',
+        ],
+      },
+      grandRex: {
+        title: 'Pourquoi le Grand Rex ?',
+        intro: 'Le choix du lieu résulte d\'une réflexion stratégique, et non d\'une sélection aléatoire.',
+        cards: [
+          { icon: '🎬', title: 'Un lieu emblématique', text: 'Le plus grand cinéma d\'Europe, monument historique parisien associé au spectacle et à la magie — un cadre à la hauteur des 100 ans de Disney.' },
+          { icon: '👥', title: 'Une grande capacité', text: 'Une salle pouvant accueillir un large public, idéale pour une projection événementielle à fort rayonnement.' },
+          { icon: '✨', title: 'Des animations immersives', text: 'Un lieu déjà reconnu pour ses mises en scène féériques, propice aux expériences immersives imaginées autour des émotions.' },
+          { icon: '📱', title: 'Une forte visibilité réseaux', text: 'Un décor iconique et photogénique, propice au partage sur Instagram et TikTok par les participants.' },
+          { icon: '🎯', title: 'Une cohérence avec les 100 ans', text: 'Un lieu prestigieux et chargé d\'histoire, parfaitement aligné avec la dimension exceptionnelle de l\'anniversaire Disney.' },
+        ],
+        conclusion: 'Le Grand Rex coche toutes les cases : prestige, capacité, dimension immersive et fort potentiel de visibilité — un choix réfléchi au service de l\'événement.',
+      },
+      problematic: {
+        title: 'La problématique',
+        statement: 'Dans le cadre d\'une projection du film Vice-Versa au Grand Rex à Paris, comment concevoir une communication authentique et impactante qui donne aux jeunes adultes envie de participer à un événement émotionnel fort, en répondant à leur besoin de connexion sincère autour de leurs émotions ?',
+      },
+      audience: {
+        title: 'Cible & Persona',
+        intro: 'Une cible définie à partir des études, incarnée par un persona représentatif.',
+        segments: [
+          { icon: '🎯', title: 'Cœur de cible', text: 'Jeunes adultes 18-24 ans, sensibles à la santé mentale et à la gestion des émotions, consommateurs de contenus introspectifs.' },
+          { icon: '🤝', title: 'Cible relais', text: 'Influenceurs et créateurs bien-être (étudiants, psys, lifestyle), médias jeunes, comptes Instagram et TikTok orientés santé mentale.' },
+        ],
+        persona: {
+          name: 'Louna',
+          age: '18 ans',
+          role: 'Étudiante en 1ʳᵉ année de psychologie',
+          quote: 'J\'ai grandi avec Vice-Versa, et l\'anxiété du 2 m\'a vraiment parlé.',
+          traits: [
+            { label: 'Situation', value: 'En colocation, indépendante' },
+            { label: 'Études', value: 'Psychologie, 1ʳᵉ année' },
+            { label: 'Rapport aux émotions', value: 'Introspective, en quête de sens' },
+            { label: 'Réseaux', value: 'Instagram & TikTok au quotidien' },
+          ],
+          interests: ['Compréhension des émotions', 'Films d\'animation', 'Santé mentale', 'Journaling', 'Contenu introspectif'],
+          why: [
+            'Profil reconstitué à partir du questionnaire exploratoire et du panel qualitatif (18-22 ans).',
+            'Cohérent avec l\'étude Ipsos : forte sensibilité des 18-24 ans aux questions d\'anxiété et de santé mentale.',
+            'Reflète les comportements observés : attachement à Vice-Versa, usage intensif des réseaux, recherche d\'authenticité.',
+            'Un persona construit par synthèse des études, et non inventé.',
+          ],
+        },
+      },
+      role: {
+        title: 'Mon rôle',
+        intro: 'Un projet individuel où j\'ai piloté l\'ensemble de la réflexion stratégique.',
+        cards: [
+          { icon: '🔍', title: 'Analyse du brief' },
+          { icon: '📊', title: 'Étude quantitative' },
+          { icon: '🎤', title: 'Étude qualitative' },
+          { icon: '🎯', title: 'Création du persona' },
+          { icon: '💡', title: 'Définition de la problématique' },
+          { icon: '🎨', title: 'Élaboration de la stratégie' },
+          { icon: '✨', title: 'Conception des innovations' },
+          { icon: '📈', title: 'Définition des indicateurs' },
+        ],
+      },
+      research: {
+        title: 'Activité 1 — Veille et études',
+        intro: 'Une phase d\'analyse approfondie pour fonder chaque choix sur des données réelles, croisées entre elles.',
+        disney: {
+          icon: '🏰',
+          title: 'Analyse de Disney',
+          source: 'Présentation de la marque',
+          points: [
+            'Une marque centenaire, leader mondial du divertissement familial.',
+            'Un univers émotionnel fort, fédérateur et intergénérationnel.',
+            'Pixar (studio Disney) : référence de l\'animation portée par l\'émotion, dont la saga Vice-Versa.',
+          ],
+        },
+        competitors: [
+          {
+            icon: '🌿',
+            title: 'Studio Ghibli',
+            points: [
+              'Animation japonaise poétique et contemplative.',
+              'Univers oniriques et rapport sensible à la nature.',
+              'Public attaché à une forte dimension artistique.',
+            ],
+          },
+          {
+            icon: '🎭',
+            title: 'DreamWorks Animation',
+            points: [
+              'Animation grand public à l\'humour marqué.',
+              'Franchises populaires (Shrek, Dragons, Kung Fu Panda).',
+              'Positionnement plus comique que Disney/Pixar.',
+            ],
+          },
+          {
+            icon: '🧶',
+            title: 'Laika',
+            points: [
+              'Studio d\'animation en stop-motion (image par image).',
+              'Univers singuliers, artisanaux et audacieux.',
+              'Public de niche sensible à l\'originalité.',
+            ],
+          },
+        ],
+        quantitative: [
+          {
+            icon: '🧠',
+            title: 'Santé mentale des jeunes',
+            source: 'Ipsos × FondaMental, 2024',
+            points: [
+              '1 jeune de 18-24 ans sur 3 concerné par des troubles psychiques.',
+              '40 % concernés par l\'anxiété.',
+              'Un sujet central pour la cible, qui légitime le thème des émotions.',
+            ],
+          },
+          {
+            icon: '📈',
+            title: 'Intérêt pour Vice-Versa',
+            source: 'Google Trends',
+            points: [
+              'Pics d\'intérêt en juin 2015 et juin 2024, calés sur les sorties.',
+              'Une notoriété toujours vivace à chaque temps fort.',
+              'Un sujet qui mobilise spontanément le public.',
+            ],
+          },
+          {
+            icon: '🎟️',
+            title: 'Succès au box-office',
+            source: 'AlloCiné / Box-office',
+            points: [
+              'Vice-Versa 2 (2024) : 8 M d\'entrées en France.',
+              '3ᵉ film d\'animation le plus vu, 1,45 Md $ au box-office mondial.',
+              'Un succès massif confirmant le potentiel de l\'événement.',
+            ],
+          },
+        ],
+        questionnaire: {
+          title: 'Étude qualitative — questionnaire exploratoire',
+          intro: 'Un questionnaire exploratoire réalisé auprès de 9 répondants afin d\'identifier des tendances et de les croiser avec les autres études.',
+          learnings: [
+            'Tous les répondants ont vu Vice-Versa 1 et/ou 2.',
+            'Les personnages les plus marquants : Anxiété, Dégoût, Joie, Embarras.',
+            'Un fort attachement émotionnel au film et à ses émotions personnifiées.',
+            'Un intérêt marqué pour les expériences immersives et le partage sur les réseaux.',
+            'Un besoin d\'authenticité et de bienveillance dans la communication.',
+          ],
+          galleryLabel: 'Voir les réponses complètes',
+          images: disneyQuestionnairePages,
+        },
+      },
+      whyViceVersa: {
+        title: 'Pourquoi Vice-Versa ?',
+        intro: 'Le choix du film découle directement des études, et non d\'une préférence personnelle.',
+        reasons: [
+          { icon: '🏆', title: 'Un succès récent et massif', text: 'Vice-Versa 2 a marqué 2024 : 8 M d\'entrées en France, un phénomène encore très présent dans les esprits.' },
+          { icon: '💛', title: 'Une notoriété intacte', text: 'Google Trends confirme des pics d\'intérêt réguliers : un film qui mobilise spontanément la cible.' },
+          { icon: '🧠', title: 'Un lien direct avec les émotions', text: 'Le film personnifie les émotions et parle de santé mentale, sujet central pour les 18-24 ans.' },
+          { icon: '🗣️', title: 'Des attentes confirmées', text: 'Le questionnaire et le panel qualitatif montrent un fort attachement des jeunes adultes au film.' },
+        ],
+        conclusion: 'Le choix de Vice-Versa résulte d\'une démarche stratégique et non d\'une préférence personnelle : il croise succès, notoriété, lien émotionnel et attentes de la cible.',
+      },
+      strategy: {
+        title: 'Activité 2 — Création de la stratégie',
+        intro: 'Des enseignements aux solutions : chaque constat issu des études a guidé une réponse concrète.',
+        mapping: [
+          { icon: '🧠', insight: 'Anxiété chez les jeunes', solution: 'Espace « Safe Place » bienveillant après la projection' },
+          { icon: '🎟️', insight: 'Popularité du film', solution: 'Projection événementielle au Grand Rex' },
+          { icon: '📱', insight: 'Usage des réseaux sociaux', solution: 'Formats courts Instagram & TikTok' },
+          { icon: '🪞', insight: 'Recherche d\'expériences immersives', solution: 'Le Miroir des Émotions dans le hall' },
+          { icon: '💛', insight: 'Besoin d\'authenticité', solution: 'Communication sincère et bienveillante' },
+        ],
+      },
+      solutions: {
+        title: 'Solutions recommandées',
+        intro: 'Les leviers de communication imaginés pour donner vie à l\'événement.',
+        disclaimer: 'Recommandations stratégiques imaginées dans le cadre du projet — non produites ni diffusées.',
+        cards: [
+          { icon: '🎬', tag: 'Affiche', title: 'Affiche événementielle', text: 'Une affiche reprenant l\'univers graphique de Vice-Versa, l\'accroche « Ça te parle ? Tes émotions aussi. », les temps forts (miroir, safe place, animations) et un QR code vers le mini-site et les réseaux.' },
+          { icon: '📱', tag: 'Réseaux sociaux', title: 'Déclinaison Instagram & TikTok', text: 'Des formats courts : vidéo de présentation du programme, contenus émotionnels et témoignages imaginés des participants, pensés pour le partage.' },
+          { icon: '🤝', tag: 'Influence', title: 'Partenariats influenceurs', text: 'Une sélection de créateurs bien-être (étudiants, psys, lifestyle) pour apporter crédibilité et résonance auprès de la cible.' },
+        ],
+      },
+      innovations: {
+        title: 'Innovations proposées',
+        intro: 'Deux expériences immersives imaginées pour faire de l\'événement un moment unique.',
+        disclaimer: 'Innovations imaginées dans le cadre de la recommandation — non réalisées.',
+        cards: [
+          { icon: '🪞', tag: 'Innovation', title: 'Le Miroir des Émotions', text: 'Un miroir interactif dans le hall qui capte l\'expression du visiteur, fait apparaître le personnage de Vice-Versa correspondant à l\'émotion détectée, et propose une photo/vidéo partageable avec un hashtag dédié et un message personnalisé.' },
+          { icon: '🛋️', tag: 'Innovation', title: 'L\'espace « Safe Place »', text: 'Un lieu calme après la projection, avec boissons et gâteaux, où des psychologues sont présents pour échanger dans un cadre confidentiel — avec des tickets offerts pour des séances de suivi.' },
+        ],
+      },
+      kpi: {
+        title: 'Activité 5 — Évaluation et KPI',
+        intro: 'Les indicateurs définis pour mesurer l\'efficacité de la communication.',
+        cards: [
+          { icon: '🎟️', title: 'Taux de remplissage', text: 'Mesurer le nombre de places vendues par rapport à la capacité de la salle.' },
+          { icon: '📱', title: 'Scans du QR code', text: 'Suivre le nombre de scans pour évaluer l\'intérêt généré par l\'affiche.' },
+          { icon: '📈', title: 'Engagement réseaux', text: 'Analyser les performances Instagram & TikTok (vues, likes, partages, abonnés).' },
+          { icon: '💬', title: 'Retours qualitatifs', text: 'Recueillir les ressentis des participants, notamment dans la safe place.' },
+          { icon: '⭐', title: 'Analyse des commentaires', text: 'Étudier le ton et le contenu des réactions en ligne pour mesurer la perception.' },
+        ],
+      },
+      slideshow: {
+        title: 'Présentation du projet',
+        intro: 'L\'ensemble de la réflexion stratégique a été synthétisé dans un diaporama, consultable directement ci-dessous.',
+        pages: disneyDiapoPages,
+        pdfUrl: '/documents/vice-versa.pdf',
+        pdfLabel: 'Consulter le diaporama complet',
+      },
+      bilan: {
+        title: 'Bilan du projet',
+        text: 'Ce projet m\'a permis de mener une démarche stratégique complète, de l\'analyse à la recommandation. En croisant études quantitatives, étude qualitative et veille concurrentielle, j\'ai construit une cible précise, choisi un film et un lieu de façon argumentée, puis imaginé des solutions et des innovations cohérentes avec les attentes des jeunes adultes. Au-delà de la promotion d\'un film, la communication imaginée vise à aider les jeunes adultes à mieux comprendre et exprimer leurs émotions, à travers une expérience immersive, bienveillante et utile.',
+      },
+    },
   },
   {
     id: 'guide-investisseur',
